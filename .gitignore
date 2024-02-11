@@ -40,3 +40,7 @@ next-env.d.ts
 
 # open-next
 .open-next
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

@@ -74,6 +74,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  wavesurfer.js:
+    specifier: ^7.7.2
+    version: 7.7.2
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -10614,6 +10617,10 @@ packages:
     dependencies:
       xml-name-validator: 5.0.0
     dev: true
+
+  /wavesurfer.js@7.7.2:
+    resolution: {integrity: sha512-x7Kx9FS+bkuSTkJrKe/eZ9f30MarDLpucObPVDcGl1npYoq3x/8dspUOUhaUasV3ZBAdcF+BzCMfMX2UVUDhCg==}
+    dev: false
 
   /wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}

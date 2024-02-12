@@ -11,6 +11,9 @@ dependencies:
   '@lucia-auth/adapter-drizzle':
     specifier: ^1.0.1
     version: 1.0.1(lucia@3.0.1)
+  '@lucia-auth/adapter-sqlite':
+    specifier: ^3.0.0
+    version: 3.0.0(@libsql/client@0.4.3)(lucia@3.0.1)
   '@mantine/core':
     specifier: ^7.5.2
     version: 7.5.2(@mantine/hooks@7.5.2)(@types/react@18.0.0)(react-dom@18.2.0)(react@18.2.0)
@@ -53,6 +56,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.10
     version: 1.11.10
+  dotenv:
+    specifier: ^16.4.2
+    version: 16.4.2
   drizzle-orm:
     specifier: ^0.29.3
     version: 0.29.3(@aws-sdk/client-rds-data@3.511.0)(@libsql/client@0.4.3)(@types/react@18.0.0)(kysely@0.25.0)(react@18.2.0)
@@ -2647,6 +2653,22 @@ packages:
     peerDependencies:
       lucia: 3.x
     dependencies:
+      lucia: 3.0.1
+    dev: false
+
+  /@lucia-auth/adapter-sqlite@3.0.0(@libsql/client@0.4.3)(lucia@3.0.1):
+    resolution: {integrity: sha512-7XMfMMNziFOoqIq2u9W5Z+wo7G7lzNQfUh7wDlkIqKxJMSLtP6GKH+QpK+21X4ZY9dIDmiuiwqZmS3Q3CgpATw==}
+    peerDependencies:
+      '@libsql/client': ^0.3.0
+      better-sqlite3: 8.x - 9.x
+      lucia: 3.x
+    peerDependenciesMeta:
+      '@libsql/client':
+        optional: true
+      better-sqlite3:
+        optional: true
+    dependencies:
+      '@libsql/client': 0.4.3
       lucia: 3.0.1
     dev: false
 

@@ -111,12 +111,8 @@ export const userTable = sqliteTable("users", {
   password: text("password").notNull(),
 });
 
-export const sessionTable = sqliteTable("sessions", {
-  id: text("id")
-    .notNull()
-    .primaryKey()
-    .$default(() => randomUUID())
-    .unique(),
+export const sessionTable = sqliteTable("session", {
+  id: text("id").notNull().primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id),

@@ -1,9 +1,13 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 import { randomUUID } from "crypto";
 
 export const audio = sqliteTable("audio", {
-  id: integer("id").notNull().primaryKey(),
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -14,7 +18,11 @@ export const audio = sqliteTable("audio", {
 });
 
 export const comments = sqliteTable("comments", {
-  id: text("id").notNull().primaryKey().default(randomUUID()),
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -31,7 +39,11 @@ export const comments = sqliteTable("comments", {
 });
 
 export const images = sqliteTable("images", {
-  id: integer("id").notNull().primaryKey(),
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -42,7 +54,11 @@ export const images = sqliteTable("images", {
 });
 
 export const posts = sqliteTable("posts", {
-  id: text("id").notNull().primaryKey(),
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description"),
   createdAt: integer("created_at", { mode: "timestamp" })
@@ -55,9 +71,9 @@ export const posts = sqliteTable("posts", {
   type: text("post_type", {
     enum: ["collab", "demo", "master", "mix", "sample", "text"],
   }).notNull(),
-  bpm: integer("bpm"),
+  bpm: real("bpm"),
   key: text("key"),
-  influences: text("influences"),
+  inspiration: text("inspiration"),
   genre: text("genre"),
   audioId: integer("audio_id").references(() => audio.id),
   imageId: integer("image_id").references(() => images.id),

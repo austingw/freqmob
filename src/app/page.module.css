@@ -5,7 +5,22 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
-  background-color: #515b3a;
+  background-color: var(--mantine-color-cool-blue-6);
+}
+
+.button1 {
+  background-color: var(--mantine-color-happy-yellow-6);
+  padding: 1rem;
+}
+
+.button2 {
+  background-color: var(--mantine-color-wild-pink-6);
+  padding: 1rem;
+}
+
+.button3 {
+  background-color: var(--mantine-color-swag-purp-6);
+  padding: 1rem;
 }
 
 .hero {

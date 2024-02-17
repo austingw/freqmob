@@ -10,7 +10,12 @@ export default function Home() {
             FREQMOB // FREQMOB // FREQMOB // FREQMOB // FREQMOB
           </h1>
         </div>
-        <div className={styles.description}>A platform for artists.</div>
+        <div className={styles.description}>
+          A platform for artists.
+          <button className={styles.button1}>Sign Up</button>
+          <button className={styles.button2}>Log In</button>
+          <button className={styles.button3}>About</button>
+        </div>
       </div>
     </main>
   );

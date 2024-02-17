@@ -1,5 +1,7 @@
-import Image from "next/image";
 import styles from "./page.module.css";
+import FileUpload from "@/components/FileUpload";
+import { Button } from "@mantine/core";
+import PostForm from "@/components/PostForm";
 
 export default function Home() {
   return (
@@ -15,8 +17,16 @@ export default function Home() {
           <button className={styles.button1}>Sign Up</button>
           <button className={styles.button2}>Log In</button>
           <button className={styles.button3}>About</button>
+          <Button
+            variant="gradient"
+            gradient={{ from: "blue", to: "cyan", deg: 90 }}
+          >
+            Button
+          </Button>
         </div>
+        <FileUpload />
       </div>
+      <PostForm />
     </main>
   );
 }

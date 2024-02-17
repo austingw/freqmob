@@ -12,9 +12,9 @@ export const audio = sqliteTable("audio", {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   url: text("url").notNull(),
-  userId: text("user_id")
+  profileId: text("profile_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => profiles.id),
 });
 
 export const comments = sqliteTable("comments", {
@@ -30,9 +30,9 @@ export const comments = sqliteTable("comments", {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   content: text("content").notNull(),
-  userId: text("user_id")
+  profileId: text("profile_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => profiles.id),
   postId: text("post_id")
     .notNull()
     .references(() => posts.id),
@@ -48,9 +48,9 @@ export const images = sqliteTable("images", {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   url: text("url").notNull(),
-  userId: text("user_id")
+  profileId: text("profile_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => profiles.id),
 });
 
 export const posts = sqliteTable("posts", {
@@ -77,9 +77,9 @@ export const posts = sqliteTable("posts", {
   genre: text("genre"),
   audioId: integer("audio_id").references(() => audio.id),
   imageId: integer("image_id").references(() => images.id),
-  userId: text("user_id")
+  profileId: text("profile_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => profiles.id),
 });
 
 export const profiles = sqliteTable("profiles", {

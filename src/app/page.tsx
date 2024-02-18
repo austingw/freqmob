@@ -24,7 +24,6 @@ export default function Home() {
             Button
           </Button>
         </div>
-        <FileUpload />
       </div>
       <PostForm />
     </main>

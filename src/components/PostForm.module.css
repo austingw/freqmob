@@ -1,0 +1,7 @@
+.segmentedIndicator {
+  background-image: linear-gradient(
+    to right,
+    var(--mantine-color-electric-teal-filled),
+    var(--mantine-color-wild-pink-filled)
+  );
+}

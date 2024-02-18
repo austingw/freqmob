@@ -12,6 +12,7 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import FileUpload from "./FileUpload";
+import classes from "./PostForm.module.css";
 
 const schema = z.object({
   title: z.string().min(3).max(100),
@@ -42,14 +43,23 @@ const PostForm = () => {
   return (
     <Flex direction="column" gap="md">
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
-        <Group>
+        <Group align="center" justify="center">
           <TextInput
             withAsterisk
             label="Title"
             placeholder="Enter a title..."
             {...form.getInputProps("title")}
           />
-          <SegmentedControl data={posts.type.enumValues} value="text" />
+          <SegmentedControl
+            data={posts.type.enumValues}
+            color="primary"
+            onChange={(value) => form.setFieldValue("type", value)}
+            radius="md"
+            size="md"
+            classNames={{
+              indicator: classes.segmentedIndicator,
+            }}
+          />
         </Group>
         <Textarea
           label="Content"

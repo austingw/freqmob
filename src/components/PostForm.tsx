@@ -13,6 +13,9 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import FileUpload from "./FileUpload";
 import classes from "./PostForm.module.css";
+import { createPost } from "@/app/actions";
+// @ts-ignore
+import { useFormState } from "react-dom";
 interface FormValues {
   title: string;
   description: string;
@@ -53,13 +56,15 @@ const PostForm = () => {
     validate: zodResolver(schema),
   });
 
+  const [state, formAction] = useFormState(createPost, form.values);
+
   const addFile = (file: File) => {
     form.setFieldValue("file", file);
   };
 
   return (
     <Flex direction="column" gap="md">
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form action={formAction}>
         <Group align="center" justify="center">
           <TextInput
             withAsterisk

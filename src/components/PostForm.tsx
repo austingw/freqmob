@@ -16,55 +16,67 @@ import classes from "./PostForm.module.css";
 import { createPost } from "@/app/actions";
 // @ts-ignore
 import { useFormState } from "react-dom";
+import generateFormData from "@/utils/generateFormData";
+
 interface FormValues {
   title: string;
   description: string;
-  file: File | null;
+  file: File | string;
   published: boolean;
   type: string;
   bpm: number;
   key: string;
   inspiration: string;
   genre: string;
+  uploadUrl: string;
 }
 
 const schema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().optional(),
-  file: z.instanceof(File).optional(),
+  file: z.instanceof(Blob).optional(),
   published: z.boolean(),
   type: z.enum(posts.type.enumValues),
   bpm: z.number().optional(),
   key: z.string().optional(),
   inspiration: z.string().optional(),
   genre: z.string().optional(),
+  uploadUrl: z.string().optional(),
 });
 
 const PostForm = () => {
   const form = useForm<FormValues>({
     initialValues: {
-      title: "",
+      title: "test",
       description: "",
-      file: null,
+      file: "",
       published: false,
       type: posts.type.enumValues[1],
       bpm: 0,
       key: "",
       inspiration: "",
       genre: "",
+      uploadUrl: "",
     },
     validate: zodResolver(schema),
   });
 
   const [state, formAction] = useFormState(createPost, form.values);
+  console.log(form.values);
 
-  const addFile = (file: File) => {
+  const addFile = async (file: File) => {
     form.setFieldValue("file", file);
   };
 
   return (
     <Flex direction="column" gap="md">
-      <form action={formAction}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const data = generateFormData(form.values);
+          formAction(data);
+        }}
+      >
         <Group align="center" justify="center">
           <TextInput
             withAsterisk

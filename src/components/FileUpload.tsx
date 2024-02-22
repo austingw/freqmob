@@ -2,11 +2,15 @@
 
 import { useRef } from "react";
 import { Text, Group, Button, rem, useMantineTheme } from "@mantine/core";
-import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
+import { Dropzone } from "@mantine/dropzone";
 import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons-react";
 import classes from "./FileUpload.module.css";
 
-const FileUpload = () => {
+type FileUploadProps = {
+  addFile: (file: File) => void;
+};
+
+const FileUpload = ({ addFile }: FileUploadProps) => {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
 
@@ -14,16 +18,11 @@ const FileUpload = () => {
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={() => {}}
         className={classes.dropzone}
         radius="md"
-        accept={[
-          "audio/aac",
-          "audio/flac",
-          "audio/mp3",
-          "audio/ogg",
-          "audio/wav",
-        ]}
+        onDrop={(files) => {
+          addFile(files[0]);
+        }}
         maxSize={30 * 1024 ** 2}
       >
         <div style={{ pointerEvents: "none" }}>

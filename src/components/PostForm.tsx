@@ -13,10 +13,22 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import FileUpload from "./FileUpload";
 import classes from "./PostForm.module.css";
+interface FormValues {
+  title: string;
+  description: string;
+  file: File | null;
+  published: boolean;
+  type: string;
+  bpm: number;
+  key: string;
+  inspiration: string;
+  genre: string;
+}
 
 const schema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().optional(),
+  file: z.instanceof(File).optional(),
   published: z.boolean(),
   type: z.enum(posts.type.enumValues),
   bpm: z.number().optional(),
@@ -26,12 +38,13 @@ const schema = z.object({
 });
 
 const PostForm = () => {
-  const form = useForm({
+  const form = useForm<FormValues>({
     initialValues: {
       title: "",
       description: "",
+      file: null,
       published: false,
-      type: "text",
+      type: posts.type.enumValues[1],
       bpm: 0,
       key: "",
       inspiration: "",
@@ -39,6 +52,10 @@ const PostForm = () => {
     },
     validate: zodResolver(schema),
   });
+
+  const addFile = (file: File) => {
+    form.setFieldValue("file", file);
+  };
 
   return (
     <Flex direction="column" gap="md">
@@ -90,7 +107,7 @@ const PostForm = () => {
             {...form.getInputProps("genre")}
           />
         </Group>
-        <FileUpload />
+        <FileUpload addFile={addFile} />
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
           <Button variant="light">Cancel</Button>

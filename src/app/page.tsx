@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import FileUpload from "@/components/FileUpload";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
 

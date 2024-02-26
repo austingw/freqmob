@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
 
-// Import the function to test
 import formatTime from "../../src/utils/formatTime";
 
 test("formatTime", () => {

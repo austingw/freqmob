@@ -2,7 +2,7 @@
 
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/db/audioDbOperations";
-import { insertPost } from "@/utils/db/postDbOperations";
+import { insertPost, queryPosts } from "@/utils/db/postDbOperations";
 
 export const createPost = async (prevState: any, post: FormData) => {
   const title = String(post.get("title"));
@@ -45,4 +45,8 @@ export const createPost = async (prevState: any, post: FormData) => {
   } catch {
     throw new Error("There was an error creating the post");
   }
+};
+
+export const getPosts = async () => {
+  return queryPosts();
 };

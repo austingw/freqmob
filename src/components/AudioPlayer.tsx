@@ -9,6 +9,7 @@ import {
   Group,
   LoadingOverlay,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
@@ -30,6 +31,8 @@ interface AudioPlayerProps {
 }
 
 const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
+  const theme = useMantineTheme();
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -52,9 +55,9 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
         wavesurferRef.current = WaveSurfer.create({
           container: waveformRef.current,
           mediaControls: false,
-          waveColor: "#eee",
-          progressColor: "#0178FF",
-          cursorColor: "OrangeRed",
+          waveColor: "lightgray",
+          progressColor: "#ed2a9f",
+          cursorColor: "#ed2a9f",
           barWidth: 5,
           barRadius: 5,
           height: 100,

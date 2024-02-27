@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
-import { posts } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { audio, posts } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 
 type NewPost = typeof posts.$inferInsert;
 
@@ -9,14 +9,9 @@ export const insertPost = async (post: NewPost) => {
 };
 
 export const queryPosts = async () => {
-  return await db.query.posts.findMany({
-    with: {
-      audio: true,
-      images: true,
-      profile: true,
-    },
-    limit: 10,
-    offset: 0,
-    orderBy: [desc(posts.createdAt)],
-  });
+  return await db
+    .select()
+    .from(posts)
+    .leftJoin(audio, eq(posts.audioId, audio.id))
+    .orderBy(desc(posts.createdAt));
 };

@@ -1,8 +1,14 @@
 import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
+import { getPosts } from "./actions";
+import AudioPlayer from "@/components/AudioPlayer";
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getPosts();
+
+  console.log(posts);
+
   return (
     <main className={styles.main}>
       <div className={styles.hero}>
@@ -25,6 +31,11 @@ export default function Home() {
         </div>
       </div>
       <PostForm />
+      {posts.map((post) => (
+        <div key={post.posts.id}>
+          {post?.audio?.url && <AudioPlayer url={post.audio.url} art="" />}
+        </div>
+      ))}
     </main>
   );
 }

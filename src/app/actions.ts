@@ -48,5 +48,5 @@ export const createPost = async (prevState: any, post: FormData) => {
 };
 
 export const getPosts = async () => {
-  return queryPosts();
+  return await queryPosts();
 };

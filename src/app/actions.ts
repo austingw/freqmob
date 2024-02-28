@@ -1,8 +1,8 @@
 "use server";
 
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
-import { insertAudio } from "@/utils/db/audioDbOperations";
-import { insertPost, queryPosts } from "@/utils/db/postDbOperations";
+import { insertAudio } from "@/utils/operations/audioDbOperations";
+import { insertPost, queryPosts } from "@/utils/operations/postDbOperations";
 
 export const createPost = async (prevState: any, post: FormData) => {
   const title = String(post.get("title"));

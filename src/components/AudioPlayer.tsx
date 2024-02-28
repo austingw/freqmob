@@ -56,8 +56,8 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
           container: waveformRef.current,
           mediaControls: false,
           waveColor: "lightgray",
-          progressColor: "#ed2a9f",
-          cursorColor: "#ed2a9f",
+          progressColor: "#F15BB5",
+          cursorColor: "#F15BB5",
           barWidth: 5,
           barRadius: 5,
           height: 100,
@@ -146,7 +146,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
         <Flex justify={"space-between"} align={"center"}>
           <Group>
             <ActionIcon
-              color="black"
+              color={theme.primaryColor}
               onClick={() => {
                 wavesurferRef.current
                   ?.playPause()
@@ -157,7 +157,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
               {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
             </ActionIcon>
             <ActionIcon
-              color="black"
+              color={theme.primaryColor}
               onClick={() => {
                 wavesurferRef.current?.stop();
                 setIsPlaying(false);
@@ -167,7 +167,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
               <IconPlayerStop />
             </ActionIcon>
             <ActionIcon
-              color="black"
+              color={theme.primaryColor}
               onClick={() => {
                 wavesurferRef.current?.skip(-15);
                 setCurrentTime(Number(wavesurferRef.current?.getCurrentTime()));
@@ -176,7 +176,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
               <IconArrowBackUp />
             </ActionIcon>
             <ActionIcon
-              color="black"
+              color={theme.primaryColor}
               onClick={() => {
                 handleSpeedChange();
               }}

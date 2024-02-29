@@ -64,7 +64,10 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
           normalize: true,
         });
 
-        await wavesurferRef.current.load(url);
+        //Convert to blob first rather than load directly from url to prevent decode error
+        const blob = await fetch(url).then((res) => res.blob());
+
+        await wavesurferRef.current.loadBlob(blob);
 
         return wavesurferRef.current;
       }

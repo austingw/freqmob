@@ -17,7 +17,7 @@ export const createPost = async (prevState: any, post: FormData) => {
         method: "PUT",
         body: file,
         headers: {
-          "Content-Type": "audio/mp3", //to be dynamic based on file type
+          "Content-Type": "audio/wav", //to be dynamic based on file type
           "Content-Disposition": `attachment; filename="${title}"`,
         },
       });

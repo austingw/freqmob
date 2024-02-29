@@ -14,8 +14,6 @@ import { z } from "zod";
 import FileUpload from "./FileUpload";
 import classes from "./PostForm.module.css";
 import { createPost } from "@/app/actions";
-// @ts-ignore
-import { useFormState } from "react-dom";
 import generateFormData from "@/utils/generateFormData";
 
 interface FormValues {
@@ -61,9 +59,6 @@ const PostForm = () => {
     validate: zodResolver(schema),
   });
 
-  const [state, formAction] = useFormState(createPost, form.values);
-  console.log(form.values);
-
   const addFile = async (file: File) => {
     form.setFieldValue("file", file);
   };
@@ -74,7 +69,7 @@ const PostForm = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           const data = generateFormData(form.values);
-          formAction(data);
+          createPost(data);
         }}
       >
         <Group align="center" justify="center">

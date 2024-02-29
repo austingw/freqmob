@@ -4,7 +4,7 @@ import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import { insertPost, queryPosts } from "@/utils/operations/postDbOperations";
 
-export const createPost = async (prevState: any, post: FormData) => {
+export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));
   const description = String(post.get("description"));
   const file = post.get("file");

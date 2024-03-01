@@ -8,7 +8,7 @@ export const audio = sqliteTable("audio", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  uploadedAt: integer("uploaded_at", { mode: "timestamp" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   url: text("url").notNull(),
@@ -44,7 +44,7 @@ export const images = sqliteTable("images", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  uploadedAt: integer("uploaded_at", { mode: "timestamp" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   url: text("url").notNull(),
@@ -95,6 +95,9 @@ export const profiles = sqliteTable("profiles", {
   soundcloud: text("soundcloud"),
   spotify: text("spotify"),
   website: text("website"),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(
+    sql`CURRENT_TIMESTAMP`
+  ),
   userId: text("user_id")
     .notNull()
     .unique()

@@ -7,7 +7,7 @@ import {
   Card,
   Flex,
   Group,
-  LoadingOverlay,
+  Skeleton,
   Text,
   useMantineTheme,
 } from "@mantine/core";
@@ -115,7 +115,6 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
   return (
     <>
       <Card withBorder pt={20} pb={10} px={20} m={10} w={"100%"}>
-        <LoadingOverlay visible={!wavesurferRef.current} />
         <Flex
           direction={"row"}
           align={"center"}
@@ -123,21 +122,24 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
           gap={10}
           pb={10}
         >
-          {
-            //below is placeholder for optional track art
-          }
-          <Box
-            style={{
-              minWidth: 140,
-              minHeight: 140,
-              backgroundColor: "gray",
-              borderRadius: 10,
-            }}
-          />
-
+          {!wavesurferRef.current ? (
+            <>
+              <Skeleton maw={140} mih={140} radius={10} />
+              <Skeleton width={"100%"} height={140} radius={10} />
+            </>
+          ) : (
+            <Box
+              style={{
+                minWidth: 140,
+                minHeight: 140,
+                backgroundColor: "gray",
+                borderRadius: 10,
+              }}
+            />
+          )}
           <div
             style={{
-              width: "100%",
+              width: !wavesurferRef.current ? "0" : "100%",
             }}
             id="waveform"
             ref={waveformRef}
@@ -148,56 +150,73 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
         </Flex>
         <Flex justify={"space-between"} align={"center"}>
           <Group>
-            <ActionIcon
-              color={theme.primaryColor}
-              onClick={() => {
-                wavesurferRef.current
-                  ?.playPause()
-                  .catch((err) => console.error(err));
-                togglePlay();
-              }}
-            >
-              {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
-            </ActionIcon>
-            <ActionIcon
-              color={theme.primaryColor}
-              onClick={() => {
-                wavesurferRef.current?.stop();
-                setIsPlaying(false);
-                setCurrentTime(0);
-              }}
-            >
-              <IconPlayerStop />
-            </ActionIcon>
-            <ActionIcon
-              color={theme.primaryColor}
-              onClick={() => {
-                wavesurferRef.current?.skip(-15);
-                setCurrentTime(Number(wavesurferRef.current?.getCurrentTime()));
-              }}
-            >
-              <IconArrowBackUp />
-            </ActionIcon>
-            <ActionIcon
-              color={theme.primaryColor}
-              onClick={() => {
-                handleSpeedChange();
-              }}
-            >
-              {speed === 1 ? (
-                <IconMultiplier1x />
-              ) : speed === 1.5 ? (
-                <IconMultiplier15x />
-              ) : speed === 2 ? (
-                <IconMultiplier2x />
-              ) : (
-                <IconMultiplier05x />
-              )}
-            </ActionIcon>
+            {!wavesurferRef.current ? (
+              <>
+                <Skeleton width={30} height={30} radius={5} />
+                <Skeleton width={30} height={30} radius={5} />
+                <Skeleton width={30} height={30} radius={5} />
+                <Skeleton width={30} height={30} radius={5} />
+              </>
+            ) : (
+              <>
+                <ActionIcon
+                  color={theme.primaryColor}
+                  onClick={() => {
+                    wavesurferRef.current
+                      ?.playPause()
+                      .catch((err) => console.error(err));
+                    togglePlay();
+                  }}
+                >
+                  {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
+                </ActionIcon>
+                <ActionIcon
+                  color={theme.primaryColor}
+                  onClick={() => {
+                    wavesurferRef.current?.stop();
+                    setIsPlaying(false);
+                    setCurrentTime(0);
+                  }}
+                >
+                  <IconPlayerStop />
+                </ActionIcon>
+                <ActionIcon
+                  color={theme.primaryColor}
+                  onClick={() => {
+                    wavesurferRef.current?.skip(-15);
+                    setCurrentTime(
+                      Number(wavesurferRef.current?.getCurrentTime())
+                    );
+                  }}
+                >
+                  <IconArrowBackUp />
+                </ActionIcon>
+                <ActionIcon
+                  color={theme.primaryColor}
+                  onClick={() => {
+                    handleSpeedChange();
+                  }}
+                >
+                  {speed === 1 ? (
+                    <IconMultiplier1x />
+                  ) : speed === 1.5 ? (
+                    <IconMultiplier15x />
+                  ) : speed === 2 ? (
+                    <IconMultiplier2x />
+                  ) : (
+                    <IconMultiplier05x />
+                  )}
+                </ActionIcon>
+              </>
+            )}
           </Group>
-          <Text size="sm" c="dimmed">
-            {formatTime(currentTime) || 0} / {formatTime(duration) || 0}
-          </Text>
+          {!wavesurferRef.current ? (
+            <Skeleton width={100} height={30} radius={5} mr={10} />
+          ) : (
+            <Text size="sm" c="dimmed">
+              {formatTime(currentTime) || 0} / {formatTime(duration) || 0}
+            </Text>
+          )}
         </Flex>
       </Card>
     </>

@@ -3,6 +3,7 @@ import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
 import { getPosts } from "./actions";
 import AudioPlayer from "@/components/AudioPlayer";
+import SignUp from "@/components/SignUp";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -28,6 +29,7 @@ export default async function Home() {
           </Button>
         </div>
       </div>
+      <SignUp />
       <PostForm />
       <AudioPlayer url={posts[0].audio?.url || ""} art="" />
     </main>

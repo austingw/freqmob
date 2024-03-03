@@ -1,3 +1,7 @@
+"use client";
+
+import { signup } from "@/app/actions";
+import generateFormData from "@/utils/generateFormData";
 import {
   Button,
   Flex,
@@ -6,23 +10,45 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
+
+interface SignUpFormValues {
+  username: string;
+  password: string;
+}
+
+const schema = z.object({
+  username: z.string().min(3).max(100),
+  password: z
+    .string()
+    .min(8)
+    .max(100)
+    .refine((value) => {
+      return (
+        value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/)
+      );
+    }, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
+});
 
 const SignUp = () => {
-  const form = useForm({
+  const form = useForm<SignUpFormValues>({
     initialValues: {
-      name: "",
-      email: "",
+      username: "",
       password: "",
     },
+    validate: zodResolver(schema),
   });
 
   return (
     <>
       <form
-        onSubmit={form.onSubmit((values) => {
-          console.log("values", values);
-        })}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const data = generateFormData(form.values);
+          console.log(form.values, data.get("username"), data.get("password"));
+          signup(data);
+        }}
       >
         <Flex>
           <Stack>
@@ -32,12 +58,6 @@ const SignUp = () => {
               label="Artist Name"
               placeholder="Something cool like Scaremony..."
               {...form.getInputProps("username")}
-            />
-            <TextInput
-              withAsterisk
-              label="Email"
-              placeholder="Following this format: your@email.com"
-              {...form.getInputProps("email")}
             />
             <PasswordInput
               withAsterisk

@@ -7,8 +7,6 @@ import AudioPlayer from "@/components/AudioPlayer";
 export default async function Home() {
   const posts = await getPosts();
 
-  console.log(posts);
-
   return (
     <main className={styles.main}>
       <div className={styles.hero}>

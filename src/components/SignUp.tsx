@@ -16,26 +16,41 @@ import { z } from "zod";
 interface SignUpFormValues {
   username: string;
   password: string;
+  password2: string;
 }
 
-const schema = z.object({
-  username: z.string().min(3).max(100),
-  password: z
-    .string()
-    .min(8)
-    .max(100)
-    .refine((value) => {
-      return (
-        value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/)
-      );
-    }, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
-});
+const schema = z
+  .object({
+    username: z.string().min(3).max(31),
+    password: z
+      .string()
+      .min(6)
+      .max(100)
+      .refine((value) => {
+        return (
+          value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/)
+        );
+      }, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
+    password2: z
+      .string()
+      .min(6)
+      .max(100)
+      .refine((value) => {
+        return (
+          value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/)
+        );
+      }, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
+  })
+  .refine((values) => {
+    return values.password === values.password2;
+  }, "Passwords must match");
 
 const SignUp = () => {
   const form = useForm<SignUpFormValues>({
     initialValues: {
       username: "",
       password: "",
+      password2: "",
     },
     validate: zodResolver(schema),
   });
@@ -45,9 +60,15 @@ const SignUp = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          form.validate();
+          if (form.errors.username || form.errors.password) return form.errors;
           const data = generateFormData(form.values);
-          console.log(form.values, data.get("username"), data.get("password"));
-          signup(data);
+          signup(data).then((res) => {
+            if (res.error) {
+              form.validate();
+              form.setErrors({ username: res.error });
+            }
+          });
         }}
       >
         <Flex>
@@ -64,6 +85,12 @@ const SignUp = () => {
               label="Password"
               placeholder="Password"
               {...form.getInputProps("password")}
+            />
+            <PasswordInput
+              withAsterisk
+              label="Confirm Password"
+              placeholder="Password 2"
+              {...form.getInputProps("password2")}
             />
             <Button type="submit">Sign Up</Button>
           </Stack>

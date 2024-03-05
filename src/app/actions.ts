@@ -65,7 +65,6 @@ export const signup = async (user: FormData) => {
   const username = String(user.get("username"));
   const password = user.get("password");
 
-  console.log(username, password);
   //Check if the username already exists
   if (username) {
     const usernameExists = await checkUsername(username);
@@ -79,8 +78,8 @@ export const signup = async (user: FormData) => {
 
   if (
     typeof password !== "string" ||
-    password.length < 8 ||
-    password.length > 100
+    password.length < 6 ||
+    password.length > 255
   ) {
     console.log("Invalid password");
     return {

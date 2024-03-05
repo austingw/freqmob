@@ -64,7 +64,7 @@ const SignUp = () => {
           if (form.errors.username || form.errors.password) return form.errors;
           const data = generateFormData(form.values);
           signup(data).then((res) => {
-            if (res.error) {
+            if (res?.error) {
               form.validate();
               form.setErrors({ username: res.error });
             }
@@ -76,20 +76,20 @@ const SignUp = () => {
             <LoadingOverlay visible={false} />
             <TextInput
               withAsterisk
-              label="Artist Name"
-              placeholder="Something cool like Scaremony..."
+              label="Username"
+              placeholder="Ideally this should be your artist name"
               {...form.getInputProps("username")}
             />
             <PasswordInput
               withAsterisk
               label="Password"
-              placeholder="Password"
+              placeholder="Password (1 uppercase, 1 lowercase, 1 number)"
               {...form.getInputProps("password")}
             />
             <PasswordInput
               withAsterisk
               label="Confirm Password"
-              placeholder="Password 2"
+              placeholder="Password (Match what you entered above)"
               {...form.getInputProps("password2")}
             />
             <Button type="submit">Sign Up</Button>

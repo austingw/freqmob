@@ -63,13 +63,12 @@ export const getPosts = async () => {
 
 export const signup = async (user: FormData) => {
   const username = String(user.get("username"));
-  const password = user.get("password");
+  const password = String(user.get("password"));
 
   //Check if the username already exists
   if (username) {
     const usernameExists = await checkUsername(username);
-    if (usernameExists.length) {
-      console.log(usernameExists);
+    if (usernameExists[0]) {
       return {
         error: "Username already exists",
       };
@@ -81,7 +80,6 @@ export const signup = async (user: FormData) => {
     password.length < 6 ||
     password.length > 255
   ) {
-    console.log("Invalid password");
     return {
       error: "Invalid password",
     };
@@ -96,7 +94,7 @@ export const signup = async (user: FormData) => {
       username,
       password: hashedPassword,
     });
-    console.log(newUser);
+
     //Create a public-facing profile to be updated later during onboarding
     await insertProfile({
       userId: newUser[0].id,
@@ -111,10 +109,64 @@ export const signup = async (user: FormData) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    return redirect("/");
   } catch {
     return {
       error: "There was an error creating the user",
     };
   }
+
+  return redirect("/");
+};
+
+export const login = async (user: FormData) => {
+  const username = String(user.get("username"));
+  const password = String(user.get("password"));
+
+  //Basic validation for username and password
+  if (
+    typeof username !== "string" ||
+    username.length < 3 ||
+    username.length > 31
+  ) {
+    return {
+      error: "Incorrect username or password1",
+    };
+  }
+
+  if (
+    typeof password !== "string" ||
+    password.length < 6 ||
+    password.length > 255
+  ) {
+    return {
+      error: "Incorrect username or password2",
+    };
+  }
+
+  //Check if the username exists
+  const existingUser = await checkUsername(username);
+  if (!existingUser[0]) {
+    return {
+      error: "Incorrect username or password3",
+    };
+  }
+
+  const passwordMatch = await new Argon2id().verify(
+    existingUser[0].password,
+    password
+  );
+  if (!passwordMatch) {
+    return {
+      error: "Incorrect username or password4",
+    };
+  }
+
+  const session = await lucia.createSession(existingUser[0].id, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+  return redirect("/");
 };

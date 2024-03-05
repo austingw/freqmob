@@ -4,6 +4,7 @@ import PostForm from "@/components/PostForm";
 import { getPosts } from "./actions";
 import AudioPlayer from "@/components/AudioPlayer";
 import SignUp from "@/components/SignUp";
+import Login from "@/components/Login";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -30,6 +31,7 @@ export default async function Home() {
         </div>
       </div>
       <SignUp />
+      <Login />
       <PostForm />
       <AudioPlayer url={posts[0].audio?.url || ""} art="" />
     </main>

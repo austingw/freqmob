@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { useState } from "react";
 import { z } from "zod";
 
 interface LoginFormValues {
@@ -24,6 +25,7 @@ const schema = z.object({
 });
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const form = useForm<LoginFormValues>({
     initialValues: {
       username: "",
@@ -40,7 +42,9 @@ const Login = () => {
           form.validate();
           if (form.errors.username || form.errors.password) return form.errors;
           const data = generateFormData(form.values);
+          setLoading(true);
           login(data).then((res) => {
+            setLoading(false);
             if (res?.error) {
               form.validate();
               form.setErrors({ username: res.error, password: res.error });
@@ -50,7 +54,7 @@ const Login = () => {
       >
         <Flex>
           <Stack>
-            <LoadingOverlay visible={false} />
+            <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk
               label="Username"

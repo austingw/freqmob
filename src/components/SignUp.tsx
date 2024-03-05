@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { useState } from "react";
 import { z } from "zod";
 
 interface SignUpFormValues {
@@ -46,6 +47,8 @@ const schema = z
   }, "Passwords must match");
 
 const SignUp = () => {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<SignUpFormValues>({
     initialValues: {
       username: "",
@@ -62,8 +65,10 @@ const SignUp = () => {
           e.preventDefault();
           form.validate();
           if (form.errors.username || form.errors.password) return form.errors;
+          setLoading(true);
           const data = generateFormData(form.values);
           signup(data).then((res) => {
+            setLoading(false);
             if (res?.error) {
               form.validate();
               form.setErrors({ username: res.error });
@@ -73,7 +78,7 @@ const SignUp = () => {
       >
         <Flex>
           <Stack>
-            <LoadingOverlay visible={false} />
+            <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk
               label="Username"

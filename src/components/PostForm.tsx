@@ -68,6 +68,8 @@ const PostForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          form.validate();
+          if (form.errors.title || form.errors.type) return;
           const data = generateFormData(form.values);
           createPost(data);
         }}

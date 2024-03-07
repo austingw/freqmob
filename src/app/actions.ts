@@ -1,6 +1,6 @@
 "use server";
 
-import { lucia } from "@/db/auth";
+import { lucia, validateRequest } from "@/db/auth";
 import { db } from "@/db/db";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
@@ -10,6 +10,7 @@ import {
   insertProfile,
   insertUser,
 } from "@/utils/operations/userDbOperations";
+import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
@@ -169,4 +170,23 @@ export const login = async (user: FormData) => {
     sessionCookie.attributes
   );
   return redirect("/");
+};
+
+export const logout = async (): Promise<ActionResult> => {
+  const { session } = await validateRequest();
+  if (!session) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+
+  await lucia.invalidateSession(session.id);
+
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+  return redirect("/login");
 };

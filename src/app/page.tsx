@@ -1,10 +1,11 @@
 import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
-import { getPosts } from "./actions";
+import { getPosts, logout } from "./actions";
 import AudioPlayer from "@/components/AudioPlayer";
 import SignUp from "@/components/SignUp";
 import Login from "@/components/Login";
+import Link from "next/link";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -33,6 +34,7 @@ export default async function Home() {
       <SignUp />
       <Login />
       <PostForm />
+      <a onClick={logout}>Logout</a>
       <AudioPlayer url={posts[0].audio?.url || ""} art="" />
     </main>
   );

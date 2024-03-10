@@ -17,6 +17,26 @@ export const audio = sqliteTable("audio", {
     .references(() => profiles.id),
 });
 
+export const boards = sqliteTable("boards", {
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  description: text("description"),
+  primaryColor: text("primary_color"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  profileId: text("profile_id")
+    .notNull()
+    .references(() => profiles.id),
+});
+
 export const comments = sqliteTable("comments", {
   id: integer("id", {
     mode: "number",
@@ -53,6 +73,36 @@ export const images = sqliteTable("images", {
     .references(() => profiles.id),
 });
 
+export const likes = sqliteTable("likes", {
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
+  profileId: text("profile_id")
+    .notNull()
+    .references(() => profiles.id),
+  postId: text("post_id")
+    .notNull()
+    .references(() => posts.id),
+  isUpvote: integer("is_upvote", { mode: "boolean" }).notNull(),
+});
+
+export const commentLikes = sqliteTable("comment_likes", {
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
+  profileId: text("profile_id")
+    .notNull()
+    .references(() => profiles.id),
+  commentId: text("comment_id")
+    .notNull()
+    .references(() => comments.id),
+  isUpvote: integer("is_upvote", { mode: "boolean" }).notNull(),
+});
+
 export const posts = sqliteTable("posts", {
   id: integer("id", {
     mode: "number",
@@ -75,12 +125,14 @@ export const posts = sqliteTable("posts", {
   key: text("key"),
   inspiration: text("inspiration"),
   genre: text("genre"),
+  boardId: integer("board_id").references(() => boards.id),
   audioId: integer("audio_id").references(() => audio.id),
   imageId: integer("image_id").references(() => images.id),
   profileId: text("profile_id")
     .notNull()
     .references(() => profiles.id),
 });
+
 
 export const profiles = sqliteTable("profiles", {
   id: text("id")

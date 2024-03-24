@@ -125,6 +125,8 @@ export const posts = sqliteTable("posts", {
   key: text("key"),
   inspiration: text("inspiration"),
   genre: text("genre"),
+  likeCount: integer("like_count").notNull().default(0),
+  commentCount: integer("comment_count").notNull().default(0),
   boardId: integer("board_id").references(() => boards.id),
   audioId: integer("audio_id").references(() => audio.id),
   imageId: integer("image_id").references(() => images.id),

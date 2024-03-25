@@ -1,3 +1,4 @@
-export default function Page({ params }: { params: { slug: string } }) {
-	return <div>My Post: {params.slug}</div>
+export default function Page({ params }: { params: { board: string } }) {
+	console.log(params.board)
+	return <div>My Post: {params.board}</div>
 }

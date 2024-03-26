@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { audio, posts } from "@/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 type NewPost = typeof posts.$inferInsert;
 

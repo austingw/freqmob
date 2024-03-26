@@ -36,9 +36,8 @@ export const createPost = async (post: FormData) => {
 
       audioId = await insertAudio({
         url: audioUrl,
-        profileId: "1",
+        profileId: "test",
       });
-      console.log(audioId);
     } catch {
       throw new Error("There was an error uploading the file");
     }
@@ -50,8 +49,9 @@ export const createPost = async (post: FormData) => {
       description,
       type: "demo",
       published: true,
-      profileId: "1",
+      profileId: "test",
       audioId: audioId ? audioId[0].id : null,
+      boardId: 1,
     });
   } catch {
     throw new Error("There was an error creating the post");

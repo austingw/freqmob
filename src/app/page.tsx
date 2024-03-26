@@ -35,7 +35,7 @@ export default async function Home() {
       <Login />
       <PostForm />
       <a onClick={logout}>Logout</a>
-      <AudioPlayer url={posts[0].audio?.url || ""} art="" />
+      <AudioPlayer url={posts?.[0]?.audio?.url || ""} art="" />
     </main>
   );
 }

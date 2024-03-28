@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { profiles, userTable } from "@/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 type NewUser = typeof userTable.$inferInsert;
 type NewProfile = typeof profiles.$inferInsert;

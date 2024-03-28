@@ -1,7 +1,6 @@
 "use server";
 
 import { lucia, validateRequest } from "@/db/auth";
-import { db } from "@/db/db";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import { insertPost, queryPosts } from "@/utils/operations/postDbOperations";

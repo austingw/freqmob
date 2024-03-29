@@ -15,3 +15,21 @@ export const queryPosts = async () => {
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .orderBy(desc(posts.createdAt));
 };
+
+export const queryPostsByBoard = async (boardId: number) => {
+  return await db
+    .select()
+    .from(posts)
+    .leftJoin(audio, eq(posts.audioId, audio.id))
+    .where(eq(posts.boardId, boardId))
+    .orderBy(desc(posts.createdAt));
+};
+
+export const queryPostsByProfile = async (profileId: string) => {
+  return await db
+    .select()
+    .from(posts)
+    .leftJoin(audio, eq(posts.audioId, audio.id))
+    .where(eq(posts.profileId, profileId))
+    .orderBy(desc(posts.createdAt));
+};

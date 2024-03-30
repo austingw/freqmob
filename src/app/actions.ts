@@ -3,7 +3,11 @@
 import { lucia, validateRequest } from "@/db/auth";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
-import { insertPost, queryPosts } from "@/utils/operations/postDbOperations";
+import {
+  insertPost,
+  queryPosts,
+  queryPostsByBoard,
+} from "@/utils/operations/postDbOperations";
 import {
   checkUsername,
   insertProfile,
@@ -107,7 +111,7 @@ export const signup = async (user: FormData) => {
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes
+      sessionCookie.attributes,
     );
   } catch {
     return {
@@ -153,7 +157,7 @@ export const login = async (user: FormData) => {
 
   const passwordMatch = await new Argon2id().verify(
     existingUser[0].password,
-    password
+    password,
   );
   if (!passwordMatch) {
     return {
@@ -166,7 +170,7 @@ export const login = async (user: FormData) => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return redirect("/");
 };
@@ -185,7 +189,11 @@ export const logout = async (): Promise<ActionResult> => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return redirect("/login");
+};
+
+export const getPostsByBoard = async (id: string) => {
+  await queryPostsByBoard(Number(id));
 };

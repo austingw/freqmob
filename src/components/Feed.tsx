@@ -1,36 +1,22 @@
+"use client"
+
 import { Flex, Modal } from "@mantine/core";
 import PostCard from "./PostCard";
 import { useState } from "react";
-import Post from "./Post";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { PostWithMedia, } from "@/db/schema";
 
-const Feed = () => {
-  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+interface FeedProps {
+  postList: PostWithMedia[] | null;
+}
+
+const Feed = ({ postList }: FeedProps) => {
+  const [selectedPost, setSelectedPost] = useState<number | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const testPosts = [
-    {
-      id: 1,
-      url: "https://xntslrrernpkzvgsuipl.supabase.co/storage/v1/object/sign/Audio/Two%20Pillars(7).wav?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJBdWRpby9Ud28gUGlsbGFycyg3KS53YXYiLCJpYXQiOjE2OTQ5ODU3OTUsImV4cCI6MTcyNjUyMTc5NX0.2jcTsYUzbSXxLKnrxpzgpB0dYxqhVymprddFt80e39g&t=2023-09-17T21%3A23%3A15.979Z",
-      art: "",
-      title: "Two Pillars",
-    },
-    {
-      id: 2,
-      url: "https://xntslrrernpkzvgsuipl.supabase.co/storage/v1/object/sign/Audio/Two%20Pillars(7).wav?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJBdWRpby9Ud28gUGlsbGFycyg3KS53YXYiLCJpYXQiOjE2OTQ5ODU3OTUsImV4cCI6MTcyNjUyMTc5NX0.2jcTsYUzbSXxLKnrxpzgpB0dYxqhVymprddFt80e39g&t=2023-09-17T21%3A23%3A15.979Z",
-      art: "",
-    },
-    {
-      id: 3,
-      url: "https://xntslrrernpkzvgsuipl.supabase.co/storage/v1/object/sign/Audio/Two%20Pillars(7).wav?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJBdWRpby9Ud28gUGlsbGFycyg3KS53YXYiLCJpYXQiOjE2OTQ5ODU3OTUsImV4cCI6MTcyNjUyMTc5NX0.2jcTsYUzbSXxLKnrxpzgpB0dYxqhVymprddFt80e39g&t=2023-09-17T21%3A23%3A15.979Z",
-      art: "",
-    },
-  ];
-
-  const handleClickPost = () => {
-    // setSelectedPost(id);
-    open();
+  const handleClickPost = (id: number) => {
+    setSelectedPost(id);
   };
 
   const handleClickLike = () => {
@@ -44,6 +30,7 @@ const Feed = () => {
 
   const handleClose = () => {
     setSelectedPost(null);
+    close();
   };
 
   return (
@@ -57,28 +44,31 @@ const Feed = () => {
         w="100%"
         h="100%"
       >
-        {testPosts?.map((post) => {
+        {postList?.map((post) => {
           return (
             <PostCard
               key={post?.id}
-              url={post?.url}
-              art={post?.art}
-              clickPost={handleClickPost}
+              url={post?.audio?.url || ""}
+              art={post?.image?.url || ""}
+              clickPost={() => handleClickPost(post?.id)}
               clickLike={handleClickLike}
               clickComment={handleClickComment}
             />
           );
-        })}
+        })
+        }
+
       </Flex>
       <Modal
         opened={opened}
-        onClose={close}
+        onClose={handleClose}
         size="calc(100vw - 3rem)"
         withCloseButton={false}
         fullScreen={isMobile}
         padding={0}
       >
-        <Post post={testPosts[0]!} />
+        { // <Post post={testPosts[0]!} />
+        }
       </Modal>
     </>
   );

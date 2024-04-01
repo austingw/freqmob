@@ -5,18 +5,21 @@ import PostCard from "./PostCard";
 import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { PostWithMedia, } from "@/db/schema";
+import Post from "./Post";
 
 interface FeedProps {
   postList: PostWithMedia[] | null;
 }
 
 const Feed = ({ postList }: FeedProps) => {
-  const [selectedPost, setSelectedPost] = useState<number | null>(null);
+  const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const handleClickPost = (id: number) => {
-    setSelectedPost(id);
+  const handleClickPost = (postId: number) => {
+    const post = postList?.find((post) => post.posts.id === postId);
+    post && setSelectedPost(post);
+    open();
   };
 
   const handleClickLike = () => {
@@ -47,10 +50,10 @@ const Feed = ({ postList }: FeedProps) => {
         {postList?.map((post) => {
           return (
             <PostCard
-              key={post?.id}
+              key={post?.posts.id}
               url={post?.audio?.url || ""}
-              art={post?.image?.url || ""}
-              clickPost={() => handleClickPost(post?.id)}
+              art={""}
+              clickPost={() => handleClickPost(post.posts.id)}
               clickLike={handleClickLike}
               clickComment={handleClickComment}
             />
@@ -67,8 +70,7 @@ const Feed = ({ postList }: FeedProps) => {
         fullScreen={isMobile}
         padding={0}
       >
-        { // <Post post={testPosts[0]!} />
-        }
+        {selectedPost && <Post post={selectedPost} />}
       </Modal>
     </>
   );

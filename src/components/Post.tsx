@@ -27,13 +27,10 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import AudioPlayer from "./AudioPlayer";
+import { PostWithMedia } from "@/db/schema";
 
 interface PostProps {
-  post: {
-    id: number;
-    url: string;
-    art: string;
-  };
+  post: PostWithMedia
 }
 
 const Post = ({ post }: PostProps) => {
@@ -63,7 +60,7 @@ const Post = ({ post }: PostProps) => {
 
           <Card.Section>
             <Flex justify={"center"} align={"center"}>
-              <AudioPlayer url={post?.url} art={post?.art} />
+              <AudioPlayer url={post?.audio?.url || ""} art={""} />
             </Flex>
           </Card.Section>
           <Stack gap={4}>
@@ -75,7 +72,7 @@ const Post = ({ post }: PostProps) => {
               pb={isMobile ? 10 : 0}
             >
               <Text fz="xl" fw={600}>
-                Two Pillarz Two Pillarz
+                {post?.posts.title}
               </Text>
               <Badge
                 variant="outline"

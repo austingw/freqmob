@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { audio, images, posts } from "@/db/schema";
+import { audio, images, posts, profiles } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 
 type NewPost = typeof posts.$inferInsert;
@@ -14,6 +14,7 @@ export const queryPosts = async () => {
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
+    .leftJoin(profiles, eq(posts.profileId, profiles.id))
     .orderBy(desc(posts.createdAt));
 };
 

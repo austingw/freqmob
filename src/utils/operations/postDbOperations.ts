@@ -23,6 +23,8 @@ export const queryPostsByBoard = async (boardId: number) => {
     .select()
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
+    .leftJoin(images, eq(posts.imageId, images.id))
+    .leftJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.boardId, boardId))
     .orderBy(desc(posts.createdAt));
 };

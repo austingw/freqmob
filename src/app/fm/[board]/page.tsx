@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { board: string } }) {
   const posts = await queryPostsByBoard(boardData[0].id);
   return (
     <div>
-      My Post: {boardData[0].name}
+      {boardData[0].name}
       <Feed postList={posts} />
     </div>
   );

@@ -179,4 +179,5 @@ export type PostWithMedia = {
   posts: typeof posts.$inferSelect;
   images: typeof images.$inferSelect | null;
   audio: typeof audio.$inferSelect | null;
+  profiles: typeof profiles.$inferSelect;
 };

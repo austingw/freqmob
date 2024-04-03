@@ -52,7 +52,7 @@ const Feed = ({ postList }: FeedProps) => {
             <PostCard
               key={post?.posts.id}
               url={post?.audio?.url || ""}
-              art={""}
+              art={post?.images?.url || ""}
               clickPost={() => handleClickPost(post.posts.id)}
               clickLike={handleClickLike}
               clickComment={handleClickComment}

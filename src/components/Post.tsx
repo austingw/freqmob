@@ -65,7 +65,7 @@ const Post = ({ post }: PostProps) => {
               pb={isMobile ? 10 : 0}
             >
               <Text fz="xl" fw={600}>
-                {post?.posts.title}
+                {post?.posts?.title}
               </Text>
               <Badge
                 variant="outline"
@@ -74,36 +74,16 @@ const Post = ({ post }: PostProps) => {
                   cursor: "pointer",
                   ":hover": {
                     backgroundColor: "gray",
-                  },
+                  }
                 }}
               >
-                Posted by <b>Bill Wormeater</b>
+                Posted by <b>{post?.profiles?.name}</b>
               </Badge>
             </Flex>
 
-            <Text fz="sm" c="dimmed" w={"100%"}>
-              A description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah A
-              description of the inspo behind the track blah blah blah
-            </Text>
+            {post.posts.description && <Text fz="sm" c="dimmed" w={"100%"}>
+              {post.posts.description}
+            </Text>}
             <Group align="flex-start" gap={"xs"} py={10}>
               <Badge
                 variant="gradient"
@@ -113,14 +93,14 @@ const Post = ({ post }: PostProps) => {
                   position: "relative",
                 }}
               >
-                demo
+                {post?.posts?.type}
               </Badge>
               <Group gap={4} align="center">
                 <ActionIcon color={"red"} size={"xs"}>
                   <IconHeart />
                 </ActionIcon>
                 <Text fz="xs" c="dimmed">
-                  733 likes
+                  {post?.posts?.likeCount || 0} {post?.posts?.likeCount === 1 ? "like" : "likes"}
                 </Text>
               </Group>
               <Group gap={4} align="center">
@@ -134,22 +114,22 @@ const Post = ({ post }: PostProps) => {
                   <IconMessageCircle2 />
                 </ActionIcon>
                 <Text fz="xs" c="dimmed">
-                  12094 comments
+                  {post?.posts?.commentCount || 0} {post?.posts?.commentCount === 1 ? "comment" : "comments"}
                 </Text>
               </Group>
               <Group gap={"xs"} align="center">
-                <Text fz="xs" c="dimmed">
-                  Genre: <b>House</b>
-                </Text>
-                <Text fz="xs" c="dimmed">
-                  BPM: <b>120</b>
-                </Text>
-                <Text fz="xs" c="dimmed">
-                  Key: <b>A minor</b>
-                </Text>
-                <Text fz="xs" c="dimmed">
-                  Influences: <b>Daft Punk</b>
-                </Text>
+                {post.posts.genre && <Text fz="xs" c="dimmed">
+                  Genre: <b>{post.posts.genre}</b>
+                </Text>}
+                {post.posts.bpm && <Text fz="xs" c="dimmed">
+                  BPM: <b>{post.posts.bpm}</b>
+                </Text>}
+                {post.posts.key && <Text fz="xs" c="dimmed">
+                  Key: <b>{post.posts.key}</b>
+                </Text>}
+                {post.posts.inspiration && <Text fz="xs" c="dimmed">
+                  Influences: <b>{post.posts.inspiration}</b>
+                </Text>}
               </Group>
             </Group>
 

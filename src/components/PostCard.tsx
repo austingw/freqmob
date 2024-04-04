@@ -11,21 +11,20 @@ import {
   Flex,
 } from "@mantine/core";
 import AudioPlayer from "./AudioPlayer";
+import { PostWithMedia } from "@/db/schema";
 
 interface PostCardProps {
-  url: string;
-  art: string;
   clickPost: () => void;
   clickLike: () => void;
   clickComment: () => void;
+  post: PostWithMedia
 }
 
 const PostCard = ({
-  url,
-  art,
   clickPost,
   clickLike,
   clickComment,
+  post
 }: PostCardProps) => {
   const theme = useMantineTheme();
 
@@ -39,7 +38,7 @@ const PostCard = ({
         cursor: "pointer",
       }}
     >
-      <Card.Section>
+      {post?.audio?.url && <Card.Section>
         <Flex
           justify={"center"}
           align={"center"}
@@ -47,9 +46,9 @@ const PostCard = ({
             zIndex: 999,
           }}
         >
-          <AudioPlayer url={url} art={art} />
+          <AudioPlayer url={post.audio?.url} art={post?.images?.url || ""} />
         </Flex>
-      </Card.Section>
+      </Card.Section>}
       <Stack gap={4}>
         <Group
           gap={"xs"}
@@ -66,7 +65,7 @@ const PostCard = ({
               minWidth: "fit-content",
             }}
           >
-            demo
+            {post.posts.type}
           </Badge>
           <Text
             fz="xl"
@@ -81,19 +80,11 @@ const PostCard = ({
               overflow: "hidden",
             }}
           >
-            Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two
-            Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz
-            Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two
-            Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz
-            Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two
-            Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz
-            Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two
-            Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz Two Pillarz
-            Two Pillarz Two Pillarz Two Pillarz Two Pillarz
+            {post.posts.title}
           </Text>
         </Group>
         <Group gap={0} align="center">
-          <Text
+          {post.posts.description && <Text
             fz="sm"
             c="dimmed"
             lineClamp={1}
@@ -105,29 +96,9 @@ const PostCard = ({
               overflow: "hidden",
             }}
           >
-            A description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah A
-            description of the inspo behind the track blah blah blah
-          </Text>
-          <Text
+            {post.posts.description}
+          </Text>}
+          {post.posts.description && <Text
             fz="sm"
             lineClamp={1}
             component="a"
@@ -142,7 +113,7 @@ const PostCard = ({
             }}
           >
             View full post
-          </Text>
+          </Text>}
         </Group>
         <Group align="flex-start" gap={"sm"} mx={-5} pt={5}>
           <Group gap={"xs"} align="center">
@@ -151,7 +122,7 @@ const PostCard = ({
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />
               </ActionIcon>
               <Text fz="xs" c="dimmed">
-                733 likes
+                {post.posts.likeCount || 0} likes
               </Text>
             </Group>
             <Group gap={4} align="center">
@@ -165,7 +136,7 @@ const PostCard = ({
                 />
               </ActionIcon>
               <Text fz="xs" c="dimmed">
-                12094 comments
+                {post.posts.commentCount || 0} comments
               </Text>
             </Group>
           </Group>
@@ -182,7 +153,7 @@ const PostCard = ({
               },
             }}
           >
-            Bill Wormeater
+            {post.profiles.name}
           </Badge>
         </Group>
       </Stack>

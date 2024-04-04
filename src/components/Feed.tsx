@@ -50,12 +50,10 @@ const Feed = ({ postList }: FeedProps) => {
         {postList?.map((post) => {
           return (
             <PostCard
-              key={post?.posts.id}
-              url={post?.audio?.url || ""}
-              art={post?.images?.url || ""}
               clickPost={() => handleClickPost(post.posts.id)}
               clickLike={handleClickLike}
               clickComment={handleClickComment}
+              post={post}
             />
           );
         })
@@ -70,7 +68,7 @@ const Feed = ({ postList }: FeedProps) => {
         fullScreen={isMobile}
         padding={0}
       >
-        {selectedPost && <Post post={selectedPost} />}
+        {selectedPost && <Post clickClose={handleClose} post={selectedPost} />}
       </Modal>
     </>
   );

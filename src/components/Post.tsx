@@ -23,10 +23,11 @@ import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
 
 interface PostProps {
+  clickClose: () => void;
   post: PostWithMedia
 }
 
-const Post = ({ post }: PostProps) => {
+const Post = ({ clickClose, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
@@ -39,7 +40,7 @@ const Post = ({ post }: PostProps) => {
             radius="xl"
             size="sm"
             onClick={() => {
-              console.log("click");
+              clickClose();
             }}
             style={{
               position: "absolute",
@@ -93,7 +94,7 @@ const Post = ({ post }: PostProps) => {
                   position: "relative",
                 }}
               >
-                {post?.posts?.type}
+                {post.posts.type}
               </Badge>
               <Group gap={4} align="center">
                 <ActionIcon color={"red"} size={"xs"}>

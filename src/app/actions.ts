@@ -1,6 +1,7 @@
 "use server";
 
 import { lucia, validateRequest } from "@/db/auth";
+import { posts } from "@/db/schema";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import {
@@ -22,6 +23,8 @@ export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));
   const description = String(post.get("description"));
   const file = post.get("file");
+  const typeString = String(post.get("type"));
+  const type = posts.type.enumValues.filter((t) => t === typeString)[0];
 
   let audioId;
   if (file) {
@@ -50,7 +53,7 @@ export const createPost = async (post: FormData) => {
     await insertPost({
       title,
       description,
-      type: "demo",
+      type,
       published: true,
       profileId: "test",
       audioId: audioId ? audioId[0].id : null,

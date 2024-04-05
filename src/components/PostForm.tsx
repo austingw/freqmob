@@ -95,7 +95,7 @@ const PostForm = () => {
         <Textarea
           label="Content"
           placeholder="Post content goes here..."
-          {...form.getInputProps("content")}
+          {...form.getInputProps("description")}
         />
         <Group>
           <TextInput

@@ -52,11 +52,11 @@ const Post = ({ clickClose, post }: PostProps) => {
             <IconX />
           </ActionIcon>
 
-          <Card.Section>
+          {post?.audio?.url && <Card.Section>
             <Flex justify={"center"} align={"center"}>
               <AudioPlayer url={post?.audio?.url || ""} art={""} />
             </Flex>
-          </Card.Section>
+          </Card.Section>}
           <Stack gap={4}>
             <Flex
               direction={isMobile ? "column" : "row"}

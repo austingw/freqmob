@@ -15,6 +15,7 @@ import FileUpload from "./FileUpload";
 import classes from "./PostForm.module.css";
 import { createPost } from "@/app/actions";
 import generateFormData from "@/utils/generateFormData";
+import TextEditor from "./TextEditor";
 
 interface FormValues {
   title: string;
@@ -97,6 +98,7 @@ const PostForm = () => {
           placeholder="Post content goes here..."
           {...form.getInputProps("description")}
         />
+        <TextEditor />
         <Group>
           <TextInput
             label="BPM"

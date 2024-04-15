@@ -12,11 +12,13 @@ export default async function Page({ params }: { params: { board: string } }) {
       body: "Not found",
     };
   }
-  const posts = await queryPostsByBoard(boardData[0].id);
+  const posts = boardData[0]?.id
+    ? await queryPostsByBoard(boardData[0].id)
+    : null;
   return (
     <div>
-      {boardData[0].name}
-      <Feed postList={posts} />
+      {boardData[0]?.name ?? "Board doesn't exist :/"}
+      {posts && <Feed postList={posts} />}
     </div>
   );
 }

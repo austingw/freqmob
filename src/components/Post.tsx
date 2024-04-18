@@ -21,10 +21,11 @@ import {
 } from "@tabler/icons-react";
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
+import CommentForm from "./CommentForm";
 
 interface PostProps {
   clickClose: () => void;
-  post: PostWithMedia
+  post: PostWithMedia;
 }
 
 const Post = ({ clickClose, post }: PostProps) => {
@@ -52,11 +53,13 @@ const Post = ({ clickClose, post }: PostProps) => {
             <IconX />
           </ActionIcon>
 
-          {post?.audio?.url && <Card.Section>
-            <Flex justify={"center"} align={"center"}>
-              <AudioPlayer url={post?.audio?.url || ""} art={""} />
-            </Flex>
-          </Card.Section>}
+          {post?.audio?.url && (
+            <Card.Section>
+              <Flex justify={"center"} align={"center"}>
+                <AudioPlayer url={post?.audio?.url || ""} art={""} />
+              </Flex>
+            </Card.Section>
+          )}
           <Stack gap={4}>
             <Flex
               direction={isMobile ? "column" : "row"}
@@ -75,16 +78,18 @@ const Post = ({ clickClose, post }: PostProps) => {
                   cursor: "pointer",
                   ":hover": {
                     backgroundColor: "gray",
-                  }
+                  },
                 }}
               >
                 Posted by <b>{post?.profiles?.name}</b>
               </Badge>
             </Flex>
 
-            {post.posts.description && <Text fz="sm" c="dimmed" w={"100%"}>
-              {post.posts.description}
-            </Text>}
+            {post.posts.description && (
+              <Text fz="sm" c="dimmed" w={"100%"}>
+                {post.posts.description}
+              </Text>
+            )}
             <Group align="flex-start" gap={"xs"} py={10}>
               <Badge
                 variant="gradient"
@@ -101,7 +106,8 @@ const Post = ({ clickClose, post }: PostProps) => {
                   <IconHeart />
                 </ActionIcon>
                 <Text fz="xs" c="dimmed">
-                  {post?.posts?.likeCount || 0} {post?.posts?.likeCount === 1 ? "like" : "likes"}
+                  {post?.posts?.likeCount || 0}{" "}
+                  {post?.posts?.likeCount === 1 ? "like" : "likes"}
                 </Text>
               </Group>
               <Group gap={4} align="center">
@@ -115,22 +121,31 @@ const Post = ({ clickClose, post }: PostProps) => {
                   <IconMessageCircle2 />
                 </ActionIcon>
                 <Text fz="xs" c="dimmed">
-                  {post?.posts?.commentCount || 0} {post?.posts?.commentCount === 1 ? "comment" : "comments"}
+                  {post?.posts?.commentCount || 0}{" "}
+                  {post?.posts?.commentCount === 1 ? "comment" : "comments"}
                 </Text>
               </Group>
               <Group gap={"xs"} align="center">
-                {post.posts.genre && <Text fz="xs" c="dimmed">
-                  Genre: <b>{post.posts.genre}</b>
-                </Text>}
-                {post.posts.bpm && <Text fz="xs" c="dimmed">
-                  BPM: <b>{post.posts.bpm}</b>
-                </Text>}
-                {post.posts.key && <Text fz="xs" c="dimmed">
-                  Key: <b>{post.posts.key}</b>
-                </Text>}
-                {post.posts.inspiration && <Text fz="xs" c="dimmed">
-                  Influences: <b>{post.posts.inspiration}</b>
-                </Text>}
+                {post.posts.genre && (
+                  <Text fz="xs" c="dimmed">
+                    Genre: <b>{post.posts.genre}</b>
+                  </Text>
+                )}
+                {post.posts.bpm && (
+                  <Text fz="xs" c="dimmed">
+                    BPM: <b>{post.posts.bpm}</b>
+                  </Text>
+                )}
+                {post.posts.key && (
+                  <Text fz="xs" c="dimmed">
+                    Key: <b>{post.posts.key}</b>
+                  </Text>
+                )}
+                {post.posts.inspiration && (
+                  <Text fz="xs" c="dimmed">
+                    Influences: <b>{post.posts.inspiration}</b>
+                  </Text>
+                )}
               </Group>
             </Group>
 
@@ -146,7 +161,9 @@ const Post = ({ clickClose, post }: PostProps) => {
             >
               <Accordion.Item value="Add Comment">
                 <Accordion.Control>Add Comment</Accordion.Control>
-                <Accordion.Panel></Accordion.Panel>
+                <Accordion.Panel>
+                  <CommentForm postId={post.posts.id} />
+                </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
 

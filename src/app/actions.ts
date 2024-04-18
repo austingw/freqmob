@@ -5,6 +5,10 @@ import { posts } from "@/db/schema";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import {
+  insertComment,
+  queryComments,
+} from "@/utils/operations/commentDbOperations";
+import {
   insertPost,
   queryPosts,
   queryPostsByBoard,
@@ -199,4 +203,25 @@ export const logout = async (): Promise<ActionResult> => {
 
 export const getPostsByBoard = async (id: string) => {
   await queryPostsByBoard(Number(id));
+};
+
+export const createComment = async (comment: FormData) => {
+  console.log("this is reaching", comment);
+
+  const postId = String(comment.get("postId"));
+  const content = String(comment.get("content"));
+
+  try {
+    await insertComment({
+      postId,
+      content,
+      profileId: "test",
+    });
+  } catch {
+    throw new Error("There was an error creating the comment");
+  }
+};
+
+export const getComments = async (postId: string) => {
+  return await queryComments(postId);
 };

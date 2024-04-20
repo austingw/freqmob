@@ -21,6 +21,7 @@ import {
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { Argon2id } from "oslo/password";
 
 export const createPost = async (post: FormData) => {
@@ -217,6 +218,7 @@ export const createComment = async (comment: FormData) => {
       content,
       profileId: "test",
     });
+    return { status: 201, message: "Comment created" };
   } catch {
     throw new Error("There was an error creating the comment");
   }

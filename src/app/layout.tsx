@@ -1,11 +1,14 @@
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
+import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { theme } from "../../theme";
 import Providers from "@/app/providers";
+import { Notifications } from "@mantine/notifications";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,6 +28,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider theme={theme}>
+          <Notifications />
           <Providers>{children}</Providers>
         </MantineProvider>
       </body>

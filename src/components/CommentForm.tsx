@@ -4,6 +4,9 @@ import { createComment } from "@/app/actions";
 import generateFormData from "@/utils/generateFormData";
 import { Button, Flex, Group, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 interface CommentFormProps {
@@ -21,6 +24,8 @@ const schema = z.object({
 });
 
 const CommentForm = ({ postId }: CommentFormProps) => {
+  const queryClient = useQueryClient();
+
   const form = useForm<CommentFormValues>({
     initialValues: {
       content: "",
@@ -36,7 +41,22 @@ const CommentForm = ({ postId }: CommentFormProps) => {
           form.validate();
           if (form.errors.content || form.errors.postId) return;
           const data = generateFormData(form.values);
-          createComment(data);
+          await createComment(data)
+            .catch((err) => console.error(err))
+            .then((res) => {
+              if (res?.status === 201) {
+                notifications.show({
+                  message: "Comment posted!",
+                  icon: <IconCheck />,
+                  autoClose: 3000,
+                });
+
+                form.reset();
+                queryClient.invalidateQueries({
+                  queryKey: ["comments", postId],
+                });
+              }
+            });
         }}
       >
         <Textarea

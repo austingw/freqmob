@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { comments, posts } from "@/db/schema";
+import { comments, posts, profiles } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 
 type NewComment = typeof comments.$inferInsert;
@@ -13,6 +13,7 @@ export const queryComments = async (postId: string) => {
     .select()
     .from(comments)
     .where(eq(comments.postId, postId))
+    .innerJoin(profiles, eq(comments.profileId, profiles.id))
     .orderBy(desc(comments.createdAt));
 };
 

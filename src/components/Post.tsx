@@ -22,6 +22,7 @@ import {
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
 import CommentForm from "./CommentForm";
+import { useGetComments } from "@/queries/comments";
 
 interface PostProps {
   clickClose: () => void;
@@ -30,6 +31,9 @@ interface PostProps {
 
 const Post = ({ clickClose, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const { data, isLoading } = useGetComments(post.posts.id);
+
+  console.log(data);
 
   return (
     <>
@@ -166,11 +170,25 @@ const Post = ({ clickClose, post }: PostProps) => {
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
-
+            {data?.map((comment) => (
+              <Paper radius="md" key={comment.comments.id}>
+                <Group>
+                  <div>
+                    <Text fz="sm">{comment.comments.content}</Text>
+                    <Text fz="xs" c="dimmed">
+                      {comment.profiles.name}
+                    </Text>
+                    <Text fz="xs" c="dimmed">
+                      {String(comment.comments.createdAt)}
+                    </Text>
+                  </div>
+                </Group>
+              </Paper>
+            ))}
             <Paper radius="md">
               <Group>
                 <div>
-                  <Text fz="sm">Jacob Warnhalter</Text>
+                  <Text fz="sm"></Text>
                   <Text fz="xs" c="dimmed">
                     10 minutes ago
                   </Text>

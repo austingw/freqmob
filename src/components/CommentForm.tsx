@@ -45,7 +45,7 @@ const CommentForm = ({ postId }: CommentFormProps) => {
             .catch((err) => {
               console.error(err);
               notifications.show({
-                message: "Error posting comment",
+                message: "Error creating comment",
                 icon: <IconX />,
                 autoClose: 3000,
               });
@@ -53,7 +53,7 @@ const CommentForm = ({ postId }: CommentFormProps) => {
             .then((res) => {
               if (res?.status === 201) {
                 notifications.show({
-                  message: "Comment posted!",
+                  message: "Comment created!",
                   icon: <IconCheck />,
                   autoClose: 3000,
                 });
@@ -64,7 +64,7 @@ const CommentForm = ({ postId }: CommentFormProps) => {
                 });
               } else {
                 notifications.show({
-                  message: "Failed to posting comment, please try again",
+                  message: "Failed to create comment, please try again",
                   icon: <IconX />,
                   autoClose: 3000,
                 });

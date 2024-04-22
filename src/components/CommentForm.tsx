@@ -5,7 +5,7 @@ import generateFormData from "@/utils/generateFormData";
 import { Button, Flex, Group, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
@@ -42,7 +42,14 @@ const CommentForm = ({ postId }: CommentFormProps) => {
           if (form.errors.content || form.errors.postId) return;
           const data = generateFormData(form.values);
           await createComment(data)
-            .catch((err) => console.error(err))
+            .catch((err) => {
+              console.error(err);
+              notifications.show({
+                message: "Error posting comment",
+                icon: <IconX />,
+                autoClose: 3000,
+              });
+            })
             .then((res) => {
               if (res?.status === 201) {
                 notifications.show({
@@ -55,12 +62,17 @@ const CommentForm = ({ postId }: CommentFormProps) => {
                 queryClient.invalidateQueries({
                   queryKey: ["comments", postId],
                 });
+              } else {
+                notifications.show({
+                  message: "Failed to posting comment, please try again",
+                  icon: <IconX />,
+                  autoClose: 3000,
+                });
               }
             });
         }}
       >
         <Textarea
-          label="Comment"
           placeholder="Enter your comment here..."
           required
           {...form.getInputProps("content")}

@@ -33,8 +33,6 @@ const Post = ({ clickClose, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { data, isLoading } = useGetComments(post.posts.id);
 
-  console.log(data);
-
   return (
     <>
       <ScrollArea.Autosize scrollbarSize={10}>

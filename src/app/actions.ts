@@ -21,7 +21,6 @@ import {
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 import { Argon2id } from "oslo/password";
 
 export const createPost = async (post: FormData) => {
@@ -50,7 +49,10 @@ export const createPost = async (post: FormData) => {
         profileId: "test",
       });
     } catch {
-      throw new Error("There was an error uploading the file");
+      return {
+        status: 500,
+        message: "There was an upload issue, please try again later",
+      };
     }
   }
 
@@ -64,8 +66,10 @@ export const createPost = async (post: FormData) => {
       audioId: audioId ? audioId[0].id : null,
       boardId: 1,
     });
+
+    return { status: 201, message: "Post created" };
   } catch {
-    throw new Error("There was an error creating the post");
+    return { status: 500, message: "There was an error creating the post" };
   }
 };
 

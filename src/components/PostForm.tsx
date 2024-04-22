@@ -16,6 +16,8 @@ import classes from "./PostForm.module.css";
 import { createPost } from "@/app/actions";
 import generateFormData from "@/utils/generateFormData";
 import TextEditor from "./TextEditor";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 interface FormValues {
   title: string;
@@ -72,7 +74,31 @@ const PostForm = () => {
           form.validate();
           if (form.errors.title || form.errors.type) return;
           const data = generateFormData(form.values);
-          createPost(data);
+          await createPost(data)
+            .catch((err) => {
+              console.error(err);
+              notifications.show({
+                message: "Error creating post",
+                icon: <IconX />,
+                autoClose: 3000,
+              });
+            })
+            .then((res) => {
+              if (res?.status === 201) {
+                notifications.show({
+                  message: "Post created!",
+                  icon: <IconCheck />,
+                  autoClose: 3000,
+                });
+                form.reset();
+              } else {
+                notifications.show({
+                  message: "Failed to create post, please try again",
+                  icon: <IconX />,
+                  autoClose: 3000,
+                });
+              }
+            });
         }}
       >
         <Group align="center" justify="center">

@@ -8,17 +8,19 @@ export const insertPost = async (post: NewPost) => {
   return await db.insert(posts).values(post);
 };
 
-export const queryPosts = async () => {
+export const queryPosts = async (page: number) => {
   return await db
     .select()
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
+    .limit(10)
+    .offset((page - 1) * 10)
     .orderBy(desc(posts.createdAt));
 };
 
-export const queryPostsByBoard = async (boardId: number) => {
+export const queryPostsByBoard = async (boardId: number, page: number) => {
   return await db
     .select()
     .from(posts)
@@ -26,6 +28,8 @@ export const queryPostsByBoard = async (boardId: number) => {
     .leftJoin(images, eq(posts.imageId, images.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.boardId, boardId))
+    .limit(5)
+    .offset((page - 1) * 5)
     .orderBy(desc(posts.createdAt));
 };
 

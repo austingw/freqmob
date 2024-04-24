@@ -13,12 +13,12 @@ export default async function Page({ params }: { params: { board: string } }) {
     };
   }
   const posts = boardData[0]?.id
-    ? await queryPostsByBoard(boardData[0].id)
+    ? await queryPostsByBoard(boardData[0].id, 1)
     : null;
   return (
     <div>
       {boardData[0]?.name ?? "Board doesn't exist :/"}
-      {posts && <Feed postList={posts} />}
+      {posts && <Feed initialPosts={posts} boardId={String(boardData[0].id)} />}
     </div>
   );
 }

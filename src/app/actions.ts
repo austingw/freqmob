@@ -73,8 +73,8 @@ export const createPost = async (post: FormData) => {
   }
 };
 
-export const getPosts = async () => {
-  return await queryPosts();
+export const getPosts = async (page: number) => {
+  return await queryPosts(page);
 };
 
 export const signup = async (user: FormData) => {
@@ -206,10 +206,6 @@ export const logout = async (): Promise<ActionResult> => {
   return redirect("/login");
 };
 
-export const getPostsByBoard = async (id: string) => {
-  await queryPostsByBoard(Number(id));
-};
-
 export const createComment = async (comment: FormData) => {
   console.log("this is reaching", comment);
 
@@ -230,4 +226,12 @@ export const createComment = async (comment: FormData) => {
 
 export const getComments = async (postId: string) => {
   return await queryComments(postId);
+};
+
+export const getPostsByBoard = async (boardId: number, page: number) => {
+  try {
+    return await queryPostsByBoard(boardId, page);
+  } catch {
+    return null;
+  }
 };

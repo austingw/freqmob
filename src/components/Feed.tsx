@@ -1,23 +1,35 @@
-"use client"
+"use client";
 
-import { Flex, Modal } from "@mantine/core";
+import { Flex, Modal, Pagination } from "@mantine/core";
 import PostCard from "./PostCard";
 import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { PostWithMedia, } from "@/db/schema";
+import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
+import { getPostsByBoard } from "@/app/actions";
+import { useQuery } from "@tanstack/react-query";
 
 interface FeedProps {
-  postList: PostWithMedia[] | null;
+  initialPosts: PostWithMedia[] | null;
+  boardId: string;
 }
 
-const Feed = ({ postList }: FeedProps) => {
+const Feed = ({ initialPosts, boardId }: FeedProps) => {
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
+  const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["posts", boardId, page],
+    queryFn: () => getPostsByBoard(Number(boardId), page),
+    initialData: initialPosts,
+  });
+
+  console.log("data", data?.length, isLoading);
+
   const handleClickPost = (postId: number) => {
-    const post = postList?.find((post) => post.posts.id === postId);
+    const post = data?.find((post) => post.posts.id === postId);
     post && setSelectedPost(post);
     open();
   };
@@ -47,7 +59,7 @@ const Feed = ({ postList }: FeedProps) => {
         w="100%"
         h="100%"
       >
-        {postList?.map((post) => {
+        {data?.map((post) => {
           return (
             <PostCard
               clickPost={() => handleClickPost(post.posts.id)}
@@ -56,9 +68,13 @@ const Feed = ({ postList }: FeedProps) => {
               post={post}
             />
           );
-        })
-        }
-
+        })}
+        <Pagination
+          total={10}
+          value={page}
+          onChange={setPage}
+          onClick={() => refetch()}
+        />
       </Flex>
       <Modal
         opened={opened}

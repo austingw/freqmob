@@ -73,10 +73,6 @@ export const createPost = async (post: FormData) => {
   }
 };
 
-export const getPosts = async (page: number) => {
-  return await queryPosts(page);
-};
-
 export const signup = async (user: FormData) => {
   const username = String(user.get("username"));
   const password = String(user.get("password"));
@@ -228,10 +224,14 @@ export const getComments = async (postId: string) => {
   return await queryComments(postId);
 };
 
-export const getPostsByBoard = async (boardId: number, page: number) => {
+export const getPostsByBoard = async (page: number, boardId?: number) => {
   try {
+    if (!boardId) {
+      return await queryPosts(page);
+    }
     return await queryPostsByBoard(boardId, page);
-  } catch {
+  } catch (e) {
+    console.error(e);
     return null;
   }
 };

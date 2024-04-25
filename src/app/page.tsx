@@ -1,15 +1,13 @@
 import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
-import { getPosts, logout } from "./actions";
+import { logout } from "./actions";
 import AudioPlayer from "@/components/AudioPlayer";
 import SignUp from "@/components/SignUp";
 import Login from "@/components/Login";
 import Link from "next/link";
 
 export default async function Home() {
-  const posts = await getPosts();
-
   return (
     <main className={styles.main}>
       <div className={styles.hero}>
@@ -35,7 +33,6 @@ export default async function Home() {
       <Login />
       <PostForm />
       <a onClick={logout}>Logout</a>
-      <AudioPlayer url={posts?.[0]?.audio?.url || ""} art="" />
     </main>
   );
 }

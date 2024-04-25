@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { board: string } }) {
     };
   }
   const posts = boardData[0]?.id
-    ? await queryPostsByBoard(boardData[0].id, 1)
+    ? await queryPostsByBoard(1, boardData[0].id)
     : null;
   return (
     <div>

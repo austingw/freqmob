@@ -4,10 +4,10 @@ import Feed from "@/components/Feed";
 import { queryPosts } from "@/utils/operations/postDbOperations";
 
 export default async function Page() {
-  const posts = await queryPosts();
+  const posts = await queryPosts(1);
   return (
     <div>
-      <Feed postList={posts} />
+      <Feed initialPosts={posts} />
     </div>
   );
 }

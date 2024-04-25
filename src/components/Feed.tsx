@@ -2,16 +2,16 @@
 
 import { Flex, Modal, Pagination } from "@mantine/core";
 import PostCard from "./PostCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
 import { getPostsByBoard } from "@/app/actions";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 interface FeedProps {
   initialPosts: PostWithMedia[] | null;
-  boardId: string;
+  boardId?: string;
 }
 
 const Feed = ({ initialPosts, boardId }: FeedProps) => {
@@ -20,13 +20,13 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["posts", boardId, page],
-    queryFn: () => getPostsByBoard(Number(boardId), page),
+    queryFn: () => getPostsByBoard(page, Number(boardId)),
     initialData: initialPosts,
+    staleTime: 0,
+    placeholderData: keepPreviousData,
   });
-
-  console.log("data", data?.length, isLoading);
 
   const handleClickPost = (postId: number) => {
     const post = data?.find((post) => post.posts.id === postId);
@@ -62,6 +62,7 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
         {data?.map((post) => {
           return (
             <PostCard
+              key={post.posts.id}
               clickPost={() => handleClickPost(post.posts.id)}
               clickLike={handleClickLike}
               clickComment={handleClickComment}
@@ -69,12 +70,7 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
             />
           );
         })}
-        <Pagination
-          total={10}
-          value={page}
-          onChange={setPage}
-          onClick={() => refetch()}
-        />
+        <Pagination total={10} value={page} onChange={setPage} />
       </Flex>
       <Modal
         opened={opened}

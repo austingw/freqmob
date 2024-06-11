@@ -1,6 +1,7 @@
 "use client";
 
-import { AppShell, Burger, Group, Skeleton } from "@mantine/core";
+import AuthModal from "@/components/AuthModal";
+import { AppShell, Burger, Group, Modal, Skeleton, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function Layout({
@@ -8,7 +9,7 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <AppShell
       header={{ height: 60 }}
@@ -18,6 +19,7 @@ export default function Layout({
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
       padding="md"
+      color="black"
     >
       <AppShell.Header>
         <Group h="100%" px="md">
@@ -33,6 +35,12 @@ export default function Layout({
             visibleFrom="sm"
             size="sm"
           />
+          <Text onClick={open} c="black">
+            Login
+          </Text>
+          <Modal opened={opened} onClose={close}>
+            <AuthModal />
+          </Modal>
         </Group>
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">

@@ -57,12 +57,14 @@ const Login = () => {
             <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk
+              c="black"
               label="Username"
               placeholder=""
               {...form.getInputProps("username")}
             />
             <PasswordInput
               withAsterisk
+              c="black"
               label="Password"
               placeholder=""
               {...form.getInputProps("password")}

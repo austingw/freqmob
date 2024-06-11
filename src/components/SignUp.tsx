@@ -81,18 +81,21 @@ const SignUp = () => {
             <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk
+              c="black"
               label="Username"
               placeholder="Ideally this should be your artist name"
               {...form.getInputProps("username")}
             />
             <PasswordInput
               withAsterisk
+              c="black"
               label="Password"
               placeholder="Password (1 uppercase, 1 lowercase, 1 number)"
               {...form.getInputProps("password")}
             />
             <PasswordInput
               withAsterisk
+              c="black"
               label="Confirm Password"
               placeholder="Password (Match what you entered above)"
               {...form.getInputProps("password2")}

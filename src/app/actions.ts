@@ -203,8 +203,6 @@ export const logout = async (): Promise<ActionResult> => {
 };
 
 export const createComment = async (comment: FormData) => {
-  console.log("this is reaching", comment);
-
   const postId = String(comment.get("postId"));
   const content = String(comment.get("content"));
 

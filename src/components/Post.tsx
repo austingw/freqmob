@@ -11,7 +11,6 @@ import {
   TypographyStylesProvider,
   Accordion,
 } from "@mantine/core";
-
 import { useMediaQuery } from "@mantine/hooks";
 import {
   IconHeart,

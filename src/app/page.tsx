@@ -2,10 +2,8 @@ import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
 import { logout } from "./actions";
-import AudioPlayer from "@/components/AudioPlayer";
 import SignUp from "@/components/SignUp";
 import Login from "@/components/Login";
-import Link from "next/link";
 
 export default async function Home() {
   return (

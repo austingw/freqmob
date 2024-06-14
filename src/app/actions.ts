@@ -127,7 +127,7 @@ export const signup = async (user: FormData) => {
     };
   }
 
-  return redirect("/");
+  return redirect("/fm/main");
 };
 
 export const login = async (user: FormData) => {

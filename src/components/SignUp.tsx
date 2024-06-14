@@ -11,6 +11,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -22,7 +24,10 @@ interface SignUpFormValues {
 
 const schema = z
   .object({
-    username: z.string().min(3).max(31),
+    username: z
+      .string()
+      .min(3, { message: "Username must have at least three characters" })
+      .max(100, { message: "Username can have at most 100 characters" }),
     password: z
       .string()
       .min(6)
@@ -67,11 +72,15 @@ const SignUp = () => {
           if (form.errors.username || form.errors.password) return form.errors;
           setLoading(true);
           const data = generateFormData(form.values);
-          signup(data).then((res) => {
+          await signup(data).then((res) => {
             setLoading(false);
             if (res?.error) {
               form.validate();
-              form.setErrors({ username: res.error });
+              notifications.show({
+                message: "Failed to create account, please try again later",
+                icon: <IconX />,
+                autoClose: 3000,
+              });
             }
           });
         }}

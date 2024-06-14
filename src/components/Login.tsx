@@ -11,6 +11,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -47,7 +49,11 @@ const Login = () => {
             setLoading(false);
             if (res?.error) {
               form.validate();
-              form.setErrors({ username: res.error, password: res.error });
+              notifications.show({
+                message: "Username or password is incorrect, please try again.",
+                icon: <IconX />,
+                autoClose: 3000,
+              });
             }
           });
         }}

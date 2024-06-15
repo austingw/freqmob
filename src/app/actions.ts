@@ -180,7 +180,7 @@ export const login = async (user: FormData) => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect("/fm/main");
 };
 
 export const logout = async (): Promise<ActionResult> => {
@@ -199,7 +199,7 @@ export const logout = async (): Promise<ActionResult> => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/login");
+  return redirect("/");
 };
 
 export const createComment = async (comment: FormData) => {

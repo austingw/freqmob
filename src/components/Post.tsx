@@ -8,8 +8,8 @@ import {
   Badge,
   ScrollArea,
   Paper,
-  TypographyStylesProvider,
   Accordion,
+  Button,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -22,6 +22,14 @@ import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
 import CommentForm from "./CommentForm";
 import { useGetComments } from "@/queries/comments";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import tz from "dayjs/plugin/timezone";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(tz);
 
 interface PostProps {
   clickClose: () => void;
@@ -176,30 +184,18 @@ const Post = ({ clickClose, post }: PostProps) => {
                       {comment.profiles.name}
                     </Text>
                     <Text fz="xs" c="dimmed">
-                      {String(comment.comments.createdAt)}
+                      {dayjs(dayjs().utc().format()).to(
+                        dayjs(comment.comments.createdAt)
+                          .utc()
+                          .local()
+                          .tz()
+                          .format("YYYY-MM-DDTHH:mm:ss") + "Z",
+                      )}
                     </Text>
                   </div>
                 </Group>
               </Paper>
             ))}
-            <Paper radius="md">
-              <Group>
-                <div>
-                  <Text fz="sm"></Text>
-                  <Text fz="xs" c="dimmed">
-                    10 minutes ago
-                  </Text>
-                </div>
-              </Group>
-              <TypographyStylesProvider>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      '<p>I use <a href="https://heroku.com/" rel="noopener noreferrer" target="_blank">Heroku</a> to host my Node.js application, but MongoDB add-on appears to be too <strong>expensive</strong>. I consider switching to <a href="https://www.digitalocean.com/" rel="noopener noreferrer" target="_blank">Digital Ocean</a> VPS to save some cash.</p>',
-                  }}
-                />
-              </TypographyStylesProvider>
-            </Paper>
           </Stack>
         </Card>
       </ScrollArea.Autosize>

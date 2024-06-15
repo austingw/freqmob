@@ -8,9 +8,9 @@ export const audio = sqliteTable("audio", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  uploadedAt: integer("uploaded_at", { mode: "timestamp" })
+  uploadedAt: text("uploaded_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .default(sql`(current_timestamp)`),
   url: text("url").notNull(),
   profileId: text("profile_id")
     .notNull()
@@ -26,12 +26,12 @@ export const boards = sqliteTable("boards", {
   name: text("name").notNull(),
   description: text("description"),
   primaryColor: text("primary_color"),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: text("created_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .default(sql`(current_timestamp)`),
   profileId: text("profile_id")
     .notNull()
     .references(() => profiles.id),
@@ -43,12 +43,12 @@ export const comments = sqliteTable("comments", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: text("created_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .default(sql`(current_timestamp)`),
   content: text("content").notNull(),
   profileId: text("profile_id")
     .notNull()
@@ -64,9 +64,9 @@ export const images = sqliteTable("images", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  uploadedAt: integer("uploaded_at", { mode: "timestamp" })
+  uploadedAt: text("uploaded_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .default(sql`(current_timestamp)`),
   url: text("url").notNull(),
   profileId: text("profile_id")
     .notNull()
@@ -111,12 +111,12 @@ export const posts = sqliteTable("posts", {
     .primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description"),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: text("created_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .default(sql`(current_timestamp)`),
   published: integer("published", { mode: "boolean" }).notNull().default(false),
   type: text("post_type", {
     enum: ["collab", "demo", "master", "mix", "sample", "text"],
@@ -148,9 +148,9 @@ export const profiles = sqliteTable("profiles", {
   soundcloud: text("soundcloud"),
   spotify: text("spotify"),
   website: text("website"),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(
-    sql`CURRENT_TIMESTAMP`,
-  ),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
   userId: text("user_id")
     .notNull()
     .unique()

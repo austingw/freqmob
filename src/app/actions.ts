@@ -15,6 +15,7 @@ import {
 } from "@/utils/operations/postDbOperations";
 import {
   checkUsername,
+  getProfileIdFromUserId,
   insertProfile,
   insertUser,
 } from "@/utils/operations/userDbOperations";
@@ -29,6 +30,24 @@ export const createPost = async (post: FormData) => {
   const file = post.get("file");
   const typeString = String(post.get("type"));
   const type = posts.type.enumValues.filter((t) => t === typeString)[0];
+
+  const user = await validateRequest();
+
+  if (!user.user || !user.session) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  const profile = await getProfileIdFromUserId(user.user.id);
+
+  if (!profile[0]) {
+    return {
+      status: 500,
+      message: "There was an error creating the post",
+    };
+  }
 
   let audioId;
   if (file) {
@@ -46,9 +65,10 @@ export const createPost = async (post: FormData) => {
 
       audioId = await insertAudio({
         url: audioUrl,
-        profileId: "test",
+        profileId: profile[0].id,
       });
-    } catch {
+    } catch (e) {
+      console.error(e);
       return {
         status: 500,
         message: "There was an upload issue, please try again later",
@@ -62,13 +82,13 @@ export const createPost = async (post: FormData) => {
       description,
       type,
       published: true,
-      profileId: "test",
+      profileId: profile[0].id,
       audioId: audioId ? audioId[0].id : null,
       boardId: 1,
     });
 
     return { status: 201, message: "Post created" };
-  } catch {
+  } catch (e) {
     return { status: 500, message: "There was an error creating the post" };
   }
 };

@@ -9,7 +9,6 @@ import {
   ScrollArea,
   Paper,
   Accordion,
-  Button,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -177,11 +176,10 @@ const Post = ({ clickClose, post }: PostProps) => {
             </Accordion>
             {data?.map((comment) => (
               <Paper radius="md" key={comment.comments.id}>
-                <Group>
-                  <div>
-                    <Text fz="sm">{comment.comments.content}</Text>
+                <Stack gap={4} p={2}>
+                  <Group gap={4} align="center" justify="flex-start">
                     <Text fz="xs" c="dimmed">
-                      {comment.profiles.name}
+                      {comment.profiles.name} -
                     </Text>
                     <Text fz="xs" c="dimmed">
                       {dayjs(dayjs().utc().format()).to(
@@ -192,8 +190,10 @@ const Post = ({ clickClose, post }: PostProps) => {
                           .format("YYYY-MM-DDTHH:mm:ss") + "Z",
                       )}
                     </Text>
-                  </div>
-                </Group>
+                  </Group>
+
+                  <Text fz="sm">{comment.comments.content}</Text>
+                </Stack>
               </Paper>
             ))}
           </Stack>

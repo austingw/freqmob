@@ -21,3 +21,34 @@ export const checkUsername = async (username: string) => {
     .from(userTable)
     .where(eq(userTable.username, username));
 };
+
+export const addBoardSub = async (profileId: string, board: string) => {
+  const profile = await db
+    .select({ boardList: profiles.boardList })
+    .from(profiles)
+    .where(eq(profiles.id, profileId));
+  const prevList = profile[0].boardList && profile[0].boardList;
+  return await db.update(profiles).set({
+    boardList: prevList ? [...prevList, board] : [board],
+  });
+};
+
+export const removeBoardSub = async (profileId: string, board: string) => {
+  const profile = await db
+    .select({ boardList: profiles.boardList })
+    .from(profiles)
+    .where(eq(profiles.id, profileId));
+  const prevList = profile[0].boardList && profile[0].boardList;
+  return await db.update(profiles).set({
+    boardList: prevList
+      ? prevList.filter((item: string) => item !== board)
+      : [],
+  });
+};
+
+export const getUserBoards = async (profileId: string) => {
+  return await db
+    .select({ boardList: profiles.boardList })
+    .from(profiles)
+    .where(eq(profiles.id, profileId));
+};

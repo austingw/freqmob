@@ -148,6 +148,7 @@ export const profiles = sqliteTable("profiles", {
   soundcloud: text("soundcloud"),
   spotify: text("spotify"),
   website: text("website"),
+  boardList: text("board_list", { mode: "json" }).$type<string[]>(),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`),

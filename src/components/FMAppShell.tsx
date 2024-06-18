@@ -2,22 +2,30 @@
 
 import { logout } from "@/app/actions";
 import AuthModal from "@/components/AuthModal";
-import { AppShell, Burger, Group, Modal, Skeleton, Text } from "@mantine/core";
+import { profiles } from "@/db/schema";
+import { AppShell, Burger, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
+import { useMemo } from "react";
 
 export default function FMAppShell({
   children,
+  profile,
   user,
 }: Readonly<{
   children: React.ReactNode;
   user: { user: User; session: Session } | { user: null; session: null };
+  profile: typeof profiles.$inferSelect | null;
 }>) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
 
-  console.log(user);
+  //global state for logged in profile
+  const profileAtom = useMemo(() => atom(profile), [profile]);
+  const [profileValue] = useAtom(profileAtom);
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -58,11 +66,10 @@ export default function FMAppShell({
         </Group>
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">
-        Groups
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
+        <Text c="black"> Groups</Text>
+        {profileValue?.boardList &&
+          profileValue.boardList.map((board) => (
+            <Text key={board}>{board}</Text>
           ))}
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>

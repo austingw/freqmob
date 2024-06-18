@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Group,
+  NumberInput,
   SegmentedControl,
   TextInput,
   Textarea,
@@ -124,7 +125,7 @@ const PostForm = () => {
           {...form.getInputProps("description")}
         />
         <Group>
-          <TextInput
+          <NumberInput
             label="BPM"
             placeholder="Enter the BPM..."
             {...form.getInputProps("bpm")}

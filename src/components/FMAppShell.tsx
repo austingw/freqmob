@@ -7,7 +7,8 @@ import { AppShell, Burger, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
-import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -31,6 +32,8 @@ export default function FMAppShell({
       setProfileValue(profile);
     }
   }, [profile, setProfileValue]);
+
+  const router = useRouter();
 
   return (
     <AppShell
@@ -75,7 +78,9 @@ export default function FMAppShell({
         <Text c="black"> Groups</Text>
         {profileValue?.boardList &&
           profileValue.boardList.map((board) => (
-            <Text key={board}>{board}</Text>
+            <Text key={board} onClick={() => router.push(`/fm/${board}`)}>
+              {board}
+            </Text>
           ))}
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>

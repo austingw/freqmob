@@ -14,10 +14,13 @@ import {
   queryPostsByBoard,
 } from "@/utils/operations/postDbOperations";
 import {
+  addBoardSub,
   checkUsername,
   getProfileFromUserId,
+  getUserBoards,
   insertProfile,
   insertUser,
+  removeBoardSub,
 } from "@/utils/operations/userDbOperations";
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
@@ -90,6 +93,34 @@ export const createPost = async (post: FormData) => {
     return { status: 201, message: "Post created" };
   } catch (e) {
     return { status: 500, message: "There was an error creating the post" };
+  }
+};
+
+export const joinBoard = async (boardName: string, profileId: string) => {
+  try {
+    await addBoardSub(boardName, profileId);
+    return { status: 201, message: "Board joined" };
+  } catch (e) {
+    return { status: 500, message: "There was an error joining the board" };
+  }
+};
+
+export const leaveBoard = async (boardName: string, profileId: string) => {
+  try {
+    await removeBoardSub(profileId, boardName);
+    return { status: 200, message: "Board left" };
+  } catch (e) {
+    return { status: 500, message: "There was an error leaving the board" };
+  }
+};
+
+export const getUserBoardList = async (profileId: string) => {
+  try {
+    const data = await getUserBoards(profileId);
+    return { status: 200, data: data[0].boardList };
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 };
 

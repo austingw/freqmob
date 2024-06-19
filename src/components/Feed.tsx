@@ -63,7 +63,6 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
         w="100%"
         h="100%"
       >
-        <Text c="black">{profileValue?.name}</Text>
         {data?.map((post) => {
           return (
             <PostCard

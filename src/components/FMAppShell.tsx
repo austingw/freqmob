@@ -7,7 +7,9 @@ import { AppShell, Burger, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+
+export const profileAtom = atom(profiles.$inferSelect);
 
 export default function FMAppShell({
   children,
@@ -23,8 +25,12 @@ export default function FMAppShell({
   const [opened, { open, close }] = useDisclosure(false);
 
   //global state for logged in profile
-  const profileAtom = useMemo(() => atom(profile), [profile]);
-  const [profileValue] = useAtom(profileAtom);
+  const [profileValue, setProfileValue] = useAtom(profileAtom);
+  useEffect(() => {
+    if (profile) {
+      setProfileValue(profile);
+    }
+  }, [profile, setProfileValue]);
 
   return (
     <AppShell

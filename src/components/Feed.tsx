@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Modal, Pagination } from "@mantine/core";
+import { Flex, Modal, Pagination, Text } from "@mantine/core";
 import PostCard from "./PostCard";
 import { useEffect, useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -8,6 +8,8 @@ import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
 import { getPostsByBoard } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "./FMAppShell";
 
 interface FeedProps {
   initialPosts: PostWithMedia[] | null;
@@ -19,6 +21,8 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const profileValue = useAtomValue(profileAtom);
 
   const { data, isLoading } = useQuery({
     queryKey: ["posts", boardId, page],
@@ -59,6 +63,7 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
         w="100%"
         h="100%"
       >
+        <Text c="black">{profileValue?.name}</Text>
         {data?.map((post) => {
           return (
             <PostCard

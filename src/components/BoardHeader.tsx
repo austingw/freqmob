@@ -5,16 +5,16 @@ import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
 import { joinBoard, leaveBoard } from "@/app/actions";
 import { useGetBoardList } from "@/queries/boards";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BoardHeaderProps {
   name: string;
 }
 
 const BoardHeader = ({ name }: BoardHeaderProps) => {
+  const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
-  const { data, isLoading, refetch } = useGetBoardList(profileValue?.id);
-
-  console.log("data", data);
+  const { data } = useGetBoardList(profileValue?.id);
 
   return (
     <Group>
@@ -25,7 +25,11 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
             onClick={async () =>
               await joinBoard(name, profileValue.id)
                 .catch((e) => console.error(e))
-                .then(() => refetch())
+                .then(() =>
+                  queryClient.invalidateQueries({
+                    queryKey: ["boardList", profileValue.id],
+                  }),
+                )
             }
             color="red"
           >
@@ -36,7 +40,11 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
             onClick={async () =>
               await leaveBoard(name, profileValue.id)
                 .catch((e) => console.error(e))
-                .then(() => refetch())
+                .then(() =>
+                  queryClient.invalidateQueries({
+                    queryKey: ["boardList", profileValue.id],
+                  }),
+                )
             }
           >
             Leave

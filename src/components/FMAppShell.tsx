@@ -3,6 +3,7 @@
 import { logout } from "@/app/actions";
 import AuthModal from "@/components/AuthModal";
 import { profiles } from "@/db/schema";
+import { useGetBoardList } from "@/queries/boards";
 import {
   AppShell,
   Burger,
@@ -41,6 +42,8 @@ export default function FMAppShell({
       setProfileValue(profile);
     }
   }, [profile, setProfileValue]);
+
+  const { data, isLoading, refetch } = useGetBoardList(profileValue?.id);
 
   const router = useRouter();
 
@@ -86,8 +89,8 @@ export default function FMAppShell({
       <AppShell.Navbar p="md">
         <Stack align="flex-start" justify="flex-start" gap={0}>
           <Text c="black">your fm/boards</Text>
-          {profileValue?.boardList && profileValue.boardList.length >= 1 ? (
-            profileValue.boardList.map((board) => (
+          {data?.data && data?.data?.length >= 1 ? (
+            data.data.map((board) => (
               <Button
                 variant="transparent"
                 p={0}

@@ -14,12 +14,13 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
   const profileValue = useAtomValue(profileAtom);
   const { data, isLoading, refetch } = useGetBoardList(profileValue?.id);
 
+  console.log("data", data);
+
   return (
     <Group>
       <h1>{name}</h1>
-      {data?.data &&
-        !isLoading &&
-        (!data.data.includes(name) ? (
+      {data?.status === 200 &&
+        (!data?.data?.includes(name) ? (
           <Button
             onClick={async () =>
               await joinBoard(name, profileValue.id)

@@ -250,7 +250,7 @@ export const logout = async (): Promise<ActionResult> => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect("/fm/main");
 };
 
 export const createComment = async (comment: FormData) => {

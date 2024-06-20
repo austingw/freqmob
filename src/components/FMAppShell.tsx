@@ -3,7 +3,16 @@
 import { logout } from "@/app/actions";
 import AuthModal from "@/components/AuthModal";
 import { profiles } from "@/db/schema";
-import { AppShell, Burger, Group, Modal, Text } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Button,
+  Divider,
+  Group,
+  Modal,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
@@ -47,7 +56,7 @@ export default function FMAppShell({
       color="black"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
+        <Group h="100%" px="md" align="center" justify="space-between">
           <Burger
             opened={mobileOpened}
             onClick={toggleMobile}
@@ -61,27 +70,37 @@ export default function FMAppShell({
             size="sm"
           />
           {user.user ? (
-            <Text onClick={() => logout()} c="black">
+            <Button variant="transparent" onClick={() => logout()}>
               Logout
-            </Text>
+            </Button>
           ) : (
-            <Text onClick={open} c="black">
+            <Button variant="transparent" onClick={open}>
               Login
-            </Text>
+            </Button>
           )}
           <Modal opened={opened} onClose={close}>
-            <AuthModal />
+            <AuthModal close={close} />
           </Modal>
         </Group>
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">
-        <Text c="black"> Groups</Text>
-        {profileValue?.boardList &&
-          profileValue.boardList.map((board) => (
-            <Text key={board} onClick={() => router.push(`/fm/${board}`)}>
-              {board}
-            </Text>
-          ))}
+        <Stack align="flex-start" justify="flex-start" gap={0}>
+          <Text c="black">your fm/boards</Text>
+          {profileValue?.boardList && profileValue.boardList.length >= 1 ? (
+            profileValue.boardList.map((board) => (
+              <Button
+                variant="transparent"
+                p={0}
+                key={board}
+                onClick={() => router.push(`/fm/${board}`)}
+              >
+                fm/{board}
+              </Button>
+            ))
+          ) : (
+            <Text c="black">no boards found, join some!</Text>
+          )}
+        </Stack>
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>

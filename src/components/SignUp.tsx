@@ -12,9 +12,13 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { z } from "zod";
+
+interface SignUpProps {
+  close: () => void;
+}
 
 interface SignUpFormValues {
   username: string;
@@ -51,7 +55,7 @@ const schema = z
     return values.password === values.password2;
   }, "Passwords must match");
 
-const SignUp = () => {
+const SignUp = ({ close }: SignUpProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<SignUpFormValues>({
@@ -79,6 +83,13 @@ const SignUp = () => {
               notifications.show({
                 message: "Failed to create account, please try again later",
                 icon: <IconX />,
+                autoClose: 3000,
+              });
+            } else {
+              close();
+              notifications.show({
+                message: "Account created successfully!",
+                icon: <IconCheck />,
                 autoClose: 3000,
               });
             }

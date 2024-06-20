@@ -12,9 +12,13 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { z } from "zod";
+
+interface LoginProps {
+  close: () => void;
+}
 
 interface LoginFormValues {
   username: string;
@@ -26,7 +30,7 @@ const schema = z.object({
   password: z.string().min(6).max(100),
 });
 
-const Login = () => {
+const Login = ({ close }: LoginProps) => {
   const [loading, setLoading] = useState(false);
   const form = useForm<LoginFormValues>({
     initialValues: {
@@ -52,6 +56,13 @@ const Login = () => {
               notifications.show({
                 message: "Username or password is incorrect, please try again.",
                 icon: <IconX />,
+                autoClose: 3000,
+              });
+            } else {
+              close();
+              notifications.show({
+                message: "Login successful!",
+                icon: <IconCheck />,
                 autoClose: 3000,
               });
             }

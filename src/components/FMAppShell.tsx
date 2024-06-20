@@ -88,7 +88,7 @@ export default function FMAppShell({
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">
         <Stack align="flex-start" justify="flex-start" gap={0}>
-          <Text c="black">your fm/boards</Text>
+          <Text c="black">your boards</Text>
           {data?.data && data?.data?.length >= 1 ? (
             data.data.map((board) => (
               <Button

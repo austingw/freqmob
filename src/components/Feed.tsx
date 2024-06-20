@@ -58,7 +58,6 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
         direction={"column"}
         align={"center"}
         justify={"center"}
-        px={25}
         gap={25}
         w="100%"
         h="100%"

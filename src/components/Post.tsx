@@ -175,8 +175,8 @@ const Post = ({ clickClose, post }: PostProps) => {
               </Accordion.Item>
             </Accordion>
             {data?.map((comment) => (
-              <Paper radius="md" key={comment.comments.id}>
-                <Stack gap={4} p={2}>
+              <Paper withBorder radius="md" key={comment.comments.id} px={10}>
+                <Stack gap={4} p={4}>
                   <Group gap={4} align="center" justify="flex-start">
                     <Text fz="xs" c="dimmed">
                       {comment.profiles.name} -

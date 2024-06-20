@@ -17,7 +17,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
   const { data } = useGetBoardList(profileValue?.id);
 
   return (
-    <Group>
+    <Group align="center" justify="space-between">
       <h1>{name}</h1>
       {data?.status === 200 &&
         (!data?.data?.includes(name) ? (

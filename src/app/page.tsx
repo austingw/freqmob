@@ -2,8 +2,6 @@ import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
 import { logout } from "./actions";
-import SignUp from "@/components/SignUp";
-import Login from "@/components/Login";
 
 export default async function Home() {
   return (
@@ -27,8 +25,6 @@ export default async function Home() {
           </Button>
         </div>
       </div>
-      <SignUp />
-      <Login />
       <PostForm />
       <a onClick={logout}>Logout</a>
     </main>

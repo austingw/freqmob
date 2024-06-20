@@ -2,15 +2,8 @@
 
 import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
-import { validateRequest } from "@/db/auth";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import { queryPostsByBoard } from "@/utils/operations/postDbOperations";
-import {
-  addBoardSub,
-  getProfileFromUserId,
-  removeBoardSub,
-} from "@/utils/operations/userDbOperations";
-import { Button } from "@mantine/core";
 
 export default async function Page({ params }: { params: { board: string } }) {
   const boardData = await queryBoardByName(params.board);
@@ -20,22 +13,6 @@ export default async function Page({ params }: { params: { board: string } }) {
       body: "Not found",
     };
   }
-
-  const user = await validateRequest();
-
-  const profile = user.user ? await getProfileFromUserId(user.user.id) : null;
-
-  const joinBoard = async () => {
-    if (profile && profile[0].id) {
-      await addBoardSub(profile[0].id, boardData[0].name);
-    }
-  };
-
-  const leaveBoard = async () => {
-    if (profile && profile[0].id) {
-      await removeBoardSub(profile[0].id, boardData[0].name);
-    }
-  };
 
   const posts = boardData[0]?.id
     ? await queryPostsByBoard(1, boardData[0].id)

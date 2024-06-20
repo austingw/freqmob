@@ -257,11 +257,22 @@ export const createComment = async (comment: FormData) => {
   const postId = String(comment.get("postId"));
   const content = String(comment.get("content"));
 
+  const user = await validateRequest();
+
+  if (!user.user || !user.session) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  const profile = await getProfileFromUserId(user.user.id);
+
   try {
     await insertComment({
       postId,
       content,
-      profileId: "test",
+      profileId: profile[0].id,
     });
     return { status: 201, message: "Comment created" };
   } catch {

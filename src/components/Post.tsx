@@ -9,6 +9,7 @@ import {
   ScrollArea,
   Paper,
   Accordion,
+  useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -38,6 +39,8 @@ interface PostProps {
 const Post = ({ clickClose, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { data, isLoading } = useGetComments(post.posts.id);
+
+  const theme = useMantineTheme();
 
   return (
     <>
@@ -91,7 +94,7 @@ const Post = ({ clickClose, post }: PostProps) => {
               <Group gap={"xs"} align="center">
                 <Badge
                   variant="gradient"
-                  gradient={{ from: "yellow", to: "red" }}
+                  gradient={{ from: "electric-teal", to: "wild-pink" }}
                   style={{
                     minWidth: "fit-content",
                     position: "relative",
@@ -100,7 +103,7 @@ const Post = ({ clickClose, post }: PostProps) => {
                   {post.posts.type}
                 </Badge>
                 <Group gap={4} align="center">
-                  <ActionIcon color={"red"} size={"xs"}>
+                  <ActionIcon color={theme.primaryColor} size={"xs"}>
                     <IconHeart />
                   </ActionIcon>
                   <Text fz="xs" c="dimmed">
@@ -110,7 +113,7 @@ const Post = ({ clickClose, post }: PostProps) => {
                 </Group>
                 <Group gap={4} align="center">
                   <ActionIcon
-                    color={"yellow"}
+                    color={theme.primaryColor}
                     size={"xs"}
                     style={{
                       cursor: "default",
@@ -194,7 +197,6 @@ const Post = ({ clickClose, post }: PostProps) => {
                       )}
                     </Text>
                   </Group>
-
                   <Text fz="sm">{comment.comments.content}</Text>
                 </Stack>
               </Paper>

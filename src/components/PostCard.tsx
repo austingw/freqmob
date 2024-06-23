@@ -20,12 +20,7 @@ interface PostCardProps {
   post: PostWithMedia;
 }
 
-const PostCard = ({
-  clickPost,
-  clickLike,
-  clickComment,
-  post,
-}: PostCardProps) => {
+const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
   const theme = useMantineTheme();
 
   return (
@@ -123,7 +118,7 @@ const PostCard = ({
           <Group gap={"xs"}>
             <Badge
               variant="gradient"
-              gradient={{ from: "yellow", to: "red" }}
+              gradient={{ from: "electric-teal", to: "wild-pink" }}
               style={{
                 minWidth: "fit-content",
               }}
@@ -132,7 +127,11 @@ const PostCard = ({
             </Badge>
 
             <Group gap={4} align="center">
-              <ActionIcon color={"red"} size={"sm"} onClick={() => clickLike()}>
+              <ActionIcon
+                color={theme.primaryColor}
+                size={"sm"}
+                onClick={() => clickLike()}
+              >
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />
               </ActionIcon>
               <Text fz="xs" c="dimmed">
@@ -141,9 +140,9 @@ const PostCard = ({
             </Group>
             <Group gap={4} align="center">
               <ActionIcon
-                color={"yellow"}
+                color={theme.primaryColor}
                 size={"sm"}
-                onClick={() => clickComment()}
+                onClick={() => clickPost()}
               >
                 <IconMessageCircle2
                   style={{ width: rem(16), height: rem(16) }}

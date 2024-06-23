@@ -17,14 +17,14 @@ interface PostCardProps {
   clickPost: () => void;
   clickLike: () => void;
   clickComment: () => void;
-  post: PostWithMedia
+  post: PostWithMedia;
 }
 
 const PostCard = ({
   clickPost,
   clickLike,
   clickComment,
-  post
+  post,
 }: PostCardProps) => {
   const theme = useMantineTheme();
 
@@ -38,17 +38,19 @@ const PostCard = ({
         cursor: "pointer",
       }}
     >
-      {post?.audio?.url && <Card.Section>
-        <Flex
-          justify={"center"}
-          align={"center"}
-          style={{
-            zIndex: 999,
-          }}
-        >
-          <AudioPlayer url={post.audio?.url} art={post?.images?.url || ""} />
-        </Flex>
-      </Card.Section>}
+      {post?.audio?.url && (
+        <Card.Section>
+          <Flex
+            justify={"center"}
+            align={"center"}
+            style={{
+              zIndex: 999,
+            }}
+          >
+            <AudioPlayer url={post.audio?.url} art={post?.images?.url || ""} />
+          </Flex>
+        </Card.Section>
+      )}
       <Stack gap={4}>
         <Group
           gap={"xs"}
@@ -58,15 +60,6 @@ const PostCard = ({
             cursor: "pointer",
           }}
         >
-          <Badge
-            variant="gradient"
-            gradient={{ from: "yellow", to: "red" }}
-            style={{
-              minWidth: "fit-content",
-            }}
-          >
-            {post.posts.type}
-          </Badge>
           <Text
             fz="xl"
             fw={600}
@@ -84,39 +77,60 @@ const PostCard = ({
           </Text>
         </Group>
         <Group gap={0} align="center">
-          {post.posts.description && <Text
-            fz="sm"
-            c="dimmed"
-            lineClamp={1}
-            w={"100%"}
-            onClick={() => clickPost()}
-            style={{
-              cursor: "pointer",
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-            }}
-          >
-            {post.posts.description}
-          </Text>}
-          {post.posts.description && <Text
-            fz="sm"
-            lineClamp={1}
-            component="a"
-            onClick={() => clickPost()}
-            c={theme.colors.blue[6]}
-            style={{
-              cursor: "pointer",
-              ":hover": {
-                textDecoration: "underline",
-              },
-              minWidth: "fit-content",
-            }}
-          >
-            View full post
-          </Text>}
+          {post.posts.description && (
+            <Text
+              fz="sm"
+              c="dimmed"
+              lineClamp={1}
+              w={"100%"}
+              onClick={() => clickPost()}
+              style={{
+                cursor: "pointer",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+            >
+              {post.posts.description}
+            </Text>
+          )}
+          {post.posts.description && (
+            <Text
+              fz="sm"
+              lineClamp={1}
+              component="a"
+              onClick={() => clickPost()}
+              c={theme.colors.blue[6]}
+              style={{
+                cursor: "pointer",
+                ":hover": {
+                  textDecoration: "underline",
+                },
+                minWidth: "fit-content",
+              }}
+            >
+              View full post
+            </Text>
+          )}
         </Group>
-        <Group align="flex-start" gap={"sm"} mx={-5} pt={5}>
-          <Group gap={"xs"} align="center">
+        <Group
+          align="space-between"
+          justify="space-between"
+          gap={"sm"}
+          mx={-5}
+          pt={5}
+          w={"100%"}
+        >
+          <Group gap={"xs"}>
+            <Badge
+              variant="gradient"
+              gradient={{ from: "yellow", to: "red" }}
+              style={{
+                minWidth: "fit-content",
+              }}
+            >
+              {post.posts.type}
+            </Badge>
+
             <Group gap={4} align="center">
               <ActionIcon color={"red"} size={"sm"} onClick={() => clickLike()}>
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />
@@ -140,7 +154,6 @@ const PostCard = ({
               </Text>
             </Group>
           </Group>
-
           <Badge
             variant="outline"
             onClick={() => {
@@ -153,7 +166,7 @@ const PostCard = ({
               },
             }}
           >
-            {post.profiles.name}
+            Posted by {post.profiles.name}
           </Badge>
         </Group>
       </Stack>

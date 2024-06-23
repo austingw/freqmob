@@ -75,10 +75,77 @@ const Post = ({ clickClose, post }: PostProps) => {
               justify={isMobile ? "center" : "space-between"}
               gap={isMobile ? 10 : 0}
               pb={isMobile ? 10 : 0}
+              pt={!post?.audio?.url ? 10 : 0}
             >
               <Text fz="xl" fw={600}>
                 {post?.posts?.title}
               </Text>
+            </Flex>
+
+            {post.posts.description && (
+              <Text fz="sm" c="dimmed" w={"100%"}>
+                {post.posts.description}
+              </Text>
+            )}
+            <Group align="flex-start" justify="space-between" py={10}>
+              <Group gap={"xs"} align="center">
+                <Badge
+                  variant="gradient"
+                  gradient={{ from: "yellow", to: "red" }}
+                  style={{
+                    minWidth: "fit-content",
+                    position: "relative",
+                  }}
+                >
+                  {post.posts.type}
+                </Badge>
+                <Group gap={4} align="center">
+                  <ActionIcon color={"red"} size={"xs"}>
+                    <IconHeart />
+                  </ActionIcon>
+                  <Text fz="xs" c="dimmed">
+                    {post?.posts?.likeCount || 0}{" "}
+                    {post?.posts?.likeCount === 1 ? "like" : "likes"}
+                  </Text>
+                </Group>
+                <Group gap={4} align="center">
+                  <ActionIcon
+                    color={"yellow"}
+                    size={"xs"}
+                    style={{
+                      cursor: "default",
+                    }}
+                  >
+                    <IconMessageCircle2 />
+                  </ActionIcon>
+                  <Text fz="xs" c="dimmed">
+                    {post?.posts?.commentCount || 0}{" "}
+                    {post?.posts?.commentCount === 1 ? "comment" : "comments"}
+                  </Text>
+                </Group>
+                <Group gap={"xs"} align="center">
+                  {post.posts.genre && (
+                    <Text fz="xs" c="dimmed">
+                      Genre: <b>{post.posts.genre}</b>
+                    </Text>
+                  )}
+                  {post.posts.bpm && (
+                    <Text fz="xs" c="dimmed">
+                      BPM: <b>{post.posts.bpm}</b>
+                    </Text>
+                  )}
+                  {post.posts.key && (
+                    <Text fz="xs" c="dimmed">
+                      Key: <b>{post.posts.key}</b>
+                    </Text>
+                  )}
+                  {post.posts.inspiration && (
+                    <Text fz="xs" c="dimmed">
+                      Influences: <b>{post.posts.inspiration}</b>
+                    </Text>
+                  )}
+                </Group>
+              </Group>
               <Badge
                 variant="outline"
                 w={isMobile ? "100%" : "fit-content"}
@@ -91,70 +158,6 @@ const Post = ({ clickClose, post }: PostProps) => {
               >
                 Posted by <b>{post?.profiles?.name}</b>
               </Badge>
-            </Flex>
-
-            {post.posts.description && (
-              <Text fz="sm" c="dimmed" w={"100%"}>
-                {post.posts.description}
-              </Text>
-            )}
-            <Group align="flex-start" gap={"xs"} py={10}>
-              <Badge
-                variant="gradient"
-                gradient={{ from: "yellow", to: "red" }}
-                style={{
-                  minWidth: "fit-content",
-                  position: "relative",
-                }}
-              >
-                {post.posts.type}
-              </Badge>
-              <Group gap={4} align="center">
-                <ActionIcon color={"red"} size={"xs"}>
-                  <IconHeart />
-                </ActionIcon>
-                <Text fz="xs" c="dimmed">
-                  {post?.posts?.likeCount || 0}{" "}
-                  {post?.posts?.likeCount === 1 ? "like" : "likes"}
-                </Text>
-              </Group>
-              <Group gap={4} align="center">
-                <ActionIcon
-                  color={"yellow"}
-                  size={"xs"}
-                  style={{
-                    cursor: "default",
-                  }}
-                >
-                  <IconMessageCircle2 />
-                </ActionIcon>
-                <Text fz="xs" c="dimmed">
-                  {post?.posts?.commentCount || 0}{" "}
-                  {post?.posts?.commentCount === 1 ? "comment" : "comments"}
-                </Text>
-              </Group>
-              <Group gap={"xs"} align="center">
-                {post.posts.genre && (
-                  <Text fz="xs" c="dimmed">
-                    Genre: <b>{post.posts.genre}</b>
-                  </Text>
-                )}
-                {post.posts.bpm && (
-                  <Text fz="xs" c="dimmed">
-                    BPM: <b>{post.posts.bpm}</b>
-                  </Text>
-                )}
-                {post.posts.key && (
-                  <Text fz="xs" c="dimmed">
-                    Key: <b>{post.posts.key}</b>
-                  </Text>
-                )}
-                {post.posts.inspiration && (
-                  <Text fz="xs" c="dimmed">
-                    Influences: <b>{post.posts.inspiration}</b>
-                  </Text>
-                )}
-              </Group>
             </Group>
 
             <Accordion

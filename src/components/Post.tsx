@@ -15,6 +15,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import {
   IconHeart,
   IconMessageCircle2,
+  IconMinus,
   IconPlus,
   IconX,
 } from "@tabler/icons-react";
@@ -26,6 +27,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -38,6 +40,7 @@ interface PostProps {
 
 const Post = ({ clickClose, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [value, setValue] = useState<string | null>(null);
   const { data, isLoading } = useGetComments(post.posts.id);
 
   const theme = useMantineTheme();
@@ -94,7 +97,7 @@ const Post = ({ clickClose, post }: PostProps) => {
               <Group gap={"xs"} align="center">
                 <Badge
                   variant="gradient"
-                  gradient={{ from: "electric-teal", to: "wild-pink" }}
+                  gradient={{ from: "cool-blue", to: "wild-pink" }}
                   style={{
                     minWidth: "fit-content",
                     position: "relative",
@@ -103,7 +106,11 @@ const Post = ({ clickClose, post }: PostProps) => {
                   {post.posts.type}
                 </Badge>
                 <Group gap={4} align="center">
-                  <ActionIcon color={theme.primaryColor} size={"xs"}>
+                  <ActionIcon
+                    color={theme.primaryColor}
+                    size={"sm"}
+                    variant="subtle"
+                  >
                     <IconHeart />
                   </ActionIcon>
                   <Text fz="xs" c="dimmed">
@@ -111,10 +118,11 @@ const Post = ({ clickClose, post }: PostProps) => {
                     {post?.posts?.likeCount === 1 ? "like" : "likes"}
                   </Text>
                 </Group>
-                <Group gap={4} align="center">
+                <Group gap={4} align="center" variant="subtle">
                   <ActionIcon
                     color={theme.primaryColor}
-                    size={"xs"}
+                    size={"sm"}
+                    variant="subtle"
                     style={{
                       cursor: "default",
                     }}
@@ -164,7 +172,12 @@ const Post = ({ clickClose, post }: PostProps) => {
             </Group>
 
             <Accordion
-              chevron={<IconPlus size="1rem" />}
+              chevron={
+                value ? <IconMinus size="1rem" /> : <IconPlus size="1rem" />
+              }
+              variant="filled"
+              value={value}
+              onChange={setValue}
               styles={{
                 chevron: {
                   "&[data-rotate]": {
@@ -176,7 +189,7 @@ const Post = ({ clickClose, post }: PostProps) => {
               <Accordion.Item value="Add Comment">
                 <Accordion.Control>Add Comment</Accordion.Control>
                 <Accordion.Panel>
-                  <CommentForm postId={post.posts.id} />
+                  <CommentForm postId={post.posts.id} setValue={setValue} />
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>

@@ -118,7 +118,7 @@ const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
           <Group gap={"xs"}>
             <Badge
               variant="gradient"
-              gradient={{ from: "electric-teal", to: "wild-pink" }}
+              gradient={{ from: "cool-blue", to: "wild-pink" }}
               style={{
                 minWidth: "fit-content",
               }}
@@ -129,6 +129,7 @@ const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
+                variant="subtle"
                 size={"sm"}
                 onClick={() => clickLike()}
               >
@@ -141,6 +142,7 @@ const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
+                variant="subtle"
                 size={"sm"}
                 onClick={() => clickPost()}
               >

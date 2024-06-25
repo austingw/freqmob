@@ -11,6 +11,7 @@ import { z } from "zod";
 
 interface CommentFormProps {
   postId: number;
+  setValue: (value: string | null) => void;
 }
 
 interface CommentFormValues {
@@ -23,7 +24,7 @@ const schema = z.object({
   postId: z.number().positive(),
 });
 
-const CommentForm = ({ postId }: CommentFormProps) => {
+const CommentForm = ({ postId, setValue }: CommentFormProps) => {
   const queryClient = useQueryClient();
 
   const form = useForm<CommentFormValues>({
@@ -79,7 +80,15 @@ const CommentForm = ({ postId }: CommentFormProps) => {
         />
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
-          <Button variant="light">Cancel</Button>
+          <Button
+            variant="light"
+            onClick={() => {
+              setValue(null);
+              form.reset();
+            }}
+          >
+            Cancel
+          </Button>
         </Group>
       </form>
     </Flex>

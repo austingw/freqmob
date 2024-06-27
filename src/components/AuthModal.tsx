@@ -13,7 +13,6 @@ const AuthModal = ({ close }: AuthModelProps) => {
     <Stack align="center">
       <Text c="black"> {isLogin ? "Login" : "Signup"} </Text>
       {isLogin ? <Login close={close} /> : <SignUp close={close} />}
-
       <Button
         variant="transparent"
         c="black"

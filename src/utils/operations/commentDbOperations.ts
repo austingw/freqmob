@@ -1,10 +1,17 @@
 import { db } from "@/db/db";
 import { comments, posts, profiles } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 type NewComment = typeof comments.$inferInsert;
 
 export const insertComment = async (comment: NewComment) => {
+  await db
+    .update(posts)
+    .set({
+      likeCount: sql`${posts.likeCount} + 1`,
+    })
+    .where(eq(posts.id, Number(comment.postId)));
+
   return await db.insert(comments).values(comment);
 };
 

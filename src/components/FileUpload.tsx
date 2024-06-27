@@ -51,7 +51,7 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
 
           <Text ta="center" fw={700} fz="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
-            <Dropzone.Reject>Pdf file less than 30mb</Dropzone.Reject>
+            <Dropzone.Reject>Audio file less than 30mb</Dropzone.Reject>
             <Dropzone.Idle>Upload resume</Dropzone.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">

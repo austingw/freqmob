@@ -38,7 +38,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
         ) : (
           <Button
             onClick={async () =>
-              await leaveBoard(name, profileValue.id)
+              await leaveBoard(profileValue.id, name)
                 .catch((e) => console.error(e))
                 .then(() =>
                   queryClient.invalidateQueries({

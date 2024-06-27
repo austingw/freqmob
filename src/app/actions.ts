@@ -105,7 +105,7 @@ export const joinBoard = async (profileId: string, boardName: string) => {
   }
 };
 
-export const leaveBoard = async (boardName: string, profileId: string) => {
+export const leaveBoard = async (profileId: string, boardName: string) => {
   try {
     await removeBoardSub(profileId, boardName);
     return { status: 200, message: "Board left" };

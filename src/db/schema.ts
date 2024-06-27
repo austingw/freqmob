@@ -85,22 +85,6 @@ export const likes = sqliteTable("likes", {
   postId: text("post_id")
     .notNull()
     .references(() => posts.id),
-  isUpvote: integer("is_upvote", { mode: "boolean" }).notNull(),
-});
-
-export const commentLikes = sqliteTable("comment_likes", {
-  id: integer("id", {
-    mode: "number",
-  })
-    .notNull()
-    .primaryKey({ autoIncrement: true }),
-  profileId: text("profile_id")
-    .notNull()
-    .references(() => profiles.id),
-  commentId: text("comment_id")
-    .notNull()
-    .references(() => comments.id),
-  isUpvote: integer("is_upvote", { mode: "boolean" }).notNull(),
 });
 
 export const posts = sqliteTable("posts", {

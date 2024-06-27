@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { audio, images, posts, profiles } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 
 type NewPost = typeof posts.$inferInsert;
 
@@ -40,4 +40,15 @@ export const queryPostsByProfile = async (profileId: string) => {
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .where(eq(posts.profileId, profileId))
     .orderBy(desc(posts.createdAt));
+};
+
+export const queryPostCount = async (boardId: number | null) => {
+  if (boardId) {
+    return await db
+      .select({ count: count() })
+      .from(posts)
+      .where(eq(posts.boardId, boardId));
+  }
+
+  return await db.select({ count: count() }).from(posts);
 };

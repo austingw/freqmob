@@ -23,7 +23,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
         (!data?.data?.includes(name) ? (
           <Button
             onClick={async () =>
-              await joinBoard(name, profileValue.id)
+              await joinBoard(profileValue.id, name)
                 .catch((e) => console.error(e))
                 .then(() =>
                   queryClient.invalidateQueries({

@@ -96,9 +96,9 @@ export const createPost = async (post: FormData) => {
   }
 };
 
-export const joinBoard = async (boardName: string, profileId: string) => {
+export const joinBoard = async (profileId: string, boardName: string) => {
   try {
-    await addBoardSub(boardName, profileId);
+    await addBoardSub(profileId, boardName);
     return { status: 201, message: "Board joined" };
   } catch (e) {
     return { status: 500, message: "There was an error joining the board" };

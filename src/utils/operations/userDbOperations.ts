@@ -26,7 +26,7 @@ export const getProfileFromUserId = async (userId: string) => {
   return await db.select().from(profiles).where(eq(profiles.userId, userId));
 };
 
-export const addBoardSub = async (board: string, profileId: string) => {
+export const addBoardSub = async (profileId: string, board: string) => {
   const profile = await db
     .select({ boardList: profiles.boardList })
     .from(profiles)

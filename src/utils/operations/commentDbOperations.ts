@@ -15,7 +15,7 @@ export const insertComment = async (comment: NewComment) => {
   return await db.insert(comments).values(comment);
 };
 
-export const queryComments = async (postId: string) => {
+export const queryComments = async (postId: number) => {
   return await db
     .select()
     .from(comments)

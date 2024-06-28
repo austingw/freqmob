@@ -259,7 +259,7 @@ export const logout = async (): Promise<ActionResult> => {
 };
 
 export const createComment = async (comment: FormData) => {
-  const postId = String(comment.get("postId"));
+  const postId = Number(comment.get("postId"));
   const content = String(comment.get("content"));
 
   const user = await validateRequest();
@@ -285,7 +285,7 @@ export const createComment = async (comment: FormData) => {
   }
 };
 
-export const getComments = async (postId: string) => {
+export const getComments = async (postId: number) => {
   return await queryComments(postId);
 };
 
@@ -301,7 +301,7 @@ export const getPostsByBoard = async (page: number, boardId?: number) => {
   }
 };
 
-export const toggleLike = async (postId: string, profileId: string) => {
+export const toggleLike = async (postId: number, profileId: string) => {
   const user = await validateRequest();
 
   if (!user.user || !user.session) {
@@ -358,7 +358,7 @@ export const toggleLike = async (postId: string, profileId: string) => {
   }
 };
 
-export const getUserLike = async (postId: string, profileId: string) => {
+export const getUserLike = async (postId: number, profileId: string) => {
   try {
     const userLike = await checkLike(postId, profileId);
     if (userLike[0]) {

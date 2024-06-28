@@ -53,7 +53,7 @@ export const comments = sqliteTable("comments", {
   profileId: text("profile_id")
     .notNull()
     .references(() => profiles.id),
-  postId: text("post_id")
+  postId: integer("post_id")
     .notNull()
     .references(() => posts.id),
 });
@@ -82,7 +82,7 @@ export const likes = sqliteTable("likes", {
   profileId: text("profile_id")
     .notNull()
     .references(() => profiles.id),
-  postId: text("post_id")
+  postId: integer("post_id")
     .notNull()
     .references(() => posts.id),
 });

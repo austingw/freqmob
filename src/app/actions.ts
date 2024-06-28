@@ -1,7 +1,7 @@
 "use server";
 
 import { lucia, validateRequest } from "@/db/auth";
-import { posts } from "@/db/schema";
+import { PostWithMedia, posts } from "@/db/schema";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import {
@@ -358,27 +358,35 @@ export const toggleLike = async (postId: number, profileId: string) => {
   }
 };
 
-export const getUserLike = async (postId: number, profileId: string) => {
+type UserLikes = {
+  postId: number;
+  liked: boolean;
+}[];
+
+export const getUserLike = async (
+  postIds: number[] | null,
+  profileId: string,
+) => {
+  if (postIds === null) {
+    return {
+      status: 200,
+      message: "No posts to check",
+    };
+  }
   try {
-    const userLike = await checkLike(postId, profileId);
-    if (userLike[0]) {
-      return {
-        status: 200,
-        data: true,
-        message: "Post has been liked",
-      };
-    } else {
-      return {
-        status: 200,
-        data: false,
-        message: "Post not yet liked",
-      };
+    let userLikes: UserLikes = [];
+    for (const postId of postIds) {
+      const userLike = await checkLike(postId, profileId);
+      userLikes.push({
+        postId,
+        liked: userLike[0] ? true : false,
+      });
     }
   } catch (e) {
     console.error(e);
     return {
       status: 500,
-      message: "There was an error checking if the post like status",
+      message: "There was an error checking post like statuses",
     };
   }
 };

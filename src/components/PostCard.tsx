@@ -129,7 +129,7 @@ const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
-                variant="subtle"
+                variant={false ? "filled" : "subtle"}
                 size={"sm"}
                 onClick={() => clickLike()}
               >

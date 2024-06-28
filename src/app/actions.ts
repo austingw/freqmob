@@ -9,6 +9,11 @@ import {
   queryComments,
 } from "@/utils/operations/commentDbOperations";
 import {
+  checkLike,
+  deletePostLike,
+  insertPostLike,
+} from "@/utils/operations/likeDbOperations";
+import {
   insertPost,
   queryPosts,
   queryPostsByBoard,
@@ -293,5 +298,87 @@ export const getPostsByBoard = async (page: number, boardId?: number) => {
   } catch (e) {
     console.error(e);
     return null;
+  }
+};
+
+export const toggleLike = async (postId: string, profileId: string) => {
+  const user = await validateRequest();
+
+  if (!user.user || !user.session) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  let alreadyLiked = false;
+  try {
+    const userLike = await checkLike(postId, user.user.id);
+    if (userLike[0]) {
+      alreadyLiked = true;
+    }
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error checking if the post like status",
+    };
+  }
+
+  if (!alreadyLiked) {
+    try {
+      await insertPostLike(postId, profileId);
+
+      return {
+        status: 200,
+        message: "Post liked",
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        status: 500,
+        message: "There was an error liking the post",
+      };
+    }
+  } else {
+    try {
+      await deletePostLike(postId, profileId);
+
+      return {
+        status: 200,
+        message: "Post unliked",
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        status: 500,
+        message: "There was an error unliking the post",
+      };
+    }
+  }
+};
+
+export const getUserLike = async (postId: string, profileId: string) => {
+  try {
+    const userLike = await checkLike(postId, profileId);
+    if (userLike[0]) {
+      return {
+        status: 200,
+        data: true,
+        message: "Post has been liked",
+      };
+    } else {
+      return {
+        status: 200,
+        data: false,
+        message: "Post not yet liked",
+      };
+    }
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error checking if the post like status",
+    };
   }
 };

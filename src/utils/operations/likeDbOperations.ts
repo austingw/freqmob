@@ -2,7 +2,7 @@ import { db } from "@/db/db";
 import { likes, posts } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
-const checkLike = async (postId: string, profileId: string) => {
+export const checkLike = async (postId: string, profileId: string) => {
   return await db
     .select()
     .from(likes)
@@ -10,12 +10,6 @@ const checkLike = async (postId: string, profileId: string) => {
 };
 
 export const insertPostLike = async (postId: string, profileId: string) => {
-  const userLike = await checkLike(postId, profileId);
-
-  if (userLike.length) {
-    return;
-  }
-
   await db
     .update(posts)
     .set({
@@ -30,12 +24,6 @@ export const insertPostLike = async (postId: string, profileId: string) => {
 };
 
 export const deletePostLike = async (postId: string, profileId: string) => {
-  const userLike = await checkLike(postId, profileId);
-
-  if (!userLike.length) {
-    return;
-  }
-
   await db
     .update(posts)
     .set({

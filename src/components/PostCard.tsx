@@ -151,16 +151,21 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                 variant={data?.liked ? "filled" : "subtle"}
                 size={"sm"}
                 onClick={async () => {
-                  await toggleLike(post.posts.id, profileValue.id)
-                    .catch()
-                    .then(() => {
-                      queryClient.invalidateQueries({
-                        queryKey: ["userLike", post.posts.id, profileValue.id],
-                      });
-                      queryClient.invalidateQueries({
-                        queryKey: ["likeCount", post.posts.id],
-                      });
-                    });
+                  profileValue.id &&
+                    (await toggleLike(post.posts.id, profileValue.id)
+                      .catch()
+                      .then(() => {
+                        queryClient.invalidateQueries({
+                          queryKey: [
+                            "userLike",
+                            post.posts.id,
+                            profileValue.id,
+                          ],
+                        });
+                        queryClient.invalidateQueries({
+                          queryKey: ["likeCount", post.posts.id],
+                        });
+                      }));
                 }}
               >
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />

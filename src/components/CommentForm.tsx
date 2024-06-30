@@ -63,6 +63,9 @@ const CommentForm = ({ postId, setValue }: CommentFormProps) => {
                 queryClient.invalidateQueries({
                   queryKey: ["comments", postId],
                 });
+                queryClient.invalidateQueries({
+                  queryKey: ["commentCount", postId],
+                });
               } else {
                 notifications.show({
                   message: "Failed to create comment, please try again",

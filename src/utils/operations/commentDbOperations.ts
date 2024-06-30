@@ -8,7 +8,7 @@ export const insertComment = async (comment: NewComment) => {
   await db
     .update(posts)
     .set({
-      likeCount: sql`${posts.likeCount} + 1`,
+      commentCount: sql`${posts.commentCount} + 1`,
     })
     .where(eq(posts.id, Number(comment.postId)));
 

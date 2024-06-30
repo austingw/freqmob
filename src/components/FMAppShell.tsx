@@ -15,10 +15,12 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconPlus } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import PostForm from "./PostForm";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -72,17 +74,23 @@ export default function FMAppShell({
             visibleFrom="sm"
             size="sm"
           />
-          {user.user ? (
-            <Button variant="transparent" onClick={() => logout()}>
-              Logout
+          <Group align="center" justify="flex-end" p={0} gap={0}>
+            <Button variant="subtle" p={2}>
+              <IconPlus size={16} /> Post
             </Button>
-          ) : (
-            <Button variant="transparent" onClick={open}>
-              Login
-            </Button>
-          )}
+            {user.user ? (
+              <Button variant="transparent" onClick={() => logout()}>
+                Logout
+              </Button>
+            ) : (
+              <Button variant="transparent" onClick={open}>
+                Login
+              </Button>
+            )}
+          </Group>
           <Modal opened={opened} onClose={close}>
             <AuthModal close={close} />
+            <PostForm />
           </Modal>
         </Group>
       </AppShell.Header>{" "}

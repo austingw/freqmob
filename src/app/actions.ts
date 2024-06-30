@@ -7,6 +7,7 @@ import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import {
   insertComment,
+  queryCommentCount,
   queryComments,
 } from "@/utils/operations/commentDbOperations";
 import {
@@ -400,6 +401,16 @@ export const getLikeCount = async (postId: number) => {
   try {
     const likeCount = await queryLikeCount(postId);
     return likeCount[0].likeCount;
+  } catch (e) {
+    console.error(e);
+    return 0;
+  }
+};
+
+export const getCommentCount = async (postId: number) => {
+  try {
+    const commentCount = await queryCommentCount(postId);
+    return commentCount[0].commentCount;
   } catch (e) {
     console.error(e);
     return 0;

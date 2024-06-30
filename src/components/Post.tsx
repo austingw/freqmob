@@ -126,7 +126,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                 <Group gap={4} align="center">
                   <ActionIcon
                     color={theme.primaryColor}
-                    variant={data ? "filled" : "subtle"}
+                    variant={data?.liked ? "filled" : "subtle"}
                     size={"sm"}
                     onClick={async () => {
                       await toggleLike(post.posts.id, profileValue.id)

@@ -32,6 +32,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   const profileValue = useAtomValue(profileAtom);
 
   const { data } = useGetUserLike(post.posts.id, profileValue?.id, userLike);
+  console.log(data);
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,
@@ -147,7 +148,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
-                variant={data ? "filled" : "subtle"}
+                variant={data?.liked ? "filled" : "subtle"}
                 size={"sm"}
                 onClick={async () => {
                   await toggleLike(post.posts.id, profileValue.id)

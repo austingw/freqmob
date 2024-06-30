@@ -12,16 +12,29 @@ import {
 } from "@mantine/core";
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
+import { UserLike } from "@/types/userTypes";
+import { toggleLike } from "@/app/actions";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "./FMAppShell";
+import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PostCardProps {
   clickPost: () => void;
-  clickLike: () => void;
-  clickComment: () => void;
+  userLike: UserLike | null;
   post: PostWithMedia;
 }
 
-const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
+const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   const theme = useMantineTheme();
+  const queryClient = useQueryClient();
+  const profileValue = useAtomValue(profileAtom);
+
+  const { data } = useGetUserLike(post.posts.id, profileValue.id, userLike);
+  const { data: likeCount } = useGetLikeCount(
+    post.posts.id,
+    post.posts.likeCount,
+  );
 
   return (
     <Card
@@ -129,14 +142,25 @@ const PostCard = ({ clickPost, clickLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
-                variant={false ? "filled" : "subtle"}
+                variant={data ? "filled" : "subtle"}
                 size={"sm"}
-                onClick={() => clickLike()}
+                onClick={async () => {
+                  await toggleLike(post.posts.id, profileValue.id)
+                    .catch()
+                    .then(() => {
+                      queryClient.invalidateQueries({
+                        queryKey: ["userLike", post.posts.id, profileValue.id],
+                      });
+                      queryClient.invalidateQueries({
+                        queryKey: ["likeCount", post.posts.id],
+                      });
+                    });
+                }}
               >
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />
               </ActionIcon>
               <Text fz="xs" c="dimmed">
-                {post.posts.likeCount || 0} likes
+                {likeCount || 0} {likeCount === 1 ? "like" : "likes"}
               </Text>
             </Group>
             <Group gap={4} align="center">

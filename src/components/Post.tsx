@@ -10,6 +10,7 @@ import {
   Paper,
   Accordion,
   useMantineTheme,
+  rem,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -28,6 +29,12 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
 import { useState } from "react";
+import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
+import { useAtomValue } from "jotai";
+import { profileAtom } from "./FMAppShell";
+import { useQueryClient } from "@tanstack/react-query";
+import { UserLike } from "@/types/userTypes";
+import { toggleLike } from "@/app/actions";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -35,16 +42,23 @@ dayjs.extend(tz);
 
 interface PostProps {
   clickClose: () => void;
+  userLike: UserLike | null;
   post: PostWithMedia;
 }
 
-const Post = ({ clickClose, post }: PostProps) => {
+const Post = ({ clickClose, userLike, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [value, setValue] = useState<string | null>(null);
-  const { data, isLoading } = useGetComments(post.posts.id);
-
   const theme = useMantineTheme();
+  const queryClient = useQueryClient();
+  const profileValue = useAtomValue(profileAtom);
 
+  const { data } = useGetUserLike(post.posts.id, profileValue.id, userLike);
+  const { data: likeCount } = useGetLikeCount(
+    post.posts.id,
+    post.posts.likeCount,
+  );
+  const { data: comments, isLoading } = useGetComments(post.posts.id);
   return (
     <>
       <ScrollArea.Autosize scrollbarSize={10}>
@@ -108,14 +122,29 @@ const Post = ({ clickClose, post }: PostProps) => {
                 <Group gap={4} align="center">
                   <ActionIcon
                     color={theme.primaryColor}
+                    variant={data ? "filled" : "subtle"}
                     size={"sm"}
-                    variant="subtle"
+                    onClick={async () => {
+                      await toggleLike(post.posts.id, profileValue.id)
+                        .catch()
+                        .then(() => {
+                          queryClient.invalidateQueries({
+                            queryKey: [
+                              "userLike",
+                              post.posts.id,
+                              profileValue.id,
+                            ],
+                          });
+                          queryClient.invalidateQueries({
+                            queryKey: ["likeCount", post.posts.id],
+                          });
+                        });
+                    }}
                   >
-                    <IconHeart />
+                    <IconHeart style={{ width: rem(16), height: rem(16) }} />
                   </ActionIcon>
                   <Text fz="xs" c="dimmed">
-                    {post?.posts?.likeCount || 0}{" "}
-                    {post?.posts?.likeCount === 1 ? "like" : "likes"}
+                    {likeCount || 0} {likeCount === 1 ? "like" : "likes"}
                   </Text>
                 </Group>
                 <Group gap={4} align="center" variant="subtle">
@@ -193,7 +222,7 @@ const Post = ({ clickClose, post }: PostProps) => {
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
-            {data?.map((comment) => (
+            {comments?.map((comment) => (
               <Paper withBorder radius="md" key={comment.comments.id} px={10}>
                 <Stack gap={4} p={4}>
                   <Group gap={4} align="center" justify="flex-start">

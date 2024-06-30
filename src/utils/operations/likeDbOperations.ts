@@ -35,3 +35,10 @@ export const deletePostLike = async (postId: number, profileId: string) => {
     .delete(likes)
     .where(and(eq(likes.postId, postId), eq(likes.profileId, profileId)));
 };
+
+export const queryLikeCount = async (postId: number) => {
+  return await db
+    .select({ likeCount: posts.likeCount })
+    .from(posts)
+    .where(eq(posts.id, postId));
+};

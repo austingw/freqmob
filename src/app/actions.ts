@@ -2,6 +2,7 @@
 
 import { lucia, validateRequest } from "@/db/auth";
 import { PostWithMedia, posts } from "@/db/schema";
+import { UserLike } from "@/types/userTypes";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import {
@@ -12,6 +13,7 @@ import {
   checkLike,
   deletePostLike,
   insertPostLike,
+  queryLikeCount,
 } from "@/utils/operations/likeDbOperations";
 import {
   insertPost,
@@ -358,23 +360,28 @@ export const toggleLike = async (postId: number, profileId: string) => {
   }
 };
 
-type UserLikes = {
-  postId: number;
-  liked: boolean;
-}[];
+export const getUserLike = async (postId: number, profileId: string) => {
+  try {
+    const userLike = await checkLike(postId, profileId);
+    return {
+      postId,
+      liked: userLike[0] ? true : false,
+    };
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
 
-export const getUserLike = async (
+export const getUserLikes = async (
   postIds: number[] | null,
   profileId: string,
 ) => {
   if (postIds === null) {
-    return {
-      status: 200,
-      message: "No posts to check",
-    };
+    return [];
   }
   try {
-    let userLikes: UserLikes = [];
+    let userLikes: UserLike[] = [];
     for (const postId of postIds) {
       const userLike = await checkLike(postId, profileId);
       userLikes.push({
@@ -382,11 +389,19 @@ export const getUserLike = async (
         liked: userLike[0] ? true : false,
       });
     }
+    return userLikes;
   } catch (e) {
     console.error(e);
-    return {
-      status: 500,
-      message: "There was an error checking post like statuses",
-    };
+    return [];
+  }
+};
+
+export const getLikeCount = async (postId: number) => {
+  try {
+    const likeCount = await queryLikeCount(postId);
+    return likeCount[0].likeCount;
+  } catch (e) {
+    console.error(e);
+    return 0;
   }
 };

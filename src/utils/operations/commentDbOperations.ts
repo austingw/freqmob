@@ -32,3 +32,10 @@ export const queryCommentsByUser = async (profileId: string) => {
     .innerJoin(posts, eq(posts.id, comments.postId))
     .orderBy(desc(comments.createdAt));
 };
+
+export const queryCommentCount = async (postId: number) => {
+  return await db
+    .select({ commentCount: posts.commentCount })
+    .from(posts)
+    .where(eq(posts.id, postId));
+};

@@ -6,9 +6,10 @@ export const useGetUserLike = (
   postId: number,
   profileId: string,
   initialLike: UserLike | null,
+  postCard: boolean,
 ) => {
   return useQuery({
-    queryKey: ["userLike", postId, profileId],
+    queryKey: ["userLike", postId, profileId, postCard],
     queryFn: () => getUserLike(postId, profileId),
     initialData: initialLike,
     staleTime: 0,

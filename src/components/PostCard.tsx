@@ -19,6 +19,7 @@ import { profileAtom } from "./FMAppShell";
 import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetCommentCount } from "@/queries/comments";
+import { useEffect, useState } from "react";
 
 interface PostCardProps {
   clickPost: () => void;
@@ -30,8 +31,19 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
+  const [tempLike, setTempLike] = useState(false);
 
-  const { data } = useGetUserLike(post.posts.id, profileValue?.id, userLike);
+  const { data } = useGetUserLike(
+    post.posts.id,
+    profileValue?.id,
+    userLike,
+    true,
+  );
+
+  useEffect(() => {
+    setTempLike(data?.liked || false);
+  }, [data]);
+
   console.log(data);
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
@@ -148,11 +160,12 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
             <Group gap={4} align="center">
               <ActionIcon
                 color={theme.primaryColor}
-                variant={data?.liked ? "filled" : "subtle"}
+                variant={tempLike ? "filled" : "subtle"}
                 size={"sm"}
                 onClick={async () => {
-                  profileValue.id &&
-                    (await toggleLike(post.posts.id, profileValue.id)
+                  if (profileValue.id) {
+                    setTempLike((tempLike) => !tempLike);
+                    await toggleLike(post.posts.id, profileValue?.id)
                       .catch()
                       .then(() => {
                         queryClient.invalidateQueries({
@@ -160,12 +173,14 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                             "userLike",
                             post.posts.id,
                             profileValue.id,
+                            false,
                           ],
                         });
                         queryClient.invalidateQueries({
                           queryKey: ["likeCount", post.posts.id],
                         });
-                      }));
+                      });
+                  }
                 }}
               >
                 <IconHeart style={{ width: rem(16), height: rem(16) }} />

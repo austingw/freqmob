@@ -28,7 +28,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
 import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
@@ -52,8 +52,19 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
+  const [tempLike, setTempLike] = useState(false);
 
-  const { data } = useGetUserLike(post.posts.id, profileValue?.id, userLike);
+  const { data } = useGetUserLike(
+    post.posts.id,
+    profileValue?.id,
+    userLike,
+    false,
+  );
+
+  useEffect(() => {
+    setTempLike(data?.liked || false);
+  }, [data]);
+
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,
@@ -126,11 +137,12 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                 <Group gap={4} align="center">
                   <ActionIcon
                     color={theme.primaryColor}
-                    variant={data?.liked ? "filled" : "subtle"}
+                    variant={tempLike ? "filled" : "subtle"}
                     size={"sm"}
                     onClick={async () => {
-                      profileValue.id &&
-                        (await toggleLike(post.posts.id, profileValue.id)
+                      if (profileValue.id) {
+                        setTempLike((tempLike) => !tempLike);
+                        await toggleLike(post.posts.id, profileValue?.id)
                           .catch()
                           .then(() => {
                             queryClient.invalidateQueries({
@@ -138,12 +150,14 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                                 "userLike",
                                 post.posts.id,
                                 profileValue.id,
+                                true,
                               ],
                             });
                             queryClient.invalidateQueries({
                               queryKey: ["likeCount", post.posts.id],
                             });
-                          }));
+                          });
+                      }
                     }}
                   >
                     <IconHeart style={{ width: rem(16), height: rem(16) }} />

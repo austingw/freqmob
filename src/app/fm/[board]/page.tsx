@@ -1,9 +1,12 @@
 "use server";
 
+import { getUserLikes } from "@/app/actions";
 import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
+import { validateRequest } from "@/db/auth";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import { queryPostsByBoard } from "@/utils/operations/postDbOperations";
+import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export default async function Page({ params }: { params: { board: string } }) {
   const boardData = await queryBoardByName(params.board);
@@ -17,10 +20,27 @@ export default async function Page({ params }: { params: { board: string } }) {
   const posts = boardData[0]?.id
     ? await queryPostsByBoard(1, boardData[0].id)
     : null;
+
+  const user = await validateRequest();
+  const postIds = posts ? posts.map((post) => post.posts.id) : [];
+  const profile = user.user && (await getProfileFromUserId(user.user.id));
+  const profileId = profile ? profile[0].id : null;
+  const postLikes =
+    postIds.length > 0 && profileId
+      ? await getUserLikes(postIds, profileId)
+      : null;
+
   return (
     <div>
       <BoardHeader name={boardData[0].name} />
-      {posts && <Feed initialPosts={posts} boardId={String(boardData[0].id)} />}
+      {posts && (
+        <Feed
+          initialPosts={posts}
+          initialLikes={postLikes}
+          boardId={String(boardData[0].id)}
+          postIds={postIds}
+        />
+      )}
     </div>
   );
 }

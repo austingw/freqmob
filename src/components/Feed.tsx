@@ -6,17 +6,20 @@ import { useEffect, useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
-import { getPostsByBoard } from "@/app/actions";
+import { getPostsByBoard, toggleLike } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
+import { UserLike } from "@/types/userTypes";
 
 interface FeedProps {
   initialPosts: PostWithMedia[] | null;
+  initialLikes: UserLike[] | null;
   boardId?: string;
+  postIds: number[];
 }
 
-const Feed = ({ initialPosts, boardId }: FeedProps) => {
+const Feed = ({ initialPosts, initialLikes, boardId, postIds }: FeedProps) => {
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
@@ -38,12 +41,7 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
     open();
   };
 
-  const handleClickLike = () => {
-    console.log("like");
-  };
-
   const handleClickComment = () => {
-    console.log("comment");
     open();
   };
 
@@ -67,8 +65,11 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
             <PostCard
               key={post.posts.id}
               clickPost={() => handleClickPost(post.posts.id)}
-              clickLike={handleClickLike}
-              clickComment={handleClickComment}
+              userLike={
+                initialLikes?.filter(
+                  (like) => like.postId === post.posts.id,
+                )[0] || null
+              }
               post={post}
             />
           );
@@ -83,7 +84,17 @@ const Feed = ({ initialPosts, boardId }: FeedProps) => {
         fullScreen={isMobile}
         padding={0}
       >
-        {selectedPost && <Post clickClose={handleClose} post={selectedPost} />}
+        {selectedPost && (
+          <Post
+            clickClose={handleClose}
+            userLike={
+              initialLikes?.filter(
+                (like) => like.postId === selectedPost.posts.id,
+              )[0] || null
+            }
+            post={selectedPost}
+          />
+        )}
       </Modal>
     </>
   );

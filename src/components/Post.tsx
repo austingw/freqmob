@@ -53,7 +53,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
 
-  const { data } = useGetUserLike(post.posts.id, profileValue.id, userLike);
+  const { data } = useGetUserLike(post.posts.id, profileValue?.id, userLike);
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,

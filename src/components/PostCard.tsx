@@ -18,6 +18,7 @@ import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
 import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetCommentCount } from "@/queries/comments";
 
 interface PostCardProps {
   clickPost: () => void;
@@ -34,6 +35,10 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,
+  );
+  const { data: commentCount } = useGetCommentCount(
+    post.posts.id,
+    post.posts.commentCount,
   );
 
   return (
@@ -175,7 +180,8 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                 />
               </ActionIcon>
               <Text fz="xs" c="dimmed">
-                {post.posts.commentCount || 0} comments
+                {commentCount || 0}{" "}
+                {commentCount === 1 ? "comment" : "comments"}
               </Text>
             </Group>
           </Group>

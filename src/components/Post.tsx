@@ -23,7 +23,7 @@ import {
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
 import CommentForm from "./CommentForm";
-import { useGetComments } from "@/queries/comments";
+import { useGetCommentCount, useGetComments } from "@/queries/comments";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
@@ -57,6 +57,10 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,
+  );
+  const { data: commentCount } = useGetCommentCount(
+    post.posts.id,
+    post.posts.commentCount,
   );
   const { data: comments, isLoading } = useGetComments(post.posts.id);
   return (
@@ -159,8 +163,8 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                     <IconMessageCircle2 />
                   </ActionIcon>
                   <Text fz="xs" c="dimmed">
-                    {post?.posts?.commentCount || 0}{" "}
-                    {post?.posts?.commentCount === 1 ? "comment" : "comments"}
+                    {commentCount || 0}{" "}
+                    {commentCount === 1 ? "comment" : "comments"}
                   </Text>
                 </Group>
                 <Group gap={"xs"} align="center">

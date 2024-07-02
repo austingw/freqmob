@@ -17,9 +17,16 @@ interface FeedProps {
   initialLikes: UserLike[] | null;
   boardId?: string;
   postIds: number[];
+  count: number;
 }
 
-const Feed = ({ initialPosts, initialLikes, boardId, postIds }: FeedProps) => {
+const Feed = ({
+  initialPosts,
+  initialLikes,
+  boardId,
+  postIds,
+  count,
+}: FeedProps) => {
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
@@ -74,7 +81,11 @@ const Feed = ({ initialPosts, initialLikes, boardId, postIds }: FeedProps) => {
             />
           );
         })}
-        <Pagination total={10} value={page} onChange={setPage} />
+        <Pagination
+          total={count / 10 >= 1 ? count / 10 : 1}
+          value={page}
+          onChange={setPage}
+        />
       </Flex>
       <Modal
         opened={opened}

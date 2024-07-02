@@ -49,7 +49,7 @@ const schema = z.object({
 const PostForm = ({ close }: { close: () => void }) => {
   const form = useForm<FormValues>({
     initialValues: {
-      title: "test",
+      title: "",
       description: "",
       file: "",
       published: false,

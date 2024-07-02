@@ -23,7 +23,7 @@ export const boards = sqliteTable("boards", {
   })
     .notNull()
     .primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
   description: text("description"),
   primaryColor: text("primary_color"),
   createdAt: text("created_at")

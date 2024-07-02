@@ -8,6 +8,7 @@ import {
   AppShell,
   Burger,
   Button,
+  Divider,
   Group,
   Modal,
   Stack,
@@ -20,6 +21,7 @@ import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PostForm from "./PostForm";
+import CreateBoardInput from "./CreateBoardInput";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -129,22 +131,27 @@ export default function FMAppShell({
         </Group>
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">
-        <Stack align="flex-start" justify="flex-start" gap={0}>
-          <Text c="black">your boards</Text>
-          {data?.data && data?.data?.length >= 1 ? (
-            data.data.map((board) => (
-              <Button
-                variant="transparent"
-                p={0}
-                key={board}
-                onClick={() => router.push(`/fm/${board}`)}
-              >
-                fm/{board}
-              </Button>
-            ))
-          ) : (
-            <Text c="black">no boards found, join some!</Text>
-          )}
+        <Stack align="flex-start" justify="space-between" h={"100%"}>
+          <Stack align="flex-start" justify="flex-start" gap={0}>
+            <Text c="black">your boards</Text>
+            {data?.data && data?.data?.length >= 1 ? (
+              data.data.map((board) => (
+                <Button
+                  variant="transparent"
+                  p={0}
+                  key={board}
+                  onClick={() => router.push(`/fm/${board}`)}
+                >
+                  fm/{board}
+                </Button>
+              ))
+            ) : (
+              <Text c="black">no boards found, join some!</Text>
+            )}
+          </Stack>
+          <Stack align="flex-start" justify="flex-start" gap={0}>
+            <CreateBoardInput />
+          </Stack>
         </Stack>
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>

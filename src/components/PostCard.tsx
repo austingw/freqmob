@@ -163,7 +163,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                 variant={tempLike ? "filled" : "subtle"}
                 size={"sm"}
                 onClick={async () => {
-                  if (profileValue.id) {
+                  if (profileValue?.id) {
                     setTempLike((tempLike) => !tempLike);
                     await toggleLike(post.posts.id, profileValue?.id)
                       .catch()

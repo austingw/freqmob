@@ -133,7 +133,9 @@ export default function FMAppShell({
       <AppShell.Navbar p="md">
         <Stack align="flex-start" justify="space-between" h={"100%"}>
           <Stack align="flex-start" justify="flex-start" gap={0}>
-            <Text c="black">your boards</Text>
+            <Text c="black">
+              {profileValue ? "your boards" : "login to view boards!"}
+            </Text>
             {data?.data && data?.data?.length >= 1 ? (
               data.data.map((board) => (
                 <Button
@@ -146,11 +148,13 @@ export default function FMAppShell({
                 </Button>
               ))
             ) : (
-              <Text c="black">no boards found, join some!</Text>
+              <Text c="black">
+                {profileValue ? "no boards found, join some!" : ""}
+              </Text>
             )}
           </Stack>
           <Stack align="flex-start" justify="flex-start" gap={0}>
-            <CreateBoardInput />
+            {profileValue && <CreateBoardInput />}
           </Stack>
         </Stack>
       </AppShell.Navbar>

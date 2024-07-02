@@ -5,6 +5,7 @@ import { PostWithMedia, posts } from "@/db/schema";
 import { UserLike } from "@/types/userTypes";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
+import { insertBoard } from "@/utils/operations/boardDbOperations";
 import {
   insertComment,
   queryCommentCount,
@@ -415,5 +416,47 @@ export const getCommentCount = async (postId: number) => {
   } catch (e) {
     console.error(e);
     return 0;
+  }
+};
+
+export const createBoard = async (name: string) => {
+  if (name === "main") {
+    return {
+      status: 401,
+      message: "Name not allowed",
+    };
+  }
+
+  const user = await validateRequest();
+
+  if (!user.user || !user.session) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  const profile = await getProfileFromUserId(user.user.id);
+
+  if (!profile[0]) {
+    return {
+      status: 500,
+      message: "Unable to create board",
+    };
+  }
+
+  try {
+    await insertBoard({ name, profileId: profile[0].id });
+    return {
+      status: 200,
+      message: "Successfully created new board!",
+      name,
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "Unable to create board",
+    };
   }
 };

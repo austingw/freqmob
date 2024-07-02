@@ -103,13 +103,13 @@ const PostForm = () => {
         }}
       >
         <Stack gap="md">
-          <Group align="center" justify="flex-start">
+          <Group align="center" justify="space-between" w={"70vw"}>
             <TextInput
               withAsterisk
               label="Title"
               placeholder="Enter a title..."
               {...form.getInputProps("title")}
-              w={"55%"}
+              w={"61%"}
             />
             <SegmentedControl
               data={posts.type.enumValues}
@@ -129,6 +129,7 @@ const PostForm = () => {
             label="Content"
             placeholder="Post content goes here..."
             {...form.getInputProps("description")}
+            resize="vertical"
           />
           <Group align="center" justify="flex-start" gap={"md"}>
             <NumberInput

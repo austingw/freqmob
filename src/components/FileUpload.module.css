@@ -1,11 +1,14 @@
 .wrapper {
   position: relative;
   margin-bottom: rem(30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dropzone {
   border-width: rem(1px);
-  padding-bottom: rem(50px);
+  padding-bottom: rem(20px);
 }
 
 .icon {

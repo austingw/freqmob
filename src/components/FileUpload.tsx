@@ -49,10 +49,10 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
             </Dropzone.Idle>
           </Group>
 
-          <Text ta="center" fw={700} fz="lg" mt="xl">
-            <Dropzone.Accept>Drop files here</Dropzone.Accept>
-            <Dropzone.Reject>Audio file less than 30mb</Dropzone.Reject>
-            <Dropzone.Idle>Upload resume</Dropzone.Idle>
+          <Text ta="center" fw={700} fz="lg" mt="xl" c={theme.primaryColor}>
+            <Dropzone.Accept>Drop file here</Dropzone.Accept>
+            <Dropzone.Reject>Audio file must be less than 30mb</Dropzone.Reject>
+            <Dropzone.Idle>Upload audio</Dropzone.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">
             Drag files here or use the button below to upload. We can accept

@@ -67,7 +67,7 @@ const PostForm = () => {
   };
 
   return (
-    <Flex direction="column" gap="md">
+    <Flex direction="column" gap="md" w={"80vw"}>
       <form
         onSubmit={async (e) => {
           e.preventDefault();

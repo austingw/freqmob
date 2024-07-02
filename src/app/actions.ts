@@ -446,9 +446,17 @@ export const createBoard = async (name: string) => {
   }
 
   try {
-    await insertBoard({ name, profileId: profile[0].id });
+    const newBoard = await insertBoard({
+      name: name.toLowerCase(),
+      profileId: profile[0].id,
+    });
+
+    if (newBoard) {
+      await addBoardSub(profile[0].id, name.toLowerCase());
+    }
+
     return {
-      status: 200,
+      status: 201,
       message: "Successfully created new board!",
       name,
     };

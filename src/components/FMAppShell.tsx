@@ -19,7 +19,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PostForm from "./PostForm";
 
 export const profileAtom = atom(profiles.$inferSelect);
@@ -36,6 +36,7 @@ export default function FMAppShell({
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
+  const [modalContent, setModalContent] = useState<"login" | "post">("login");
 
   //global state for logged in profile
   const [profileValue, setProfileValue] = useAtom(profileAtom);
@@ -75,7 +76,14 @@ export default function FMAppShell({
             size="sm"
           />
           <Group align="center" justify="flex-end" p={0} gap={0}>
-            <Button variant="subtle" p={2}>
+            <Button
+              variant="subtle"
+              p={2}
+              onClick={() => {
+                setModalContent("post");
+                open();
+              }}
+            >
               <IconPlus size={16} /> Post
             </Button>
             {user.user ? (
@@ -83,14 +91,20 @@ export default function FMAppShell({
                 Logout
               </Button>
             ) : (
-              <Button variant="transparent" onClick={open}>
+              <Button
+                variant="transparent"
+                onClick={() => {
+                  setModalContent("login");
+                  open();
+                }}
+              >
                 Login
               </Button>
             )}
           </Group>
-          <Modal opened={opened} onClose={close}>
-            <AuthModal close={close} />
-            <PostForm />
+          <Modal opened={opened} onClose={close} size={"auto"}>
+            {modalContent === "login" && <AuthModal close={close} />}
+            {modalContent === "post" && <PostForm />}
           </Modal>
         </Group>
       </AppShell.Header>{" "}

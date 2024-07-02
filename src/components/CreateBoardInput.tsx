@@ -77,7 +77,7 @@ const CreateBoardInput = () => {
       ) : (
         <Group align="center" justify="flex-start" gap="sm">
           <Button variant="transparent" onClick={() => setEditable(true)} p={0}>
-            <IconPlus size={16} /> board
+            <IconPlus size={16} /> Create Board
           </Button>
         </Group>
       )}

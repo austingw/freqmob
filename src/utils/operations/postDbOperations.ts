@@ -42,7 +42,7 @@ export const queryPostsByProfile = async (profileId: string) => {
     .orderBy(desc(posts.createdAt));
 };
 
-export const queryPostCount = async (boardId: number | null) => {
+export const queryPostCount = async (boardId?: number) => {
   if (boardId) {
     return await db
       .select({ count: count() })

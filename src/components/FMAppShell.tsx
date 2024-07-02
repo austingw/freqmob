@@ -82,6 +82,9 @@ export default function FMAppShell({
                 if (user.user) {
                   setModalContent("post");
                   open();
+                } else {
+                  setModalContent("login");
+                  open();
                 }
               }}
             >

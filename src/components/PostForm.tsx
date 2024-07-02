@@ -7,6 +7,7 @@ import {
   Group,
   NumberInput,
   SegmentedControl,
+  Stack,
   TextInput,
   Textarea,
 } from "@mantine/core";
@@ -67,7 +68,7 @@ const PostForm = () => {
   };
 
   return (
-    <Flex direction="column" gap="md" w={"80vw"}>
+    <Flex direction="column" gap="xs" w={"70vw"} align="center">
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -101,54 +102,58 @@ const PostForm = () => {
             });
         }}
       >
-        <Group align="center" justify="center">
-          <TextInput
-            withAsterisk
-            label="Title"
-            placeholder="Enter a title..."
-            {...form.getInputProps("title")}
+        <Stack gap="md">
+          <Group align="center" justify="flex-start">
+            <TextInput
+              withAsterisk
+              label="Title"
+              placeholder="Enter a title..."
+              {...form.getInputProps("title")}
+              w={"55%"}
+            />
+            <SegmentedControl
+              data={posts.type.enumValues}
+              color="primary"
+              onChange={(value) => form.setFieldValue("type", value)}
+              radius="md"
+              size="sm"
+              classNames={{
+                indicator: classes.segmentedIndicator,
+              }}
+              style={{
+                marginBottom: -25,
+              }}
+            />
+          </Group>
+          <Textarea
+            label="Content"
+            placeholder="Post content goes here..."
+            {...form.getInputProps("description")}
           />
-          <SegmentedControl
-            data={posts.type.enumValues}
-            color="primary"
-            onChange={(value) => form.setFieldValue("type", value)}
-            radius="md"
-            size="md"
-            classNames={{
-              indicator: classes.segmentedIndicator,
-            }}
-          />
-        </Group>
-        <Textarea
-          label="Content"
-          placeholder="Post content goes here..."
-          {...form.getInputProps("description")}
-        />
-        <Group>
-          <NumberInput
-            label="BPM"
-            placeholder="Enter the BPM..."
-            {...form.getInputProps("bpm")}
-          />
-          <TextInput
-            label="Key"
-            placeholder="Enter the key..."
-            {...form.getInputProps("key")}
-          />
-        </Group>
-        <Group>
-          <TextInput
-            label="Inspiration"
-            placeholder="Enter the inspiration..."
-            {...form.getInputProps("inspiration")}
-          />
-          <TextInput
-            label="Genre"
-            placeholder="Enter the genre..."
-            {...form.getInputProps("genre")}
-          />
-        </Group>
-        <FileUpload addFile={addFile} />
+          <Group align="center" justify="flex-start" gap={"md"}>
+            <NumberInput
+              label="BPM"
+              placeholder="Enter the BPM..."
+              {...form.getInputProps("bpm")}
+            />
+            <TextInput
+              label="Key"
+              placeholder="Enter the key..."
+              {...form.getInputProps("key")}
+            />
+            <TextInput
+              label="Inspiration"
+              placeholder="Enter the inspiration..."
+              {...form.getInputProps("inspiration")}
+            />
+            <TextInput
+              label="Genre"
+              placeholder="Enter the genre..."
+              {...form.getInputProps("genre")}
+            />
+          </Group>
+          <FileUpload addFile={addFile} />
+        </Stack>
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
           <Button variant="light">Cancel</Button>

@@ -5,7 +5,10 @@ import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
 import { validateRequest } from "@/db/auth";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
-import { queryPostsByBoard } from "@/utils/operations/postDbOperations";
+import {
+  queryPostCount,
+  queryPostsByBoard,
+} from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export default async function Page({ params }: { params: { board: string } }) {
@@ -30,6 +33,12 @@ export default async function Page({ params }: { params: { board: string } }) {
       ? await getUserLikes(postIds, profileId)
       : null;
 
+  const postCount = await queryPostCount(boardData[0].id)
+    .catch((e) => {
+      console.error(e);
+    })
+    .then((data) => data?.[0]?.count || 1);
+
   return (
     <div>
       <BoardHeader name={boardData[0].name} />
@@ -39,6 +48,7 @@ export default async function Page({ params }: { params: { board: string } }) {
           initialLikes={postLikes}
           boardId={String(boardData[0].id)}
           postIds={postIds}
+          count={postCount}
         />
       )}
     </div>

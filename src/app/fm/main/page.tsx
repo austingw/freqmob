@@ -3,7 +3,10 @@
 import { getUserLikes } from "@/app/actions";
 import Feed from "@/components/Feed";
 import { validateRequest } from "@/db/auth";
-import { queryPosts } from "@/utils/operations/postDbOperations";
+import {
+  queryPostCount,
+  queryPosts,
+} from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export default async function Page() {
@@ -18,9 +21,20 @@ export default async function Page() {
       ? await getUserLikes(postIds, profileId)
       : null;
 
+  const postCount = await queryPostCount()
+    .catch((e) => {
+      console.error(e);
+    })
+    .then((data) => data?.[0]?.count || 1);
+
   return (
     <div>
-      <Feed initialPosts={posts} initialLikes={postLikes} postIds={postIds} />
+      <Feed
+        initialPosts={posts}
+        initialLikes={postLikes}
+        postIds={postIds}
+        count={postCount}
+      />
     </div>
   );
 }

@@ -77,10 +77,12 @@ export default function FMAppShell({
           <Group align="center" justify="flex-end" p={0} gap={0}>
             <Button
               variant="subtle"
-              p={2}
+              p={4}
               onClick={() => {
-                setModalContent("post");
-                open();
+                if (user.user) {
+                  setModalContent("post");
+                  open();
+                }
               }}
             >
               <IconPlus size={16} /> Post

@@ -1,6 +1,6 @@
 "use client";
 
-import { createTheme } from "@mantine/core";
+import { Modal, createTheme } from "@mantine/core";
 
 export const theme = createTheme({
   primaryColor: "wild-pink",
@@ -66,5 +66,18 @@ export const theme = createTheme({
       "#5e19b2",
       "#51129c",
     ],
+  },
+  components: {
+    Modal: Modal.extend({
+      vars: (theme) => {
+        return {
+          root: {},
+          title: {
+            fontSize: theme.fontSizes.lg,
+            fontWeight: 500,
+          },
+        };
+      },
+    }),
   },
 });

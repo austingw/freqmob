@@ -36,6 +36,7 @@ export default function FMAppShell({
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post">("login");
+  const [modalTitle, setModalTitle] = useState("");
 
   //global state for logged in profile
   const [profileValue, setProfileValue] = useAtom(profileAtom);
@@ -81,9 +82,11 @@ export default function FMAppShell({
               onClick={() => {
                 if (user.user) {
                   setModalContent("post");
+                  setModalTitle("Create Post");
                   open();
                 } else {
                   setModalContent("login");
+                  setModalTitle("Login");
                   open();
                 }
               }}
@@ -99,6 +102,7 @@ export default function FMAppShell({
                 variant="transparent"
                 onClick={() => {
                   setModalContent("login");
+                  setModalTitle("Login");
                   open();
                 }}
               >
@@ -106,8 +110,20 @@ export default function FMAppShell({
               </Button>
             )}
           </Group>
-          <Modal opened={opened} onClose={close} size={"auto"}>
-            {modalContent === "login" && <AuthModal close={close} />}
+          <Modal
+            opened={opened}
+            onClose={close}
+            size={"auto"}
+            title={modalTitle}
+            style={{
+              ".mantine-Modal-title": {
+                fontWeight: 6000,
+              },
+            }}
+          >
+            {modalContent === "login" && (
+              <AuthModal setModalTitle={setModalTitle} close={close} />
+            )}
             {modalContent === "post" && <PostForm close={close} />}
           </Modal>
         </Group>

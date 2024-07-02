@@ -1,22 +1,25 @@
 import { Button, Stack, Text } from "@mantine/core";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
 interface AuthModelProps {
   close: () => void;
+  setModalTitle: Dispatch<SetStateAction<string>>;
 }
 
-const AuthModal = ({ close }: AuthModelProps) => {
+const AuthModal = ({ close, setModalTitle }: AuthModelProps) => {
   const [isLogin, setIsLogin] = useState(true);
   return (
     <Stack align="center">
-      <Text c="black"> {isLogin ? "Login" : "Signup"} </Text>
       {isLogin ? <Login close={close} /> : <SignUp close={close} />}
       <Button
         variant="transparent"
         c="black"
-        onClick={() => setIsLogin(!isLogin)}
+        onClick={() => {
+          isLogin ? setModalTitle("Sign Up") : setModalTitle("Login");
+          setIsLogin(!isLogin);
+        }}
       >
         {isLogin
           ? "Don't have an account? Sign up"

@@ -8,7 +8,6 @@ import {
   AppShell,
   Burger,
   Button,
-  Divider,
   Group,
   Modal,
   Stack,
@@ -104,7 +103,7 @@ export default function FMAppShell({
           </Group>
           <Modal opened={opened} onClose={close} size={"auto"}>
             {modalContent === "login" && <AuthModal close={close} />}
-            {modalContent === "post" && <PostForm />}
+            {modalContent === "post" && <PostForm close={close} />}
           </Modal>
         </Group>
       </AppShell.Header>{" "}

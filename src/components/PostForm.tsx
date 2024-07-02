@@ -46,7 +46,7 @@ const schema = z.object({
   uploadUrl: z.string().optional(),
 });
 
-const PostForm = () => {
+const PostForm = ({ close }: { close: () => void }) => {
   const form = useForm<FormValues>({
     initialValues: {
       title: "test",
@@ -68,7 +68,7 @@ const PostForm = () => {
   };
 
   return (
-    <Flex direction="column" gap="xs" w={"70vw"} align="center">
+    <Flex direction="column" gap="xs" w={"75vw"} align="center" pb={10}>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -126,8 +126,8 @@ const PostForm = () => {
             />
           </Group>
           <Textarea
-            label="Content"
-            placeholder="Post content goes here..."
+            label="Description"
+            placeholder="Describe your post..."
             {...form.getInputProps("description")}
             resize="vertical"
           />
@@ -157,7 +157,9 @@ const PostForm = () => {
         </Stack>
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
-          <Button variant="light">Cancel</Button>
+          <Button variant="light" onClick={close}>
+            Cancel
+          </Button>
         </Group>
       </form>
     </Flex>

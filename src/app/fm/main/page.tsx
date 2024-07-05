@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserLikes } from "@/app/actions";
+import { getUserLikes } from "@/app/actions/likeActions";
 import Feed from "@/components/Feed";
 import { validateRequest } from "@/db/auth";
 import {

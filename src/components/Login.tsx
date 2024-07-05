@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/app/actions";
+import { login } from "@/app/actions/authActions";
 import generateFormData from "@/utils/generateFormData";
 import {
   Button,

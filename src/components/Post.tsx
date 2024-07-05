@@ -34,7 +34,7 @@ import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
 import { useQueryClient } from "@tanstack/react-query";
 import { UserLike } from "@/types/userTypes";
-import { toggleLike } from "@/app/actions";
+import { toggleLike } from "@/app/actions/likeActions";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -58,7 +58,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
     post.posts.id,
     profileValue?.id,
     userLike,
-    false,
+    false
   );
 
   useEffect(() => {
@@ -67,11 +67,11 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
 
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
-    post.posts.likeCount,
+    post.posts.likeCount
   );
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
-    post.posts.commentCount,
+    post.posts.commentCount
   );
   const { data: comments, isLoading } = useGetComments(post.posts.id);
   return (
@@ -254,7 +254,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                           .utc()
                           .local()
                           .tz()
-                          .format("YYYY-MM-DDTHH:mm:ss") + "Z",
+                          .format("YYYY-MM-DDTHH:mm:ss") + "Z"
                       )}
                     </Text>
                   </Group>

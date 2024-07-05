@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import { Button } from "@mantine/core";
 import PostForm from "@/components/PostForm";
-import { logout } from "./actions";
+import { logout } from "./actions/authActions";
 
 export default async function Home() {
   return (

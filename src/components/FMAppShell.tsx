@@ -1,6 +1,6 @@
 "use client";
 
-import { logout } from "@/app/actions";
+import { logout } from "@/app/actions/authActions";
 import AuthModal from "@/components/AuthModal";
 import { profiles } from "@/db/schema";
 import { useGetBoardList } from "@/queries/boards";

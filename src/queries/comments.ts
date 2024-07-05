@@ -1,4 +1,4 @@
-import { getCommentCount, getComments } from "@/app/actions";
+import { getCommentCount, getComments } from "@/app/actions/commentActions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export const useGetComments = (postId: number) => {

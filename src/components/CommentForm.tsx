@@ -1,6 +1,6 @@
 "use client";
 
-import { createComment } from "@/app/actions";
+import { createComment } from "@/app/actions/commentActions";
 import generateFormData from "@/utils/generateFormData";
 import { Button, Flex, Group, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";

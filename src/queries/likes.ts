@@ -1,4 +1,4 @@
-import { getLikeCount, getUserLike } from "@/app/actions";
+import { getLikeCount, getUserLike } from "@/app/actions/likeActions";
 import { UserLike } from "@/types/userTypes";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 

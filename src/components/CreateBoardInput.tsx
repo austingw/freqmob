@@ -1,6 +1,6 @@
 "use client";
 
-import { createBoard } from "@/app/actions";
+import { createBoard } from "@/app/actions/boardActions";
 import { ActionIcon, Button, Group, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import {

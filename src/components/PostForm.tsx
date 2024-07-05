@@ -15,7 +15,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import FileUpload from "./FileUpload";
 import classes from "./PostForm.module.css";
-import { createPost } from "@/app/actions";
+import { createPost } from "@/app/actions/postActions";
 import generateFormData from "@/utils/generateFormData";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";

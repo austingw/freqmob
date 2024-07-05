@@ -1,4 +1,4 @@
-import { getUserBoardList } from "@/app/actions";
+import { getUserBoardList } from "@/app/actions/boardActions";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetBoardList = (profileId: string) => {

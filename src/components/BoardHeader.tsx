@@ -3,7 +3,7 @@
 import { Button, Group } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { profileAtom } from "./FMAppShell";
-import { joinBoard, leaveBoard } from "@/app/actions";
+import { joinBoard, leaveBoard } from "@/app/actions/boardActions";
 import { useGetBoardList } from "@/queries/boards";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -28,7 +28,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
                 .then(() =>
                   queryClient.invalidateQueries({
                     queryKey: ["boardList", profileValue.id],
-                  }),
+                  })
                 )
             }
             color="red"
@@ -43,7 +43,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
                 .then(() =>
                   queryClient.invalidateQueries({
                     queryKey: ["boardList", profileValue.id],
-                  }),
+                  })
                 )
             }
           >

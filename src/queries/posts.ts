@@ -1,4 +1,4 @@
-import { getPostsByBoard } from "@/app/actions";
+import { getPostsByBoard } from "@/app/actions/postActions";
 import { PostWithMedia } from "@/db/schema";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 

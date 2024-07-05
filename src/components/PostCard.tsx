@@ -37,7 +37,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
     post.posts.id,
     profileValue?.id,
     userLike,
-    true
+    true,
   );
 
   useEffect(() => {
@@ -47,23 +47,15 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   console.log(data);
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
-    post.posts.likeCount
+    post.posts.likeCount,
   );
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
-    post.posts.commentCount
+    post.posts.commentCount,
   );
 
   return (
-    <Card
-      withBorder
-      radius="md"
-      w={"100%"}
-      shadow="sm"
-      style={{
-        cursor: "pointer",
-      }}
-    >
+    <Card withBorder radius="md" w={"100%"} shadow="sm">
       {post?.audio?.url && (
         <Card.Section>
           <Flex

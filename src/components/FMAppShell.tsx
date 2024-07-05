@@ -8,7 +8,6 @@ import {
   AppShell,
   Burger,
   Button,
-  Divider,
   Group,
   Modal,
   Stack,
@@ -48,7 +47,7 @@ export default function FMAppShell({
     }
   }, [profile, setProfileValue]);
 
-  const { data, isLoading, refetch } = useGetBoardList(profileValue?.id);
+  const { data } = useGetBoardList(profileValue?.id);
 
   const router = useRouter();
 

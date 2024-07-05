@@ -1,15 +1,13 @@
 "use client";
 
-import { Flex, Modal, Pagination, Text } from "@mantine/core";
+import { Flex, Modal, Pagination } from "@mantine/core";
 import PostCard from "./PostCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
-import { getPostsByBoard, toggleLike } from "@/app/actions";
+import { getPostsByBoard } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
-import { profileAtom } from "./FMAppShell";
 import { UserLike } from "@/types/userTypes";
 
 interface FeedProps {
@@ -20,21 +18,13 @@ interface FeedProps {
   count: number;
 }
 
-const Feed = ({
-  initialPosts,
-  initialLikes,
-  boardId,
-  postIds,
-  count,
-}: FeedProps) => {
+const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const profileValue = useAtomValue(profileAtom);
-
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["posts", boardId, page],
     queryFn: () => getPostsByBoard(page, Number(boardId)),
     initialData: initialPosts,
@@ -45,10 +35,6 @@ const Feed = ({
   const handleClickPost = (postId: number) => {
     const post = data?.find((post) => post.posts.id === postId);
     post && setSelectedPost(post);
-    open();
-  };
-
-  const handleClickComment = () => {
     open();
   };
 

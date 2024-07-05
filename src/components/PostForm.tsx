@@ -92,6 +92,7 @@ const PostForm = ({ close }: { close: () => void }) => {
                   autoClose: 3000,
                 });
                 form.reset();
+                close();
               } else {
                 notifications.show({
                   message: "Failed to create post, please try again",

@@ -6,9 +6,8 @@ import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
-import { getPostsByBoard } from "@/app/actions";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { UserLike } from "@/types/userTypes";
+import { useGetPosts } from "@/queries/posts";
 
 interface FeedProps {
   initialPosts: PostWithMedia[] | null;
@@ -24,13 +23,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const { data } = useQuery({
-    queryKey: ["posts", boardId, page],
-    queryFn: () => getPostsByBoard(page, Number(boardId)),
-    initialData: initialPosts,
-    staleTime: 0,
-    placeholderData: keepPreviousData,
-  });
+  const { data } = useGetPosts(initialPosts, page, boardId);
 
   const handleClickPost = (postId: number) => {
     const post = data?.find((post) => post.posts.id === postId);

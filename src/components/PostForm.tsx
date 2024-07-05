@@ -7,6 +7,7 @@ import {
   Group,
   NumberInput,
   SegmentedControl,
+  Select,
   Stack,
   TextInput,
   Textarea,
@@ -30,6 +31,7 @@ interface FormValues {
   key: string;
   inspiration: string;
   genre: string;
+  boardName: string;
   uploadUrl: string;
 }
 
@@ -43,10 +45,17 @@ const schema = z.object({
   key: z.string().optional(),
   inspiration: z.string().optional(),
   genre: z.string().optional(),
+  boardName: z.string().optional(),
   uploadUrl: z.string().optional(),
 });
 
-const PostForm = ({ close }: { close: () => void }) => {
+const PostForm = ({
+  close,
+  boardList,
+}: {
+  close: () => void;
+  boardList?: string[] | null;
+}) => {
   const form = useForm<FormValues>({
     initialValues: {
       title: "",
@@ -58,6 +67,7 @@ const PostForm = ({ close }: { close: () => void }) => {
       key: "",
       inspiration: "",
       genre: "",
+      boardName: "",
       uploadUrl: "",
     },
     validate: zodResolver(schema),
@@ -105,12 +115,13 @@ const PostForm = ({ close }: { close: () => void }) => {
       >
         <Stack gap="md">
           <Group align="center" justify="space-between" w={"70vw"}>
-            <TextInput
-              withAsterisk
-              label="Title"
-              placeholder="Enter a title..."
-              {...form.getInputProps("title")}
-              w={"61%"}
+            <Select
+              label="Board"
+              placeholder="Select a board..."
+              searchable
+              clearable
+              data={boardList || undefined}
+              onChange={(value) => form.setFieldValue("boardName", value || "")}
             />
             <SegmentedControl
               data={posts.type.enumValues}
@@ -121,11 +132,14 @@ const PostForm = ({ close }: { close: () => void }) => {
               classNames={{
                 indicator: classes.segmentedIndicator,
               }}
-              style={{
-                marginBottom: -25,
-              }}
             />
-          </Group>
+          </Group>{" "}
+          <TextInput
+            withAsterisk
+            label="Title"
+            placeholder="Enter a title..."
+            {...form.getInputProps("title")}
+          />
           <Textarea
             label="Description"
             placeholder="Describe your post..."

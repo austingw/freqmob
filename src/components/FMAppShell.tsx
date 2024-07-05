@@ -137,7 +137,9 @@ export default function FMAppShell({
             {modalContent === "login" && (
               <AuthModal setModalTitle={setModalTitle} close={close} />
             )}
-            {modalContent === "post" && <PostForm close={close} />}
+            {modalContent === "post" && (
+              <PostForm close={close} boardList={data?.data} />
+            )}
           </Modal>
         </Group>
       </AppShell.Header>{" "}

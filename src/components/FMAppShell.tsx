@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PostForm from "./PostForm";
 import CreateBoardInput from "./CreateBoardInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -38,6 +39,7 @@ export default function FMAppShell({
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post">("login");
   const [modalTitle, setModalTitle] = useState("");
+  const queryClient = useQueryClient();
 
   //global state for logged in profile
   const [profileValue, setProfileValue] = useAtom(profileAtom);
@@ -95,7 +97,17 @@ export default function FMAppShell({
               <IconPlus size={16} /> Post
             </Button>
             {user.user ? (
-              <Button variant="transparent" onClick={() => logout()}>
+              <Button
+                variant="transparent"
+                onClick={async () =>
+                  await logout().then(() => {
+                    queryClient.invalidateQueries({
+                      queryKey: ["boardList", profileValue?.id],
+                    });
+                    setProfileValue(profiles.$inferSelect);
+                  })
+                }
+              >
                 Logout
               </Button>
             ) : (

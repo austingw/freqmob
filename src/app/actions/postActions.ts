@@ -4,6 +4,7 @@ import { validateRequest } from "@/db/auth";
 import { posts } from "@/db/schema";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
+import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import {
   insertPost,
   queryPosts,
@@ -17,6 +18,7 @@ export const createPost = async (post: FormData) => {
   const file = post.get("file");
   const typeString = String(post.get("type"));
   const type = posts.type.enumValues.filter((t) => t === typeString)[0];
+  const boardName = String(post.get("boardName"));
 
   const user = await validateRequest();
 
@@ -35,6 +37,8 @@ export const createPost = async (post: FormData) => {
       message: "There was an error creating the post",
     };
   }
+
+  const boardData = await queryBoardByName(boardName);
 
   let audioId;
   if (file) {
@@ -71,7 +75,7 @@ export const createPost = async (post: FormData) => {
       published: true,
       profileId: profile[0].id,
       audioId: audioId ? audioId[0].id : null,
-      boardId: 1,
+      boardId: boardData[0].id,
     });
 
     return { status: 201, message: "Post created" };

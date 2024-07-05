@@ -6,6 +6,7 @@ import {
   insertProfile,
   insertUser,
 } from "@/utils/operations/userDbOperations";
+import { revalidatePath } from "next/cache";
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -57,7 +58,7 @@ export const signup = async (user: FormData) => {
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes
+      sessionCookie.attributes,
     );
   } catch {
     return {
@@ -65,7 +66,7 @@ export const signup = async (user: FormData) => {
     };
   }
 
-  return redirect("/fm/main");
+  return;
 };
 
 export const login = async (user: FormData) => {
@@ -103,7 +104,7 @@ export const login = async (user: FormData) => {
 
   const passwordMatch = await new Argon2id().verify(
     existingUser[0].password,
-    password
+    password,
   );
   if (!passwordMatch) {
     return {
@@ -116,9 +117,9 @@ export const login = async (user: FormData) => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
-  return redirect("/fm/main");
+  return;
 };
 
 export const logout = async (): Promise<ActionResult> => {
@@ -135,7 +136,7 @@ export const logout = async (): Promise<ActionResult> => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
-  return redirect("/fm/main");
+  return;
 };

@@ -149,13 +149,15 @@ export default function FMAppShell({
             <Text c="black">
               {profileValue ? "your boards" : "login to view boards!"}
             </Text>{" "}
-            <Button
-              variant="transparent"
-              p={0}
-              onClick={() => router.push(`/fm/main`)}
-            >
-              home
-            </Button>
+            {profileValue && (
+              <Button
+                variant="transparent"
+                p={0}
+                onClick={() => router.push(`/fm/main`)}
+              >
+                home
+              </Button>
+            )}
             {data?.data && data?.data?.length >= 1 ? (
               data.data.map((board) => (
                 <Button

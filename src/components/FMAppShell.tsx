@@ -10,6 +10,7 @@ import {
   Button,
   Group,
   Modal,
+  Skeleton,
   Stack,
   Text,
 } from "@mantine/core";
@@ -49,7 +50,7 @@ export default function FMAppShell({
     }
   }, [profile, setProfileValue]);
 
-  const { data } = useGetBoardList(profileValue?.id);
+  const { data, isLoading } = useGetBoardList(profileValue?.id);
 
   const router = useRouter();
 
@@ -145,11 +146,18 @@ export default function FMAppShell({
       </AppShell.Header>{" "}
       <AppShell.Navbar p="md">
         <Stack align="flex-start" justify="space-between" h={"100%"}>
-          <Stack align="flex-start" justify="flex-start" gap={0}>
+          <Stack
+            align="flex-start"
+            justify="flex-start"
+            gap={isLoading ? 8 : 0}
+          >
             <Text c="black">
-              {profileValue ? "your boards" : "login to view boards!"}
+              {profile ? "your boards" : "login to view boards!"}
             </Text>{" "}
-            {profileValue && (
+            {isLoading && <Skeleton height={20} width={200} />}
+            {isLoading && <Skeleton height={20} width={200} />}
+            {isLoading && <Skeleton height={20} width={200} />}
+            {!isLoading && profileValue && (
               <Button
                 variant="transparent"
                 p={0}
@@ -158,7 +166,7 @@ export default function FMAppShell({
                 home
               </Button>
             )}
-            {data?.data && data?.data?.length >= 1 ? (
+            {!isLoading && data?.data && data?.data?.length >= 1 ? (
               data.data.map((board) => (
                 <Button
                   variant="transparent"
@@ -171,7 +179,7 @@ export default function FMAppShell({
               ))
             ) : (
               <Text c="black">
-                {profileValue ? "no boards found, join some!" : ""}
+                {!isLoading && profile ? "no boards found, join some!" : ""}
               </Text>
             )}
           </Stack>

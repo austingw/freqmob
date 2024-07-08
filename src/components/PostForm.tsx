@@ -20,6 +20,7 @@ import { createPost } from "@/app/actions/postActions";
 import generateFormData from "@/utils/generateFormData";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { useState } from "react";
 
 interface FormValues {
   title: string;
@@ -56,19 +57,29 @@ const PostForm = ({
   close: () => void;
   boardList?: string[] | null;
 }) => {
+  const [showUpload, setShowUpload] = useState(false);
+
   const form = useForm<FormValues>({
     initialValues: {
       title: "",
       description: "",
       file: "",
       published: false,
-      type: posts.type.enumValues[1],
+      type: posts.type.enumValues[5],
       bpm: 0,
       key: "",
       inspiration: "",
       genre: "",
       boardName: "",
       uploadUrl: "",
+    },
+    onValuesChange: (values) => {
+      if (values.type !== "text") {
+        setShowUpload(true);
+      }
+      if (values.type === "text") {
+        setShowUpload(false);
+      }
     },
     validate: zodResolver(schema),
   });
@@ -126,6 +137,7 @@ const PostForm = ({
             <SegmentedControl
               data={posts.type.enumValues}
               color="primary"
+              value={form.values.type}
               onChange={(value) => form.setFieldValue("type", value)}
               radius="md"
               size="sm"
@@ -146,29 +158,31 @@ const PostForm = ({
             {...form.getInputProps("description")}
             resize="vertical"
           />
-          <Group align="center" justify="flex-start" gap={"md"}>
-            <NumberInput
-              label="BPM"
-              placeholder="Enter the BPM..."
-              {...form.getInputProps("bpm")}
-            />
-            <TextInput
-              label="Key"
-              placeholder="Enter the key..."
-              {...form.getInputProps("key")}
-            />
-            <TextInput
-              label="Inspiration"
-              placeholder="Enter the inspiration..."
-              {...form.getInputProps("inspiration")}
-            />
-            <TextInput
-              label="Genre"
-              placeholder="Enter the genre..."
-              {...form.getInputProps("genre")}
-            />
-          </Group>
-          <FileUpload addFile={addFile} />
+          {showUpload && (
+            <Group align="center" justify="flex-start" gap={"md"}>
+              <NumberInput
+                label="BPM"
+                placeholder="Enter the BPM..."
+                {...form.getInputProps("bpm")}
+              />
+              <TextInput
+                label="Key"
+                placeholder="Enter the key..."
+                {...form.getInputProps("key")}
+              />
+              <TextInput
+                label="Inspiration"
+                placeholder="Enter the inspiration..."
+                {...form.getInputProps("inspiration")}
+              />
+              <TextInput
+                label="Genre"
+                placeholder="Enter the genre..."
+                {...form.getInputProps("genre")}
+              />
+            </Group>
+          )}
+          {showUpload && <FileUpload addFile={addFile} />}
         </Stack>
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>

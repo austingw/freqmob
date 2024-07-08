@@ -58,7 +58,7 @@ const CommentForm = ({ postId, setValue }: CommentFormProps) => {
                   icon: <IconCheck />,
                   autoClose: 3000,
                 });
-
+                setValue(null);
                 form.reset();
                 queryClient.invalidateQueries({
                   queryKey: ["comments", postId],

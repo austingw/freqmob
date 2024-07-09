@@ -26,6 +26,10 @@ export const getProfileFromUserId = async (userId: string) => {
   return await db.select().from(profiles).where(eq(profiles.userId, userId));
 };
 
+export const getProfileFromUsername = async (username: string) => {
+  return await db.select().from(profiles).where(eq(profiles.name, username));
+};
+
 export const addBoardSub = async (profileId: string, board: string) => {
   const profile = await db
     .select({ boardList: profiles.boardList })

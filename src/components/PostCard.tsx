@@ -20,6 +20,7 @@ import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetCommentCount } from "@/queries/comments";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface PostCardProps {
   clickPost: () => void;
@@ -40,15 +41,17 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
     true,
   );
 
+  const router = useRouter();
+
   useEffect(() => {
     setTempLike(data?.liked || false);
   }, [data]);
 
-  console.log(data);
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
     post.posts.likeCount,
   );
+
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
     post.posts.commentCount,
@@ -201,7 +204,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
           <Badge
             variant="outline"
             onClick={() => {
-              console.log("posted by");
+              router.push(`/u/${post?.profiles?.name}`);
             }}
             style={{
               cursor: "pointer",

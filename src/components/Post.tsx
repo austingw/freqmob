@@ -35,6 +35,7 @@ import { profileAtom } from "./FMAppShell";
 import { useQueryClient } from "@tanstack/react-query";
 import { UserLike } from "@/types/userTypes";
 import { toggleLike } from "@/app/actions/likeActions";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -58,8 +59,10 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
     post.posts.id,
     profileValue?.id,
     userLike,
-    false
+    false,
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     setTempLike(data?.liked || false);
@@ -67,11 +70,11 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
 
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
-    post.posts.likeCount
+    post.posts.likeCount,
   );
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
-    post.posts.commentCount
+    post.posts.commentCount,
   );
   const { data: comments, isLoading } = useGetComments(post.posts.id);
   return (
@@ -211,8 +214,12 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                 style={{
                   cursor: "pointer",
                   ":hover": {
+                    opacity: 0.8,
                     backgroundColor: "gray",
                   },
+                }}
+                onClick={() => {
+                  router.push(`/u/${post?.profiles?.name}`);
                 }}
               >
                 Posted by <b>{post?.profiles?.name}</b>
@@ -254,7 +261,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                           .utc()
                           .local()
                           .tz()
-                          .format("YYYY-MM-DDTHH:mm:ss") + "Z"
+                          .format("YYYY-MM-DDTHH:mm:ss") + "Z",
                       )}
                     </Text>
                   </Group>

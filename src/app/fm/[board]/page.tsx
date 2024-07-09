@@ -13,15 +13,16 @@ import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export default async function Page({ params }: { params: { board: string } }) {
   const boardData = await queryBoardByName(params.board);
-  if (!boardData) {
-    return {
-      status: 404,
-      body: "Not found",
-    };
+  if (!boardData[0]?.id) {
+    return (
+      <div>
+        <h1>board does not exist (but feel free to create it!)</h1>
+      </div>
+    );
   }
 
   const posts = boardData[0]?.id
-    ? await queryPostsByBoard(1, boardData[0].id)
+    ? await queryPostsByBoard(1, boardData[0]?.id)
     : null;
 
   const user = await validateRequest();
@@ -33,7 +34,7 @@ export default async function Page({ params }: { params: { board: string } }) {
       ? await getUserLikes(postIds, profileId)
       : null;
 
-  const postCount = await queryPostCount(boardData[0].id)
+  const postCount = await queryPostCount(boardData[0]?.id)
     .catch((e) => {
       console.error(e);
     })
@@ -41,7 +42,7 @@ export default async function Page({ params }: { params: { board: string } }) {
 
   return (
     <div>
-      <BoardHeader name={boardData[0].name} />
+      <BoardHeader name={boardData[0]?.name} />
       {posts && (
         <Feed
           initialPosts={posts}

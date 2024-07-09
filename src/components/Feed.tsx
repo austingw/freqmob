@@ -42,7 +42,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
         direction={"column"}
         align={"center"}
         justify={"center"}
-        gap={25}
+        gap={16}
         w="100%"
         h="100%"
       >

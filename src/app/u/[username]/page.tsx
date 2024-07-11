@@ -1,5 +1,7 @@
 "use server";
 
+import ProfileContent from "@/components/ProfileContent";
+import ProfileHeader from "@/components/ProfileHeader";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
 import { queryPostsByProfile } from "@/utils/operations/postDbOperations";
 import { getProfileFromUsername } from "@/utils/operations/userDbOperations";
@@ -26,7 +28,8 @@ export default async function Page({
 
   return (
     <div>
-      <h1>{profile[0]?.name}</h1>
+      <ProfileHeader profile={profile[0]} />
+      <ProfileContent posts={posts} comments={comments} />
     </div>
   );
 }

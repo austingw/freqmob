@@ -17,7 +17,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
   const { data } = useGetBoardList(profileValue?.id);
 
   return (
-    <Group align="center" justify="space-between">
+    <Group align="center" justify="space-between" pb={8} pt={0}>
       <h1>{name}</h1>
       {data?.status === 200 &&
         (!data?.data?.includes(name) ? (
@@ -28,7 +28,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
                 .then(() =>
                   queryClient.invalidateQueries({
                     queryKey: ["boardList", profileValue.id],
-                  })
+                  }),
                 )
             }
             color="red"
@@ -43,7 +43,7 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
                 .then(() =>
                   queryClient.invalidateQueries({
                     queryKey: ["boardList", profileValue.id],
-                  })
+                  }),
                 )
             }
           >

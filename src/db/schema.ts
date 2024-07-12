@@ -160,6 +160,16 @@ export const sessionTable = sqliteTable("session", {
   expiresAt: integer("expires_at").notNull(),
 });
 
+export type CommentWithPost = {
+  comments: typeof comments.$inferSelect;
+  posts: typeof posts.$inferSelect;
+};
+
+export type PostWithAudio = {
+  posts: typeof posts.$inferSelect;
+  audio: typeof audio.$inferSelect | null;
+};
+
 export type PostWithMedia = {
   posts: typeof posts.$inferSelect;
   images: typeof images.$inferSelect | null;

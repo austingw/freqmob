@@ -1,6 +1,6 @@
 "use client";
 
-import { comments, posts, profiles } from "@/db/schema";
+import { CommentWithPost, PostWithAudio, profiles } from "@/db/schema";
 import { SegmentedControl, Stack } from "@mantine/core";
 import { useState } from "react";
 
@@ -8,8 +8,8 @@ type Segment = "details" | "posts" | "comments";
 
 interface ProfileContentProps {
   profile: typeof profiles.$inferSelect;
-  posts: (typeof posts.$inferSelect)[];
-  comments: (typeof comments.$inferSelect)[];
+  posts: PostWithAudio[] | null;
+  comments: CommentWithPost[] | null;
 }
 
 const ProfileContent = ({ profile, posts, comments }: ProfileContentProps) => {

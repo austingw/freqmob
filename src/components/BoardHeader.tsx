@@ -31,12 +31,12 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
                   }),
                 )
             }
-            color="red"
           >
             Join
           </Button>
         ) : (
           <Button
+            variant="outline"
             onClick={async () =>
               await leaveBoard(profileValue.id, name)
                 .catch((e) => console.error(e))

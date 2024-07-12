@@ -29,7 +29,7 @@ export default async function Page({
   return (
     <div>
       <ProfileHeader profile={profile[0]} />
-      <ProfileContent posts={posts} comments={comments} />
+      <ProfileContent profile={profile[0]} posts={posts} comments={comments} />
     </div>
   );
 }

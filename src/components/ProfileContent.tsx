@@ -22,15 +22,18 @@ type Segment = "details" | "posts" | "comments";
 interface ProfileContentProps {
   profile: typeof profiles.$inferSelect;
   posts: PostWithMedia[] | null;
+  postCount: number;
   comments: CommentWithPost[] | null;
-
+  commentCount: number;
   initialLikes: UserLike[] | null;
 }
 
 const ProfileContent = ({
   profile,
   posts,
+  postCount,
   comments,
+  commentCount,
   initialLikes,
 }: ProfileContentProps) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -42,7 +45,6 @@ const ProfileContent = ({
   const [postPage, setPostPage] = useState(1);
 
   const [commentPage, setCommentPage] = useState(1);
-  const count = 10;
 
   const handleClickPost = (postId: number) => {
     const post = posts?.find((post) => post.posts.id === postId);
@@ -87,7 +89,7 @@ const ProfileContent = ({
             );
           })}
           <Pagination
-            total={count / 10 >= 1 ? count / 10 : 1}
+            total={postCount / 10 >= 1 ? postCount / 10 : 1}
             value={postPage}
             onChange={setPostPage}
           />
@@ -106,7 +108,7 @@ const ProfileContent = ({
             );
           })}{" "}
           <Pagination
-            total={count / 10 >= 1 ? count / 10 : 1}
+            total={commentCount / 10 >= 1 ? commentCount / 10 : 1}
             value={commentPage}
             onChange={setCommentPage}
           />

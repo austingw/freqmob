@@ -38,6 +38,8 @@ export const queryPostsByProfile = async (profileId: string) => {
     .select()
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
+    .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.profileId, profileId))
     .orderBy(desc(posts.createdAt));
 };

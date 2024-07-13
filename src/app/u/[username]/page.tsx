@@ -3,8 +3,14 @@
 import { getUserLikes } from "@/app/actions/likeActions";
 import ProfileContent from "@/components/ProfileContent";
 import { validateRequest } from "@/db/auth";
-import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
-import { queryPostsByProfile } from "@/utils/operations/postDbOperations";
+import {
+  queryCommentCountByProfileId,
+  queryCommentsByProfile,
+} from "@/utils/operations/commentDbOperations";
+import {
+  queryPostCountByProfileId,
+  queryPostsByProfile,
+} from "@/utils/operations/postDbOperations";
 import {
   getProfileFromUserId,
   getProfileFromUsername,
@@ -26,7 +32,9 @@ export default async function Page({
   }
 
   const posts = await queryPostsByProfile(profile[0]?.id);
+  const postCount = await queryPostCountByProfileId(profile[0]?.id);
   const comments = await queryCommentsByProfile(profile[0]?.id);
+  const commentCount = await queryCommentCountByProfileId(profile[0]?.id);
 
   const postIds = posts ? posts.map((post) => post.posts.id) : [];
 
@@ -46,7 +54,9 @@ export default async function Page({
       <ProfileContent
         profile={profile[0]}
         posts={posts}
+        postCount={postCount}
         comments={comments}
+        commentCount={commentCount}
         initialLikes={postLikes}
       />
     </div>

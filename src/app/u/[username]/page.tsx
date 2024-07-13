@@ -44,7 +44,6 @@ export default async function Page({
 
   return (
     <div>
-      <ProfileHeader profile={profile[0]} />
       <ProfileContent
         profile={profile[0]}
         posts={posts}

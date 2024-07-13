@@ -1,7 +1,15 @@
 "use client";
 
 import { CommentWithPost, PostWithMedia, profiles } from "@/db/schema";
-import { Modal, SegmentedControl, Stack, useMantineTheme } from "@mantine/core";
+import {
+  Group,
+  Modal,
+  Pagination,
+  SegmentedControl,
+  Stack,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 import PostCard from "./PostCard";
@@ -25,11 +33,16 @@ const ProfileContent = ({
   comments,
   initialLikes,
 }: ProfileContentProps) => {
-  const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [segment, setSegment] = useState<Segment>("details");
+  const [postPage, setPostPage] = useState(1);
+
+  const [commentPage, setCommentPage] = useState(1);
+  const count = 10;
 
   const handleClickPost = (postId: number) => {
     const post = posts?.find((post) => post.posts.id === postId);
@@ -44,16 +57,21 @@ const ProfileContent = ({
 
   return (
     <Stack>
-      <SegmentedControl
-        color={theme.primaryColor}
-        w={isMobile ? "100%" : "300px"}
-        data={["details", "posts", "comments"]}
-        value={segment}
-        onChange={(value) => setSegment(value as Segment)}
-      />
+      <Group align="center" justify="space-between">
+        <Text fz={"h1"} c="black" fw={600}>
+          u/{profile?.name}
+        </Text>
+        <SegmentedControl
+          color={theme.primaryColor}
+          w={isMobile ? "100%" : "300px"}
+          data={["details", "posts", "comments"]}
+          value={segment}
+          onChange={(value) => setSegment(value as Segment)}
+        />
+      </Group>
       {segment === "details" && <Stack>{String(profile)}</Stack>}
       {segment === "posts" && (
-        <Stack>
+        <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
           {posts?.map((post) => {
             return (
               <PostCard
@@ -68,10 +86,15 @@ const ProfileContent = ({
               />
             );
           })}
+          <Pagination
+            total={count / 10 >= 1 ? count / 10 : 1}
+            value={postPage}
+            onChange={setPostPage}
+          />
         </Stack>
       )}
       {segment === "comments" && (
-        <Stack>
+        <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
           {comments?.map((comment) => {
             return (
               <CommentCard
@@ -81,7 +104,12 @@ const ProfileContent = ({
                 name={profile?.name}
               />
             );
-          })}
+          })}{" "}
+          <Pagination
+            total={count / 10 >= 1 ? count / 10 : 1}
+            value={commentPage}
+            onChange={setCommentPage}
+          />
         </Stack>
       )}
       <Modal

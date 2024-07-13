@@ -2,7 +2,6 @@
 
 import { getUserLikes } from "@/app/actions/likeActions";
 import ProfileContent from "@/components/ProfileContent";
-import ProfileHeader from "@/components/ProfileHeader";
 import { validateRequest } from "@/db/auth";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
 import { queryPostsByProfile } from "@/utils/operations/postDbOperations";

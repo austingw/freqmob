@@ -11,6 +11,7 @@ import {
   Accordion,
   useMantineTheme,
   rem,
+  Button,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -250,12 +251,20 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
             </Accordion>
             {comments?.map((comment) => (
               <Paper withBorder radius="md" key={comment.comments.id} px={10}>
-                <Stack gap={4} p={4}>
+                <Stack gap={0} p={4} pb={12}>
                   <Group gap={4} align="center" justify="flex-start">
+                    <Button
+                      fz="xs"
+                      variant="transparent"
+                      p={0}
+                      onClick={() => {
+                        router.push(`/u/${comment.profiles.name}`);
+                      }}
+                    >
+                      {comment.profiles.name}
+                    </Button>
                     <Text fz="xs" c="dimmed">
-                      {comment.profiles.name} -
-                    </Text>
-                    <Text fz="xs" c="dimmed">
+                      -{" "}
                       {dayjs(dayjs().utc().format()).to(
                         dayjs(comment.comments.createdAt)
                           .utc()

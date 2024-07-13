@@ -54,9 +54,9 @@ export default async function Page({
       <ProfileContent
         profile={profile[0]}
         posts={posts}
-        postCount={postCount}
+        postCount={postCount?.[0]?.count || 0}
         comments={comments}
-        commentCount={commentCount}
+        commentCount={commentCount?.[0]?.count || 0}
         initialLikes={postLikes}
       />
     </div>

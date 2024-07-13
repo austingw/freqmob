@@ -54,3 +54,10 @@ export const queryPostCount = async (boardId?: number) => {
 
   return await db.select({ count: count() }).from(posts);
 };
+
+export const queryPostCountByProfileId = async (profileId: string) => {
+  return await db
+    .select({ count: count() })
+    .from(posts)
+    .where(eq(posts.profileId, profileId));
+};

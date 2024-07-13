@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { comments, posts, profiles } from "@/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { count, desc, eq, sql } from "drizzle-orm";
 
 type NewComment = typeof comments.$inferInsert;
 
@@ -38,4 +38,11 @@ export const queryCommentCount = async (postId: number) => {
     .select({ commentCount: posts.commentCount })
     .from(posts)
     .where(eq(posts.id, postId));
+};
+
+export const queryCommentCountByProfileId = async (profileId: string) => {
+  return await db
+    .select({ count: count() })
+    .from(comments)
+    .where(eq(comments.profileId, profileId));
 };

@@ -16,6 +16,7 @@ import PostCard from "./PostCard";
 import { UserLike } from "@/types/userTypes";
 import Post from "./Post";
 import CommentCard from "./CommentCard";
+import ProfileDetails from "./ProfileDetails";
 
 type Segment = "details" | "posts" | "comments";
 
@@ -71,7 +72,15 @@ const ProfileContent = ({
           onChange={(value) => setSegment(value as Segment)}
         />
       </Group>
-      {segment === "details" && <Stack>{String(profile)}</Stack>}
+      {segment === "details" && (
+        <Stack>
+          <ProfileDetails
+            profile={profile}
+            postCount={postCount}
+            commentCount={commentCount}
+          />
+        </Stack>
+      )}
       {segment === "posts" && (
         <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
           {posts?.map((post) => {

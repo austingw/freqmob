@@ -9,6 +9,7 @@ import {
   SegmentedControl,
   Select,
   Stack,
+  Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
@@ -134,17 +135,22 @@ const PostForm = ({
               data={boardList || undefined}
               onChange={(value) => form.setFieldValue("boardName", value || "")}
             />
-            <SegmentedControl
-              data={posts.type.enumValues}
-              color="primary"
-              value={form.values.type}
-              onChange={(value) => form.setFieldValue("type", value)}
-              radius="md"
-              size="sm"
-              classNames={{
-                indicator: classes.segmentedIndicator,
-              }}
-            />
+            <Stack gap={2}>
+              <Text fz={"sm"} fw={500}>
+                Type
+              </Text>
+              <SegmentedControl
+                data={posts.type.enumValues}
+                color="primary"
+                value={form.values.type}
+                onChange={(value) => form.setFieldValue("type", value)}
+                radius="md"
+                size="sm"
+                classNames={{
+                  indicator: classes.segmentedIndicator,
+                }}
+              />
+            </Stack>
           </Group>{" "}
           <TextInput
             withAsterisk

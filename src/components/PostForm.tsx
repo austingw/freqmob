@@ -22,6 +22,7 @@ import generateFormData from "@/utils/generateFormData";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
+import ArtUpload from "./ArtUpload";
 
 interface FormValues {
   title: string;
@@ -165,11 +166,12 @@ const PostForm = ({
             resize="vertical"
           />
           {showUpload && (
-            <Group align="center" justify="flex-start" gap={"md"}>
+            <Group align="center" justify="space-between" gap={"md"}>
               <NumberInput
                 label="BPM"
                 placeholder="Enter the BPM..."
                 {...form.getInputProps("bpm")}
+                w={"90px"}
               />
               <TextInput
                 label="Key"
@@ -186,6 +188,7 @@ const PostForm = ({
                 placeholder="Enter the genre..."
                 {...form.getInputProps("genre")}
               />
+              <ArtUpload />
             </Group>
           )}
           {showUpload && <FileUpload addFile={addFile} />}

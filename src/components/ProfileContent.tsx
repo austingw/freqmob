@@ -19,7 +19,6 @@ import PostCard from "./PostCard";
 import { UserLike } from "@/types/userTypes";
 import Post from "./Post";
 import CommentCard from "./CommentCard";
-import ProfileDetails from "./ProfileDetails";
 import {
   IconBrandBandcamp,
   IconBrandSoundcloud,

@@ -77,6 +77,7 @@ const ProfileContent = ({
           direction={isMobile ? "column" : "row"}
           align="center"
           justify="center"
+          gap={isMobile ? 0 : 4}
         >
           <Flex
             direction={isMobile ? "column" : "row"}
@@ -96,7 +97,7 @@ const ProfileContent = ({
             </Text>
           </Flex>
           <Group align="center" justify="center" gap={8} pb={isMobile ? 8 : 0}>
-            {true && (
+            {profile?.website && (
               <ActionIcon
                 variant="subtle"
                 onClick={() => {

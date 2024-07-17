@@ -152,7 +152,7 @@ const PostForm = ({
                 }}
               />
             </Stack>
-          </Group>{" "}
+          </Group>
           <TextInput
             withAsterisk
             label="Title"

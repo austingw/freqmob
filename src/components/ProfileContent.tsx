@@ -68,75 +68,91 @@ const ProfileContent = ({
 
   return (
     <Stack>
-      <Flex direction="row" align="center" justify="space-between">
-        <Group align="center" justify="center">
-          {
+      <Flex
+        direction={isMobile ? "column" : "row"}
+        align="center"
+        justify="space-between"
+      >
+        <Flex
+          direction={isMobile ? "column" : "row"}
+          align="center"
+          justify="center"
+        >
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            align="center"
+            justify="center"
+            gap={isMobile ? 0 : 8}
+          >
             <Avatar
               src={profile?.avatar}
               color={theme.primaryColor}
               name={profile?.name}
               alt={`${profile?.name}'s avatar`}
+              size={"lg"}
             />
-          }
-          <Text fz={"h1"} c="black" fw={600}>
-            u/{profile?.name}
-          </Text>
-          {profile?.website && (
-            <ActionIcon
-              variant="subtle"
-              onClick={() => {
-                //if statement due to typescript not narrowing type in onClick closure
-                if (profile.website) {
-                  window.open(String(profile.website), "_blank");
-                }
-              }}
-            >
-              <IconLink />
-            </ActionIcon>
-          )}
-          {profile?.spotify && (
-            <ActionIcon
-              variant="subtle"
-              onClick={() => {
-                if (profile.spotify) {
-                  window.open(profile.spotify, "_blank");
-                }
-              }}
-            >
-              <IconBrandSpotify />
-            </ActionIcon>
-          )}
-          {profile?.spotify && (
-            <ActionIcon
-              variant="subtle"
-              onClick={() => {
-                if (profile.soundcloud) {
-                  window.open(profile.soundcloud, "_blank");
-                }
-              }}
-            >
-              <IconBrandSoundcloud />
-            </ActionIcon>
-          )}
-          {profile?.bandcamp && (
-            <ActionIcon
-              variant="subtle"
-              onClick={() => {
-                if (profile.bandcamp) {
-                  window.open(profile.bandcamp, "_blank");
-                }
-              }}
-            >
-              <IconBrandBandcamp />
-            </ActionIcon>
-          )}
-        </Group>
+            <Text fz={"h1"} c="black" fw={600}>
+              u/{profile?.name}
+            </Text>
+          </Flex>
+          <Group align="center" justify="center" gap={8} pb={isMobile ? 8 : 0}>
+            {true && (
+              <ActionIcon
+                variant="subtle"
+                onClick={() => {
+                  //if statement due to typescript not narrowing type in onClick closure
+                  if (profile.website) {
+                    window.open(String(profile.website), "_blank");
+                  }
+                }}
+              >
+                <IconLink />
+              </ActionIcon>
+            )}
+            {profile?.spotify && (
+              <ActionIcon
+                variant="subtle"
+                onClick={() => {
+                  if (profile.spotify) {
+                    window.open(profile.spotify, "_blank");
+                  }
+                }}
+              >
+                <IconBrandSpotify />
+              </ActionIcon>
+            )}
+            {profile?.spotify && (
+              <ActionIcon
+                variant="subtle"
+                onClick={() => {
+                  if (profile.soundcloud) {
+                    window.open(profile.soundcloud, "_blank");
+                  }
+                }}
+              >
+                <IconBrandSoundcloud />
+              </ActionIcon>
+            )}
+            {profile?.bandcamp && (
+              <ActionIcon
+                variant="subtle"
+                onClick={() => {
+                  if (profile.bandcamp) {
+                    window.open(profile.bandcamp, "_blank");
+                  }
+                }}
+              >
+                <IconBrandBandcamp />
+              </ActionIcon>
+            )}
+          </Group>
+        </Flex>
         <SegmentedControl
           color={theme.primaryColor}
           w={isMobile ? "100%" : "300px"}
           data={[
             {
-              label: `(${postCount}) comment` + (postCount === 1 ? "" : "s"),
+              label: `(${postCount}) post` + (postCount === 1 ? "" : "s"),
               value: "posts",
             },
             {

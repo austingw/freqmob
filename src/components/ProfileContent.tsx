@@ -138,15 +138,6 @@ const ProfileContent = ({
           onChange={(value) => setSegment(value as Segment)}
         />
       </Flex>
-      {segment === "details" && (
-        <Stack>
-          <ProfileDetails
-            profile={profile}
-            postCount={postCount}
-            commentCount={commentCount}
-          />
-        </Stack>
-      )}
       {segment === "posts" && (
         <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
           {posts?.map((post) => {

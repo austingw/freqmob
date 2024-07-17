@@ -17,7 +17,7 @@
     "@libsql/client": "^0.6.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@lucia-auth/adapter-sqlite": "^3.0.1",
-    "@mantine/core": "^7.10.2",
+    "@mantine/core": "^7.11.2",
     "@mantine/dates": "^7.10.2",
     "@mantine/dropzone": "^7.10.2",
     "@mantine/form": "^7.10.2",

@@ -74,6 +74,7 @@ const ProfileContent = ({
             <Avatar
               src={profile?.avatar}
               color={theme.primaryColor}
+              name={profile?.name}
               alt={`${profile?.name}'s avatar`}
             />
           }

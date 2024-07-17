@@ -11,15 +11,18 @@ import {
   queryPostsByBoard,
 } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+import sharp from "sharp";
 
 export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));
   const description = String(post.get("description"));
-  const file = post.get("file");
+  const audioFile = post.get("audioFile");
+  const imageFile = post.get("imageFile");
   const typeString = String(post.get("type"));
   const type = posts.type.enumValues.filter((t) => t === typeString)[0];
   const boardName = String(post.get("boardName"));
 
+  console.log(audioFile, imageFile);
   const user = await validateRequest();
 
   if (!user.user || !user.session) {
@@ -41,12 +44,12 @@ export const createPost = async (post: FormData) => {
   const boardData = await queryBoardByName(boardName);
 
   let audioId;
-  if (file) {
+  if (audioFile) {
     try {
       const presignedUrl = await getPresignedUrl();
       const res = await fetch(presignedUrl, {
         method: "PUT",
-        body: file,
+        body: audioFile,
         headers: {
           "Content-Type": "audio/mp3", //todo: add step that converts all incoming files to mp3
           "Content-Disposition": `attachment; filename="${title}"`,
@@ -94,4 +97,12 @@ export const getPostsByBoard = async (page: number, boardId?: number) => {
     console.error(e);
     return null;
   }
+};
+
+export const convertImage = async (photo: FormData) => {
+  const pic = photo.get("photo") as Blob;
+  const buffer = await pic.arrayBuffer();
+  const photoBuffer = Buffer.from(buffer);
+  const upload = await sharp(photoBuffer).resize(200, 200).toFile("art.jpeg");
+  console.log(upload);
 };

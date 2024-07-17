@@ -2,6 +2,9 @@
 
 import { CommentWithPost, PostWithMedia, profiles } from "@/db/schema";
 import {
+  ActionIcon,
+  Avatar,
+  Flex,
   Group,
   Modal,
   Pagination,
@@ -17,8 +20,14 @@ import { UserLike } from "@/types/userTypes";
 import Post from "./Post";
 import CommentCard from "./CommentCard";
 import ProfileDetails from "./ProfileDetails";
+import {
+  IconBrandBandcamp,
+  IconBrandSoundcloud,
+  IconBrandSpotify,
+  IconLink,
+} from "@tabler/icons-react";
 
-type Segment = "details" | "posts" | "comments";
+type Segment = "posts" | "comments";
 
 interface ProfileContentProps {
   profile: typeof profiles.$inferSelect;
@@ -42,7 +51,7 @@ const ProfileContent = ({
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
-  const [segment, setSegment] = useState<Segment>("details");
+  const [segment, setSegment] = useState<Segment>("posts");
   const [postPage, setPostPage] = useState(1);
 
   const [commentPage, setCommentPage] = useState(1);
@@ -60,10 +69,68 @@ const ProfileContent = ({
 
   return (
     <Stack>
-      <Group align="center" justify="space-between">
-        <Text fz={"h1"} c="black" fw={600}>
-          u/{profile?.name}
-        </Text>
+      <Flex direction="row" align="center" justify="space-between">
+        <Group align="center" justify="center">
+          {
+            <Avatar
+              src={profile?.avatar}
+              color={theme.primaryColor}
+              alt={`${profile?.name}'s avatar`}
+            />
+          }
+          <Text fz={"h1"} c="black" fw={600}>
+            u/{profile?.name}
+          </Text>
+          {profile?.website && (
+            <ActionIcon
+              variant="subtle"
+              onClick={() => {
+                //if statement due to typescript not narrowing type in onClick closure
+                if (profile.website) {
+                  window.open(String(profile.website), "_blank");
+                }
+              }}
+            >
+              <IconLink />
+            </ActionIcon>
+          )}
+          {profile?.spotify && (
+            <ActionIcon
+              variant="subtle"
+              onClick={() => {
+                if (profile.spotify) {
+                  window.open(profile.spotify, "_blank");
+                }
+              }}
+            >
+              <IconBrandSpotify />
+            </ActionIcon>
+          )}
+          {profile?.spotify && (
+            <ActionIcon
+              variant="subtle"
+              onClick={() => {
+                if (profile.soundcloud) {
+                  window.open(profile.soundcloud, "_blank");
+                }
+              }}
+            >
+              <IconBrandSoundcloud />
+            </ActionIcon>
+          )}
+          {profile?.bandcamp && (
+            <ActionIcon
+              variant="subtle"
+              onClick={() => {
+                if (profile.bandcamp) {
+                  window.open(profile.bandcamp, "_blank");
+                }
+              }}
+            >
+              <IconBrandBandcamp />
+            </ActionIcon>
+          )}
+        </Group>
         <SegmentedControl
           color={theme.primaryColor}
           w={isMobile ? "100%" : "300px"}
@@ -71,7 +138,7 @@ const ProfileContent = ({
           value={segment}
           onChange={(value) => setSegment(value as Segment)}
         />
-      </Group>
+      </Flex>
       {segment === "details" && (
         <Stack>
           <ProfileDetails

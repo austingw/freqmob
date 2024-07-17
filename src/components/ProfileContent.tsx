@@ -133,7 +133,16 @@ const ProfileContent = ({
         <SegmentedControl
           color={theme.primaryColor}
           w={isMobile ? "100%" : "300px"}
-          data={["details", "posts", "comments"]}
+          data={[
+            {
+              label: `(${postCount}) comment` + (postCount === 1 ? "" : "s"),
+              value: "posts",
+            },
+            {
+              label: `(${commentCount}) comment` + (postCount === 1 ? "" : "s"),
+              value: "comments",
+            },
+          ]}
           value={segment}
           onChange={(value) => setSegment(value as Segment)}
         />

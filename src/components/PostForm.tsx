@@ -27,7 +27,8 @@ import ArtUpload from "./ArtUpload";
 interface FormValues {
   title: string;
   description: string;
-  file: File | string;
+  audioFile: File | string;
+  imageFile: File | string;
   published: boolean;
   type: string;
   bpm: number;
@@ -41,14 +42,15 @@ interface FormValues {
 const schema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().optional(),
-  file: z.instanceof(Blob).optional(),
+  audioFile: z.instanceof(Blob).optional(),
+  imageFile: z.instanceof(Blob).optional(),
   published: z.boolean(),
   type: z.enum(posts.type.enumValues),
   bpm: z.number().optional(),
   key: z.string().optional(),
   inspiration: z.string().optional(),
   genre: z.string().optional(),
-  boardName: z.string().optional(),
+  boardName: z.string(),
   uploadUrl: z.string().optional(),
 });
 
@@ -65,7 +67,8 @@ const PostForm = ({
     initialValues: {
       title: "",
       description: "",
-      file: "",
+      audioFile: "",
+      imageFile: "",
       published: false,
       type: posts.type.enumValues[5],
       bpm: 0,
@@ -86,8 +89,8 @@ const PostForm = ({
     validate: zodResolver(schema),
   });
 
-  const addFile = async (file: File) => {
-    form.setFieldValue("file", file);
+  const addFile = async (type: "audioFile" | "imageFile", file: File) => {
+    form.setFieldValue(type, file);
   };
 
   return (
@@ -188,7 +191,7 @@ const PostForm = ({
                 placeholder="Enter the genre..."
                 {...form.getInputProps("genre")}
               />
-              <ArtUpload />
+              <ArtUpload addFile={addFile} />
             </Group>
           )}
           {showUpload && <FileUpload addFile={addFile} />}

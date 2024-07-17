@@ -1,13 +1,24 @@
-import { FileInput } from "@mantine/core";
+import { Button, FileInput } from "@mantine/core";
 import { IconFileUpload } from "@tabler/icons-react";
+import { useState } from "react";
 
-const ArtUpload = () => {
+const ArtUpload = ({
+  addFile,
+}: {
+  addFile: (type: "audioFile" | "imageFile", file: File) => void;
+}) => {
   const icon = <IconFileUpload />;
   return (
     <FileInput
       leftSection={icon}
       label={"Track Art"}
       placeholder={"Add track art here"}
+      accept="image/png,image/jpeg"
+      onChange={(file) => {
+        if (file) {
+          addFile("imageFile", file);
+        }
+      }}
     />
   );
 };

@@ -12,7 +12,7 @@ import {
 import classes from "./FileUpload.module.css";
 
 type FileUploadProps = {
-  addFile: (file: File) => void;
+  addFile: (type: "audioFile" | "imageFile", file: File) => void;
 };
 
 const FileUpload = ({ addFile }: FileUploadProps) => {
@@ -27,7 +27,7 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
         className={classes.dropzone}
         radius="md"
         onDrop={(files) => {
-          addFile(files[0]);
+          addFile("audioFile", files[0]);
           setValidFile(true);
         }}
         maxSize={30 * 1024 ** 2}

@@ -131,8 +131,8 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
           ) : art ? (
             <Box
               style={{
-                minWidth: 140,
-                minHeight: 140,
+                maxWidth: 140,
+                maxHeight: 140,
                 backgroundColor: "gray",
                 borderRadius: 10,
               }}

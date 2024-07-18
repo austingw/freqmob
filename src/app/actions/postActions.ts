@@ -5,6 +5,7 @@ import { posts } from "@/db/schema";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
+import { insertImage } from "@/utils/operations/imageDbOperations";
 import {
   insertPost,
   queryPosts,
@@ -16,13 +17,19 @@ import sharp from "sharp";
 export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));
   const description = String(post.get("description"));
-  const audioFile = post.get("audioFile");
-  const imageFile = post.get("imageFile");
+  const audioFile = post.get("audioFile") as Blob;
+  const imageFile = post.get("imageFile") as Blob;
   const typeString = String(post.get("type"));
   const type = posts.type.enumValues.filter((t) => t === typeString)[0];
   const boardName = String(post.get("boardName"));
 
-  console.log(audioFile, imageFile);
+  if (!boardName || !title || !type) {
+    return {
+      status: 400,
+      message: "Missing required fields",
+    };
+  }
+
   const user = await validateRequest();
 
   if (!user.user || !user.session) {
@@ -41,10 +48,49 @@ export const createPost = async (post: FormData) => {
     };
   }
 
+  //posts.type.enumValues[5] is the type for text posts
+  if (type !== posts.type.enumValues[5] && !audioFile) {
+    return {
+      status: 400,
+      message: "Missing audio file",
+    };
+  }
+
   const boardData = await queryBoardByName(boardName);
 
+  let imageId;
+  if (imageFile && type !== posts.type.enumValues[5]) {
+    console.log(posts.type.enumValues[0], type);
+    const buffer = await imageFile.arrayBuffer();
+    const imageBuffer = Buffer.from(buffer);
+    const resizedImage = await convertImage(imageBuffer);
+    try {
+      const presignedUrl = await getPresignedUrl();
+      const res = await fetch(presignedUrl, {
+        method: "PUT",
+        body: resizedImage,
+        headers: {
+          "Content-Type": "image/jpeg",
+          "Content-Disposition": `attachment; filename="${title}_cover"`,
+        },
+      });
+      const imgUrl = res.url.split("?")[0];
+
+      imageId = await insertImage({
+        url: imgUrl,
+        profileId: profile[0].id,
+      });
+    } catch (e) {
+      console.error(e);
+      return {
+        status: 500,
+        message: "There was an upload issue, please try again later",
+      };
+    }
+  }
+
   let audioId;
-  if (audioFile) {
+  if (audioFile && type !== posts.type.enumValues[5]) {
     try {
       const presignedUrl = await getPresignedUrl();
       const res = await fetch(presignedUrl, {
@@ -78,6 +124,7 @@ export const createPost = async (post: FormData) => {
       published: true,
       profileId: profile[0].id,
       audioId: audioId ? audioId[0].id : null,
+      imageId: imageId ? imageId[0].id : null,
       boardId: boardData[0].id,
     });
 
@@ -99,10 +146,6 @@ export const getPostsByBoard = async (page: number, boardId?: number) => {
   }
 };
 
-export const convertImage = async (photo: FormData) => {
-  const pic = photo.get("photo") as Blob;
-  const buffer = await pic.arrayBuffer();
-  const photoBuffer = Buffer.from(buffer);
-  const upload = await sharp(photoBuffer).resize(200, 200).toFile("art.jpeg");
-  console.log(upload);
+export const convertImage = async (imageBuffer: Buffer) => {
+  return await sharp(imageBuffer).resize(200, 200).toFormat("jpg").toBuffer();
 };

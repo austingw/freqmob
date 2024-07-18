@@ -13,7 +13,7 @@ const ArtUpload = ({
       leftSection={icon}
       label={"Track Art"}
       placeholder={"Add track art here"}
-      accept="image/png,image/jpeg"
+      accept="image/png,image/jpeg,image/jpg"
       onChange={(file) => {
         if (file) {
           addFile("imageFile", file);

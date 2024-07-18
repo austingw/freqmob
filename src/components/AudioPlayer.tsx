@@ -7,6 +7,7 @@ import {
   Card,
   Flex,
   Group,
+  Image,
   Skeleton,
   Text,
   useMantineTheme,
@@ -127,6 +128,17 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
               <Skeleton maw={140} mih={140} radius={10} />
               <Skeleton width={"100%"} height={140} radius={10} />
             </>
+          ) : art ? (
+            <Box
+              style={{
+                minWidth: 140,
+                minHeight: 140,
+                backgroundColor: "gray",
+                borderRadius: 10,
+              }}
+            >
+              <Image src={art} alt="cover art" radius={10} />
+            </Box>
           ) : (
             <Box
               style={{
@@ -185,7 +197,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
                   onClick={() => {
                     wavesurferRef.current?.skip(-15);
                     setCurrentTime(
-                      Number(wavesurferRef.current?.getCurrentTime())
+                      Number(wavesurferRef.current?.getCurrentTime()),
                     );
                   }}
                 >

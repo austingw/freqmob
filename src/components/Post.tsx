@@ -103,7 +103,10 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
           {post?.audio?.url && (
             <Card.Section>
               <Flex justify={"center"} align={"center"}>
-                <AudioPlayer url={post?.audio?.url || ""} art={""} />
+                <AudioPlayer
+                  url={post?.audio?.url || ""}
+                  art={post?.images?.url || ""}
+                />
               </Flex>
             </Card.Section>
           )}

@@ -6,6 +6,7 @@ import { profiles } from "@/db/schema";
 import { useGetBoardList } from "@/queries/boards";
 import {
   AppShell,
+  Avatar,
   Burger,
   Button,
   Group,
@@ -13,6 +14,7 @@ import {
   Skeleton,
   Stack,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
@@ -40,6 +42,8 @@ export default function FMAppShell({
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post">("login");
   const [modalTitle, setModalTitle] = useState("");
+
+  const theme = useMantineTheme();
   const queryClient = useQueryClient();
 
   //global state for logged in profile
@@ -79,7 +83,7 @@ export default function FMAppShell({
             visibleFrom="sm"
             size="sm"
           />
-          <Group align="center" justify="flex-end" p={0} gap={0}>
+          <Group align="center" justify="flex-end" p={0} gap={8}>
             <Button
               variant="subtle"
               p={4}
@@ -97,7 +101,7 @@ export default function FMAppShell({
             >
               <IconPlus size={16} /> Post
             </Button>
-            {user.user ? (
+            {/*
               <Button
                 variant="transparent"
                 onClick={async () =>
@@ -110,7 +114,15 @@ export default function FMAppShell({
                 }
               >
                 Logout
-              </Button>
+              </Button> */}
+
+            {user.user ? (
+              <Avatar
+                src={profileValue?.avatar}
+                name={profileValue?.name}
+                size={40}
+                color={theme.primaryColor}
+              />
             ) : (
               <Button
                 variant="transparent"

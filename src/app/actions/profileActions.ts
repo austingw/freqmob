@@ -1,8 +1,12 @@
 "use server";
 
+import { UpdateProfile } from "@/types/userTypes";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
 import { queryPostsByProfile } from "@/utils/operations/postDbOperations";
-import { getProfileFromUsername } from "@/utils/operations/userDbOperations";
+import {
+  getProfileFromUsername,
+  updateProfile,
+} from "@/utils/operations/userDbOperations";
 
 export const getProfileByName = async (username: string) => {
   try {
@@ -40,6 +44,21 @@ export const getCommentsByUser = async (profileId: string) => {
     return {
       status: 200,
       data: comments,
+    };
+  } catch (e) {
+    return {
+      status: 500,
+      message: "Internal Server Error",
+    };
+  }
+};
+
+export const putProfile = async (profileId: string, data: UpdateProfile) => {
+  try {
+    await updateProfile(profileId, data);
+    return {
+      status: 200,
+      message: "Profile updated",
     };
   } catch (e) {
     return {

@@ -22,7 +22,7 @@ import generateFormData from "@/utils/generateFormData";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import ArtUpload from "./ArtUpload";
+import ImageUpload from "./ImageUpload";
 
 interface FormValues {
   title: string;
@@ -191,7 +191,7 @@ const PostForm = ({
                 placeholder="Enter the genre..."
                 {...form.getInputProps("genre")}
               />
-              <ArtUpload addFile={addFile} />
+              <ImageUpload addFile={addFile} />
             </Group>
           )}
           {showUpload && <FileUpload addFile={addFile} />}

@@ -153,11 +153,11 @@ const ProfileContent = ({
           w={isMobile ? "100%" : "300px"}
           data={[
             {
-              label: `(${postCount}) post` + (postCount === 1 ? "" : "s"),
+              label: `${postCount} post` + (postCount === 1 ? "" : "s"),
               value: "posts",
             },
             {
-              label: `(${commentCount}) comment` + (postCount === 1 ? "" : "s"),
+              label: `${commentCount} comment` + (postCount === 1 ? "" : "s"),
               value: "comments",
             },
           ]}

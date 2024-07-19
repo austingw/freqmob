@@ -1,8 +1,7 @@
-import { Button, FileInput } from "@mantine/core";
+import { FileInput } from "@mantine/core";
 import { IconFileUpload } from "@tabler/icons-react";
-import { useState } from "react";
 
-const ArtUpload = ({
+const ImageUpload = ({
   addFile,
 }: {
   addFile: (type: "audioFile" | "imageFile", file: File) => void;
@@ -23,4 +22,4 @@ const ArtUpload = ({
   );
 };
 
-export default ArtUpload;
+export default ImageUpload;

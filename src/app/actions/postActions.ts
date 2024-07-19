@@ -2,6 +2,7 @@
 
 import { validateRequest } from "@/db/auth";
 import { posts } from "@/db/schema";
+import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
@@ -60,10 +61,9 @@ export const createPost = async (post: FormData) => {
 
   let imageId;
   if (imageFile && type !== posts.type.enumValues[5]) {
-    console.log(posts.type.enumValues[0], type);
     const buffer = await imageFile.arrayBuffer();
     const imageBuffer = Buffer.from(buffer);
-    const resizedImage = await convertImage(imageBuffer);
+    const resizedImage = await convertImage(imageBuffer, 300);
     try {
       const presignedUrl = await getPresignedUrl();
       const res = await fetch(presignedUrl, {
@@ -144,8 +144,4 @@ export const getPostsByBoard = async (page: number, boardId?: number) => {
     console.error(e);
     return null;
   }
-};
-
-export const convertImage = async (imageBuffer: Buffer) => {
-  return await sharp(imageBuffer).resize(200, 200).toFormat("jpg").toBuffer();
 };

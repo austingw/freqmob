@@ -1,9 +1,13 @@
 "use server";
 
+import { validateRequest } from "@/db/auth";
 import { UpdateProfile } from "@/types/userTypes";
+import { convertImage } from "@/utils/convertImage";
+import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
 import { queryPostsByProfile } from "@/utils/operations/postDbOperations";
 import {
+  getProfileFromUserId,
   getProfileFromUsername,
   updateProfile,
 } from "@/utils/operations/userDbOperations";
@@ -53,11 +57,72 @@ export const getCommentsByUser = async (profileId: string) => {
   }
 };
 
-export const putProfile = async (profileId: string, data: UpdateProfile) => {
-  try {
-    await updateProfile(profileId, data);
+export const putProfile = async (profileId: string, data: FormData) => {
+  const imageFile = data.get("imageFile") as Blob;
+  const currentAvatar = String(data.get("currentAvatar"));
+  const website = String(data.get("website"));
+  const spotify = String(data.get("spotify"));
+  const soundcloud = String(data.get("soundcloud"));
+  const bandcamp = String(data.get("bandcamp"));
+
+  if (!profileId || !data) {
     return {
-      status: 200,
+      status: 400,
+      message: "Missing required fields",
+    };
+  }
+
+  const user = await validateRequest();
+  if (!user.user || !user.session) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  const profile = await getProfileFromUserId(user.user.id);
+  if (profile[0].id !== profileId) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  let avatarUrl;
+  if (imageFile) {
+    const buffer = await imageFile.arrayBuffer();
+    const imageBuffer = Buffer.from(buffer);
+    const resizedImage = await convertImage(imageBuffer, 150);
+    try {
+      const presignedUrl = await getPresignedUrl();
+      const res = await fetch(presignedUrl, {
+        method: "PUT",
+        body: resizedImage,
+        headers: {
+          "Content-Type": "image/jpeg",
+          "Content-Disposition": `attachment; filename="${profile[0].name}_avatar"`,
+        },
+      });
+      avatarUrl = res.url.split("?")[0];
+    } catch (e) {
+      console.error(e);
+      return {
+        status: 500,
+        message: "There was an upload issue, please try again later",
+      };
+    }
+  }
+
+  try {
+    await updateProfile(profileId, {
+      avatar: imageFile && avatarUrl ? avatarUrl : currentAvatar,
+      website,
+      spotify,
+      soundcloud,
+      bandcamp,
+    });
+    return {
+      status: 201,
       message: "Profile updated",
     };
   } catch (e) {

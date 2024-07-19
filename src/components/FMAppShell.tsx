@@ -10,13 +10,15 @@ import {
   Burger,
   Button,
   Group,
+  Menu,
   Modal,
   Skeleton,
   Stack,
   Text,
+  UnstyledButton,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHover } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
@@ -42,6 +44,7 @@ export default function FMAppShell({
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post">("login");
   const [modalTitle, setModalTitle] = useState("");
+  const { hovered, ref } = useHover();
 
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
@@ -117,12 +120,59 @@ export default function FMAppShell({
               </Button> */}
 
             {user.user ? (
-              <Avatar
-                src={profileValue?.avatar}
-                name={profileValue?.name}
-                size={40}
-                color={theme.primaryColor}
-              />
+              <Menu
+                trigger="click-hover"
+                position="bottom-end"
+                withArrow
+                arrowPosition="center"
+                openDelay={100}
+                closeDelay={500}
+              >
+                <Menu.Target>
+                  <UnstyledButton>
+                    <Avatar
+                      src={profileValue?.avatar}
+                      name={profileValue?.name}
+                      size={40}
+                      color={theme.primaryColor}
+                    />
+                  </UnstyledButton>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item>
+                    <Button
+                      p={0}
+                      variant="transparent"
+                      onClick={() => {
+                        router.push(`/u/${profileValue?.name}`);
+                      }}
+                    >
+                      Profile
+                    </Button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Button p={0} variant="transparent">
+                      Edit Info
+                    </Button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Button
+                      p={0}
+                      variant="transparent"
+                      onClick={async () =>
+                        await logout().then(() => {
+                          queryClient.invalidateQueries({
+                            queryKey: ["boardList", profileValue?.id],
+                          });
+                          setProfileValue(profiles.$inferSelect);
+                        })
+                      }
+                    >
+                      Logout
+                    </Button>
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
             ) : (
               <Button
                 variant="transparent"

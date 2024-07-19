@@ -14,3 +14,11 @@ export type UserLikesResponse = {
   data: UserLike[];
   message: string;
 };
+
+export type UpdateProfile = {
+  avatar: string;
+  bandcamp: string;
+  soundcloud: string;
+  spotify: string;
+  website: string;
+};

@@ -1,5 +1,6 @@
 import { db } from "@/db/db";
 import { profiles, userTable } from "@/db/schema";
+import { UpdateProfile } from "@/types/userTypes";
 import { eq } from "drizzle-orm";
 
 type NewUser = typeof userTable.$inferInsert;
@@ -59,4 +60,8 @@ export const getUserBoards = async (profileId: string) => {
     .select({ boardList: profiles.boardList })
     .from(profiles)
     .where(eq(profiles.id, profileId));
+};
+
+export const updateProfile = async (profileId: string, data: UpdateProfile) => {
+  return await db.update(profiles).set(data).where(eq(profiles.id, profileId));
 };

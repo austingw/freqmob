@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import ImageUpload from "./ImageUpload";
 import { z } from "zod";
@@ -78,6 +80,7 @@ const ProfileUpdateForm = () => {
                 form.reset();
                 //close();
               } else {
+                console.log(res);
                 notifications.show({
                   message: "Failed to update, please try again",
                   icon: <IconX />,
@@ -110,9 +113,7 @@ const ProfileUpdateForm = () => {
         />
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
-          <Button variant="light" onClick={close}>
-            Cancel
-          </Button>
+          <Button variant="light">Cancel</Button>
         </Group>
       </form>
     </Stack>

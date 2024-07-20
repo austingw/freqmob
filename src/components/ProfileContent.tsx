@@ -200,7 +200,7 @@ const ProfileContent = ({
                 name={profile?.name}
               />
             );
-          })}{" "}
+          })}
           <Pagination
             total={commentCount / 10 >= 1 ? Math.ceil(commentCount / 10) : 1}
             value={commentPage}

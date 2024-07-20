@@ -1,6 +1,13 @@
 "use client";
 
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import {
+  Avatar,
+  Button,
+  Group,
+  Stack,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 import ImageUpload from "./ImageUpload";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
@@ -17,6 +24,7 @@ import {
 import generateFormData from "@/utils/generateFormData";
 import { putProfile } from "@/app/actions/profileActions";
 import { notifications } from "@mantine/notifications";
+import { useState } from "react";
 
 interface FormValues {
   imageFile: File | string;
@@ -37,21 +45,25 @@ const schema = z.object({
 });
 
 const ProfileUpdateForm = () => {
+  const [tempImg, setTempImg] = useState<string | null>(null);
   const profileValue = useAtomValue(profileAtom);
+  const theme = useMantineTheme();
 
   const form = useForm<FormValues>({
     initialValues: {
       imageFile: "",
       currentAvatar: profileValue?.avatar,
-      website: profileValue?.website,
-      spotify: profileValue?.spotify,
-      soundcloud: profileValue?.soundcloud,
-      bandcamp: profileValue?.bandcamp,
+      website: profileValue?.website || null,
+      spotify: profileValue?.spotify || null,
+      soundcloud: profileValue?.soundcloud || null,
+      bandcamp: profileValue?.bandcamp || null,
     },
     validate: zodResolver(schema),
   });
+
   const addFile = async (type: "audioFile" | "imageFile", file: File) => {
     form.setFieldValue(type, file);
+    setTempImg(URL.createObjectURL(file));
   };
 
   return (
@@ -77,7 +89,6 @@ const ProfileUpdateForm = () => {
                   icon: <IconCheck />,
                   autoClose: 3000,
                 });
-                form.reset();
                 //close();
               } else {
                 console.log(res);
@@ -90,31 +101,39 @@ const ProfileUpdateForm = () => {
             });
         }}
       >
-        <ImageUpload addFile={addFile} />
-        <TextInput
-          label="Website"
-          leftSection={<IconLink />}
-          {...form.getInputProps("website")}
-        />
-        <TextInput
-          label="Spotify"
-          leftSection={<IconBrandSpotify />}
-          {...form.getInputProps("spotify")}
-        />
-        <TextInput
-          label="Soundcloud"
-          leftSection={<IconBrandSoundcloud />}
-          {...form.getInputProps("soundcloud")}
-        />
-        <TextInput
-          label="Bandcamp"
-          leftSection={<IconBrandBandcamp />}
-          {...form.getInputProps("bandcamp")}
-        />
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">Submit</Button>
-          <Button variant="light">Cancel</Button>
-        </Group>
+        <Stack align="center" justify="center" w={"100%"}>
+          <Avatar
+            src={tempImg || profileValue?.avatar}
+            name={profileValue?.name}
+            size={"xl"}
+            color={theme.primaryColor}
+          />
+          <ImageUpload addFile={addFile} title={"Profile Image"} />
+          <TextInput
+            label="Website"
+            leftSection={<IconLink />}
+            {...form.getInputProps("website")}
+          />
+          <TextInput
+            label="Spotify"
+            leftSection={<IconBrandSpotify />}
+            {...form.getInputProps("spotify")}
+          />
+          <TextInput
+            label="Soundcloud"
+            leftSection={<IconBrandSoundcloud />}
+            {...form.getInputProps("soundcloud")}
+          />
+          <TextInput
+            label="Bandcamp"
+            leftSection={<IconBrandBandcamp />}
+            {...form.getInputProps("bandcamp")}
+          />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit">Submit</Button>
+            <Button variant="light">Cancel</Button>
+          </Group>
+        </Stack>
       </form>
     </Stack>
   );

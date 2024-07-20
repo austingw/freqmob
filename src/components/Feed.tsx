@@ -72,6 +72,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
           total={count / 10 >= 1 ? Math.ceil(count / 10) : 1}
           value={page}
           onChange={setPage}
+          hideWithOnePage
         />
       </Flex>
       <Modal

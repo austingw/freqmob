@@ -205,6 +205,7 @@ const ProfileContent = ({
             total={commentCount / 10 >= 1 ? Math.ceil(commentCount / 10) : 1}
             value={commentPage}
             onChange={setCommentPage}
+            hideWithOnePage
           />
         </Stack>
       )}

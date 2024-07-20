@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { board: string } }) {
   }
 
   const posts = boardData[0]?.id
-    ? await queryPostsByBoard(1, boardData[0]?.id)
+    ? await queryPostsByBoard(1, boardData[0]?.id, "new")
     : null;
 
   const user = await validateRequest();

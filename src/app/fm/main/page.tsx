@@ -10,7 +10,7 @@ import {
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export default async function Page() {
-  const posts = await queryPosts(1);
+  const posts = await queryPosts(1, "new");
 
   const user = await validateRequest();
   const postIds = posts ? posts.map((post) => post.posts.id) : [];

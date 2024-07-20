@@ -15,11 +15,12 @@ import {
   Skeleton,
   Stack,
   Text,
+  TextInput,
   UnstyledButton,
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
@@ -223,7 +224,16 @@ export default function FMAppShell({
             align="flex-start"
             justify="flex-start"
             gap={isLoading ? 8 : 0}
+            w={"100%"}
           >
+            <TextInput
+              variant="filled"
+              radius={"lg"}
+              placeholder="Search for boards/posts"
+              w={"100%"}
+              leftSection={<IconSearch size={16} />}
+              pb={8}
+            />
             <Text c="black">
               {profile ? "your boards" : "login to view boards!"}
             </Text>{" "}

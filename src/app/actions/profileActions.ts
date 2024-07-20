@@ -116,10 +116,16 @@ export const putProfile = async (profileId: string, data: FormData) => {
   try {
     await updateProfile(profileId, {
       avatar: imageFile && avatarUrl ? avatarUrl : currentAvatar,
-      website: website || null,
-      spotify: spotify || null,
-      soundcloud: soundcloud || null,
-      bandcamp: bandcamp || null,
+      website:
+        !website || website === "" || website === "null" ? null : website,
+      spotify:
+        !spotify || spotify === "" || website === "null" ? null : spotify,
+      soundcloud:
+        !soundcloud || soundcloud === "" || soundcloud === "null"
+          ? null
+          : soundcloud,
+      bandcamp:
+        !bandcamp || bandcamp === "" || bandcamp === "null" ? null : bandcamp,
     });
     return {
       status: 201,

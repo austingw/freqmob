@@ -122,7 +122,7 @@ const ProfileContent = ({
                 <IconBrandSpotify />
               </ActionIcon>
             )}
-            {profile?.spotify && (
+            {profile?.soundcloud && (
               <ActionIcon
                 variant="subtle"
                 onClick={() => {

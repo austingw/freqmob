@@ -47,8 +47,6 @@ export default async function Page({
       ? await getUserLikes(postIds, userProfileId)
       : null;
 
-  console.log(profile, posts, comments);
-
   return (
     <div>
       <ProfileContent

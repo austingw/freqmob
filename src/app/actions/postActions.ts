@@ -13,7 +13,6 @@ import {
   queryPostsByBoard,
 } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
-import sharp from "sharp";
 
 export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));

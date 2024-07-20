@@ -210,7 +210,7 @@ export default function FMAppShell({
             {modalContent === "login" && (
               <AuthModal setModalTitle={setModalTitle} close={close} />
             )}
-            {modalContent === "edit" && <ProfileUpdateForm />}
+            {modalContent === "edit" && <ProfileUpdateForm close={close} />}
             {modalContent === "post" && (
               <PostForm close={close} boardList={data?.data} />
             )}

@@ -40,7 +40,10 @@ interface FormValues {
 }
 
 const schema = z.object({
-  title: z.string().min(3).max(100),
+  title: z
+    .string()
+    .min(3, { message: "Title must be at least 3 characters" })
+    .max(100, { message: "Title must be less than 100 characters" }),
   description: z.string().optional(),
   audioFile: z.instanceof(Blob).optional(),
   imageFile: z.instanceof(Blob).optional(),
@@ -50,7 +53,9 @@ const schema = z.object({
   key: z.string().optional(),
   inspiration: z.string().optional(),
   genre: z.string().optional(),
-  boardName: z.string(),
+  boardName: z.string().min(1, {
+    message: "Please select a board",
+  }),
   uploadUrl: z.string().optional(),
 });
 
@@ -93,6 +98,7 @@ const PostForm = ({
     form.setFieldValue(type, file);
   };
 
+  console.log(form.errors);
   return (
     <Flex direction="column" gap="xs" w={"75vw"} align="center" pb={10}>
       <form
@@ -138,6 +144,8 @@ const PostForm = ({
               clearable
               data={boardList || undefined}
               onChange={(value) => form.setFieldValue("boardName", value || "")}
+              error={form.errors.boardName}
+              withAsterisk
             />
             <Stack gap={2}>
               <Text fz={"sm"} fw={500}>

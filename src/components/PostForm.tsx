@@ -191,7 +191,7 @@ const PostForm = ({
                 placeholder="Enter the genre..."
                 {...form.getInputProps("genre")}
               />
-              <ImageUpload addFile={addFile} />
+              <ImageUpload addFile={addFile} title={"Track Art"} />
             </Group>
           )}
           {showUpload && <FileUpload addFile={addFile} />}

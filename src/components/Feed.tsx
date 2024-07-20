@@ -8,6 +8,8 @@ import { PostWithMedia } from "@/db/schema";
 import Post from "./Post";
 import { UserLike } from "@/types/userTypes";
 import { useGetPosts } from "@/queries/posts";
+import { useAtomValue } from "jotai";
+import { sortAtom } from "./BoardHeader";
 
 interface FeedProps {
   initialPosts: PostWithMedia[] | null;
@@ -22,8 +24,14 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const sortValue = useAtomValue(sortAtom);
 
-  const { data } = useGetPosts(initialPosts, page, boardId);
+  const { data } = useGetPosts(
+    initialPosts,
+    page,
+    sortValue as SortOptions,
+    boardId,
+  );
 
   const handleClickPost = (postId: number) => {
     const post = data?.find((post) => post.posts.id === postId);

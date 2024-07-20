@@ -1,6 +1,7 @@
 import { db } from "@/db/db";
 import { audio, images, posts, profiles } from "@/db/schema";
 import { count, desc, eq } from "drizzle-orm";
+import { getSortVal } from "../getSortVal";
 
 type NewPost = typeof posts.$inferInsert;
 
@@ -8,7 +9,8 @@ export const insertPost = async (post: NewPost) => {
   return await db.insert(posts).values(post);
 };
 
-export const queryPosts = async (page: number) => {
+export const queryPosts = async (page: number, sort: SortOptions) => {
+  const sortVal = getSortVal(sort);
   return await db
     .select()
     .from(posts)
@@ -17,10 +19,15 @@ export const queryPosts = async (page: number) => {
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .limit(10)
     .offset((page - 1) * 10)
-    .orderBy(desc(posts.createdAt));
+    .orderBy(desc(sortVal));
 };
 
-export const queryPostsByBoard = async (boardId: number, page: number) => {
+export const queryPostsByBoard = async (
+  boardId: number,
+  page: number,
+  sort: SortOptions,
+) => {
+  const sortVal = getSortVal(sort);
   return await db
     .select()
     .from(posts)
@@ -30,7 +37,7 @@ export const queryPostsByBoard = async (boardId: number, page: number) => {
     .where(eq(posts.boardId, boardId))
     .limit(5)
     .offset((page - 1) * 5)
-    .orderBy(desc(posts.createdAt));
+    .orderBy(desc(sortVal));
 };
 
 export const queryPostsByProfile = async (profileId: string) => {

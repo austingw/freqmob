@@ -133,12 +133,16 @@ export const createPost = async (post: FormData) => {
   }
 };
 
-export const getPostsByBoard = async (page: number, boardId?: number) => {
+export const getPostsByBoard = async (
+  page: number,
+  sort: SortOptions,
+  boardId?: number,
+) => {
   try {
     if (!boardId) {
-      return await queryPosts(page);
+      return await queryPosts(page, sort);
     }
-    return await queryPostsByBoard(boardId, page);
+    return await queryPostsByBoard(boardId, page, sort);
   } catch (e) {
     console.error(e);
     return null;

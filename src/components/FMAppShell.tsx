@@ -232,6 +232,15 @@ export default function FMAppShell({
               placeholder="Search for boards/posts"
               w={"100%"}
               leftSection={<IconSearch size={16} />}
+              leftSectionProps={{
+                onClick: () => console.log("search"),
+                style: { cursor: "pointer" },
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  console.log("search");
+                }
+              }}
               pb={8}
             />
             <Text c="black">

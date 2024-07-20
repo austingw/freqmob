@@ -1,6 +1,7 @@
 "use server";
 
 import { getUserLikes } from "@/app/actions/likeActions";
+import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
 import { validateRequest } from "@/db/auth";
 import {
@@ -29,6 +30,7 @@ export default async function Page() {
 
   return (
     <div>
+      <BoardHeader name={""} />
       <Feed
         initialPosts={posts}
         initialLikes={postLikes}

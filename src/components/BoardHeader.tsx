@@ -43,9 +43,11 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
   return (
     <Group align="center" justify="space-between" pb={8} pt={0}>
       <Group align="center" justify="flex-start" gap={0}>
-        <Text fz={"h1"} fw={"bold"} pb={8}>
-          {name}
-        </Text>
+        {name?.length > 0 && (
+          <Text fz={"h1"} fw={"bold"} pb={8}>
+            {name}
+          </Text>
+        )}
         <Menu
           opened={opened}
           onChange={setOpened}
@@ -93,7 +95,8 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
           </Menu.Dropdown>
         </Menu>
       </Group>
-      {data?.status === 200 &&
+      {name?.length > 0 &&
+        data?.status === 200 &&
         (!data?.data?.includes(name) ? (
           <Button
             onClick={async () =>

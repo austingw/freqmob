@@ -17,8 +17,8 @@ export type UserLikesResponse = {
 
 export type UpdateProfile = {
   avatar: string;
-  bandcamp: string;
-  soundcloud: string;
-  spotify: string;
-  website: string;
+  bandcamp: string | null;
+  soundcloud: string | null;
+  spotify: string | null;
+  website: string | null;
 };

@@ -11,7 +11,7 @@ import {
 import ImageUpload from "./ImageUpload";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { profileAtom } from "./FMAppShell";
 import {
   IconBrandBandcamp,
@@ -44,9 +44,9 @@ const schema = z.object({
   bandcamp: z.string().optional().nullable(),
 });
 
-const ProfileUpdateForm = () => {
+const ProfileUpdateForm = ({ close }: { close: () => void }) => {
   const [tempImg, setTempImg] = useState<string | null>(null);
-  const profileValue = useAtomValue(profileAtom);
+  const [profileValue, setProfileValue] = useAtom(profileAtom);
   const theme = useMantineTheme();
 
   const form = useForm<FormValues>({
@@ -89,7 +89,10 @@ const ProfileUpdateForm = () => {
                   icon: <IconCheck />,
                   autoClose: 3000,
                 });
-                //close();
+                if (res.data?.[0]) {
+                  setProfileValue(res.data?.[0]);
+                }
+                close();
               } else {
                 console.log(res);
                 notifications.show({
@@ -131,7 +134,9 @@ const ProfileUpdateForm = () => {
           />
           <Group justify="flex-end" mt="md">
             <Button type="submit">Submit</Button>
-            <Button variant="light">Cancel</Button>
+            <Button variant="light" onClick={close}>
+              Cancel
+            </Button>
           </Group>
         </Stack>
       </form>

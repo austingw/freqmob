@@ -63,5 +63,9 @@ export const getUserBoards = async (profileId: string) => {
 };
 
 export const updateProfile = async (profileId: string, data: UpdateProfile) => {
-  return await db.update(profiles).set(data).where(eq(profiles.id, profileId));
+  return await db
+    .update(profiles)
+    .set(data)
+    .where(eq(profiles.id, profileId))
+    .returning();
 };

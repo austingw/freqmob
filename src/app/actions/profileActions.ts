@@ -1,7 +1,6 @@
 "use server";
 
 import { validateRequest } from "@/db/auth";
-import { UpdateProfile } from "@/types/userTypes";
 import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
@@ -114,7 +113,7 @@ export const putProfile = async (profileId: string, data: FormData) => {
   }
 
   try {
-    await updateProfile(profileId, {
+    const updatedProfile = await updateProfile(profileId, {
       avatar: imageFile && avatarUrl ? avatarUrl : currentAvatar,
       website:
         !website || website === "" || website === "null" ? null : website,
@@ -127,9 +126,11 @@ export const putProfile = async (profileId: string, data: FormData) => {
       bandcamp:
         !bandcamp || bandcamp === "" || bandcamp === "null" ? null : bandcamp,
     });
+    console.log("q+", updatedProfile);
     return {
       status: 201,
       message: "Profile updated",
+      data: updatedProfile,
     };
   } catch (e) {
     return {

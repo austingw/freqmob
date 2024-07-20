@@ -18,7 +18,7 @@ import {
   UnstyledButton,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure, useHover } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import PostForm from "./PostForm";
 import CreateBoardInput from "./CreateBoardInput";
 import { useQueryClient } from "@tanstack/react-query";
+import ProfileUpdateForm from "./ProfileUpdateForm";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -42,9 +43,10 @@ export default function FMAppShell({
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
-  const [modalContent, setModalContent] = useState<"login" | "post">("login");
+  const [modalContent, setModalContent] = useState<"login" | "post" | "edit">(
+    "login",
+  );
   const [modalTitle, setModalTitle] = useState("");
-  const { hovered, ref } = useHover();
 
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
@@ -151,7 +153,15 @@ export default function FMAppShell({
                     </Button>
                   </Menu.Item>
                   <Menu.Item>
-                    <Button p={0} variant="transparent">
+                    <Button
+                      p={0}
+                      variant="transparent"
+                      onClick={() => {
+                        setModalContent("edit");
+                        setModalTitle("Edit Profile Info");
+                        open();
+                      }}
+                    >
                       Edit Info
                     </Button>
                   </Menu.Item>
@@ -200,6 +210,7 @@ export default function FMAppShell({
             {modalContent === "login" && (
               <AuthModal setModalTitle={setModalTitle} close={close} />
             )}
+            {modalContent === "edit" && <ProfileUpdateForm />}
             {modalContent === "post" && (
               <PostForm close={close} boardList={data?.data} />
             )}

@@ -182,9 +182,10 @@ const ProfileContent = ({
             );
           })}
           <Pagination
-            total={postCount / 10 >= 1 ? postCount / 10 : 1}
+            total={postCount / 10 >= 1 ? Math.ceil(postCount / 10) : 1}
             value={postPage}
             onChange={setPostPage}
+            hideWithOnePage
           />
         </Stack>
       )}
@@ -201,7 +202,7 @@ const ProfileContent = ({
             );
           })}{" "}
           <Pagination
-            total={commentCount / 10 >= 1 ? commentCount / 10 : 1}
+            total={commentCount / 10 >= 1 ? Math.ceil(commentCount / 10) : 1}
             value={commentPage}
             onChange={setCommentPage}
           />

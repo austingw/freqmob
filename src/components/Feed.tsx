@@ -69,7 +69,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
           );
         })}
         <Pagination
-          total={count / 10 >= 1 ? count / 10 : 1}
+          total={count / 10 >= 1 ? Math.ceil(count / 10) : 1}
           value={page}
           onChange={setPage}
         />

@@ -12,6 +12,7 @@ import {
   useMantineTheme,
   rem,
   Button,
+  Avatar,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -256,6 +257,12 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
               <Paper withBorder radius="md" key={comment.comments.id} px={10}>
                 <Stack gap={0} p={4} pb={12}>
                   <Group gap={4} align="center" justify="flex-start">
+                    <Avatar
+                      src={comment?.profiles?.avatar}
+                      name={comment?.profiles?.name}
+                      size={"sm"}
+                      color={theme.primaryColor}
+                    />
                     <Button
                       fz="xs"
                       variant="transparent"

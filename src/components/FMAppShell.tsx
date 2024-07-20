@@ -48,6 +48,7 @@ export default function FMAppShell({
     "login",
   );
   const [modalTitle, setModalTitle] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
@@ -231,14 +232,20 @@ export default function FMAppShell({
               radius={"lg"}
               placeholder="Search for boards/posts"
               w={"100%"}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.currentTarget.value)}
               leftSection={<IconSearch size={16} />}
               leftSectionProps={{
-                onClick: () => console.log("search"),
+                onClick: () => {
+                  if (searchTerm.length > 0) {
+                    router.push(`/search?term=${searchTerm}`);
+                  }
+                },
                 style: { cursor: "pointer" },
               }}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  console.log("search");
+                if (e.key === "Enter" && searchTerm.length > 0) {
+                  router.push(`/search?term=${searchTerm}`);
                 }
               }}
               pb={8}

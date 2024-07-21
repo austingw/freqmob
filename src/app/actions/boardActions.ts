@@ -1,7 +1,10 @@
 "use server";
 
 import { validateRequest } from "@/db/auth";
-import { insertBoard } from "@/utils/operations/boardDbOperations";
+import {
+  insertBoard,
+  queryBoardsBySearchTerm,
+} from "@/utils/operations/boardDbOperations";
 import {
   addBoardSub,
   getProfileFromUserId,
@@ -84,5 +87,14 @@ export const createBoard = async (name: string) => {
       status: 500,
       message: "Unable to create board",
     };
+  }
+};
+
+export const getBoardsBySearchTerm = async (searchTerm: string) => {
+  try {
+    return await queryBoardsBySearchTerm(searchTerm);
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 };

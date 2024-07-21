@@ -11,6 +11,7 @@ import {
   insertPost,
   queryPosts,
   queryPostsByBoard,
+  queryPostsBySearchTerm,
 } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
@@ -143,6 +144,19 @@ export const getPostsByBoard = async (
       return await queryPosts(page, sort);
     }
     return await queryPostsByBoard(boardId, page, sort);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const getPostsBySearchTerm = async (
+  searchTerm: string,
+  page: number,
+  sort: SortOptions,
+) => {
+  try {
+    return await queryPostsBySearchTerm(searchTerm, page, sort);
   } catch (e) {
     console.error(e);
     return null;

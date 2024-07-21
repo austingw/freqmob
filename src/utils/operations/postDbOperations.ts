@@ -91,3 +91,15 @@ export const queryPostsBySearchTerm = async (
     .offset((page - 1) * 10)
     .orderBy(desc(sortVal));
 };
+
+export const queryPostsCountBySearchTerm = async (searchTerm: string) => {
+  return await db
+    .select({ count: count() })
+    .from(posts)
+    .where(
+      or(
+        like(posts.title, `%${searchTerm}%`),
+        like(posts.description, `%${searchTerm}%`),
+      ),
+    );
+};

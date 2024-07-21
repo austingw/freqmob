@@ -6,7 +6,9 @@ import {
   LoadingOverlay,
   Modal,
   Pagination,
+  SegmentedControl,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import Post from "./Post";
 import PostCard from "./PostCard";
@@ -34,9 +36,11 @@ const SearchResults = ({
 }: SearchResultsProps) => {
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [sortValue, setSortValue] = useState<SortOptions>("new");
+  const [segment, setSegment] = useState<"posts" | "boards">("posts");
   const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const theme = useMantineTheme();
 
   const { data, isLoading } = useGetPostsBySearchTerm(
     initialPosts,
@@ -67,28 +71,45 @@ const SearchResults = ({
         h="100%"
       >
         <LoadingOverlay visible={isLoading} />
-        <Group align="center" justify="space-between" gap={16}>
+        <Group align="center" justify="space-between" gap={16} w={"100%"}>
           <Group align="center" gap={8}>
             <Text fz="h1" fw={"bold"}>
-              Search results for {searchTerm}
+              Results for search: {`"` + searchTerm + `"`}
             </Text>
             <SortMenu sortValue={sortValue} setSortValue={setSortValue} />
           </Group>
+          <SegmentedControl
+            color={theme.primaryColor}
+            w={isMobile ? "100%" : "300px"}
+            data={[
+              {
+                label: "Posts",
+                value: "posts",
+              },
+              {
+                label: "Boards",
+                value: "boards",
+              },
+            ]}
+            value={segment}
+            onChange={(value) => setSegment(value as "posts" | "boards")}
+          />
         </Group>
-        {data?.map((post) => {
-          return (
-            <PostCard
-              key={post.posts.id}
-              clickPost={() => handleClickPost(post.posts.id)}
-              userLike={
-                initialLikes?.filter(
-                  (like) => like.postId === post.posts.id,
-                )[0] || null
-              }
-              post={post}
-            />
-          );
-        })}
+        {segment === "posts" &&
+          data?.map((post) => {
+            return (
+              <PostCard
+                key={post.posts.id}
+                clickPost={() => handleClickPost(post.posts.id)}
+                userLike={
+                  initialLikes?.filter(
+                    (like) => like.postId === post.posts.id,
+                  )[0] || null
+                }
+                post={post}
+              />
+            );
+          })}
         <Pagination
           total={count / 10 >= 1 ? Math.ceil(count / 10) : 1}
           value={page}

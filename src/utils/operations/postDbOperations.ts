@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { audio, images, posts, profiles } from "@/db/schema";
-import { count, desc, eq } from "drizzle-orm";
+import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
 
 type NewPost = typeof posts.$inferInsert;
@@ -35,8 +35,8 @@ export const queryPostsByBoard = async (
     .leftJoin(images, eq(posts.imageId, images.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.boardId, boardId))
-    .limit(5)
-    .offset((page - 1) * 5)
+    .limit(10)
+    .offset((page - 1) * 10)
     .orderBy(desc(sortVal));
 };
 
@@ -67,4 +67,27 @@ export const queryPostCountByProfileId = async (profileId: string) => {
     .select({ count: count() })
     .from(posts)
     .where(eq(posts.profileId, profileId));
+};
+
+export const queryPostsBySearchTerm = async (
+  searchTerm: string,
+  page: number,
+  sort: SortOptions,
+) => {
+  const sortVal = getSortVal(sort);
+  return await db
+    .select()
+    .from(posts)
+    .leftJoin(audio, eq(posts.audioId, audio.id))
+    .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(profiles, eq(posts.profileId, profiles.id))
+    .where(
+      or(
+        like(posts.title, `%${searchTerm}%`),
+        like(posts.description, `%${searchTerm}%`),
+      ),
+    )
+    .limit(10)
+    .offset((page - 1) * 10)
+    .orderBy(desc(sortVal));
 };

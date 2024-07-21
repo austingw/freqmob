@@ -18,6 +18,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { UserLike } from "@/types/userTypes";
 import { useGetPostsBySearchTerm } from "@/queries/posts";
 import SortMenu from "./SortMenu";
+import BoardCard from "./BoardCard";
 
 interface SearchResultsProps {
   initialPosts: PostWithMedia[] | null;
@@ -76,7 +77,9 @@ const SearchResults = ({
             <Text fz="h1" fw={"bold"}>
               Results for search: {`"` + searchTerm + `"`}
             </Text>
-            <SortMenu sortValue={sortValue} setSortValue={setSortValue} />
+            {segment === "posts" && (
+              <SortMenu sortValue={sortValue} setSortValue={setSortValue} />
+            )}
           </Group>
           <SegmentedControl
             color={theme.primaryColor}
@@ -125,7 +128,7 @@ const SearchResults = ({
         )}
         {segment === "boards" &&
           initialBoards?.map((board) => {
-            return <h1 key={board.id}>{board.name}</h1>;
+            return <BoardCard key={board.id} board={board} />;
           })}
         {segment === "boards" && initialBoards?.length === 0 && (
           <Text fz="xl" fw={600} c="dimmed">

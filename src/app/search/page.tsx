@@ -1,7 +1,10 @@
 import SearchResults from "@/components/SearchResults";
 import { validateRequest } from "@/db/auth";
 import { queryBoardsBySearchTerm } from "@/utils/operations/boardDbOperations";
-import { queryPostsBySearchTerm } from "@/utils/operations/postDbOperations";
+import {
+  queryPostsBySearchTerm,
+  queryPostsCountBySearchTerm,
+} from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 import { getUserLikes } from "../actions/likeActions";
 
@@ -21,13 +24,18 @@ export default async function Page({
     postIds.length > 0 && profileId
       ? await getUserLikes(postIds, profileId)
       : null;
+  const postCount = await queryPostsCountBySearchTerm(searchParams.term)
+    .catch((e) => {
+      console.error(e);
+    })
+    .then((data) => data?.[0]?.count || 1);
 
   return (
     <SearchResults
       initialPosts={posts}
       initialBoards={boards}
       initialLikes={postLikes}
-      count={10}
+      count={postCount}
       searchTerm={searchParams.term}
     />
   );

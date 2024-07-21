@@ -110,12 +110,28 @@ const SearchResults = ({
               />
             );
           })}
-        <Pagination
-          total={count / 10 >= 1 ? Math.ceil(count / 10) : 1}
-          value={page}
-          onChange={setPage}
-          hideWithOnePage
-        />
+        {segment === "posts" && data?.length === 0 && (
+          <Text fz="xl" fw={600} c="dimmed">
+            No posts found
+          </Text>
+        )}
+        {segment === "posts" && (
+          <Pagination
+            total={count / 10 >= 1 ? Math.ceil(count / 10) : 1}
+            value={page}
+            onChange={setPage}
+            hideWithOnePage
+          />
+        )}
+        {segment === "boards" &&
+          initialBoards?.map((board) => {
+            return <h1 key={board.id}>{board.name}</h1>;
+          })}
+        {segment === "boards" && initialBoards?.length === 0 && (
+          <Text fz="xl" fw={600} c="dimmed">
+            No boards found
+          </Text>
+        )}
       </Flex>
       <Modal
         opened={opened}

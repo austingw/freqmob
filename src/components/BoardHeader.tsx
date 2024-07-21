@@ -1,13 +1,12 @@
 "use client";
 
-import { Button, Group, Menu, Text } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { joinBoard, leaveBoard } from "@/app/actions/boardActions";
 import { useGetBoardList } from "@/queries/boards";
 import { useQueryClient } from "@tanstack/react-query";
-import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 import { profileAtom } from "./FMAppShell";
+import SortMenu from "./SortMenu";
 
 interface BoardHeaderProps {
   name: string;
@@ -19,26 +18,6 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
   const profileValue = useAtomValue(profileAtom);
   const [sortValue, setSortValue] = useAtom(sortAtom);
   const { data } = useGetBoardList(profileValue?.id);
-  const [opened, setOpened] = useState(false);
-
-  const parseLabel = (sort: string) => {
-    switch (sort) {
-      case "new":
-        return "Latest";
-      case "likes":
-        return "Top";
-      case "comments":
-        return "Comments";
-      default:
-        return "Latest";
-    }
-  };
-
-  const [menuTitle, setMenuTitle] = useState(parseLabel(sortValue));
-
-  useEffect(() => {
-    setMenuTitle(parseLabel(sortValue));
-  }, [sortValue]);
 
   return (
     <Group align="center" justify="space-between" pb={8} pt={0}>
@@ -48,52 +27,10 @@ const BoardHeader = ({ name }: BoardHeaderProps) => {
             {name}
           </Text>
         )}
-        <Menu
-          opened={opened}
-          onChange={setOpened}
-          trigger="click-hover"
-          position="bottom-start"
-          withArrow
-          arrowPosition="center"
-          openDelay={100}
-          closeDelay={500}
-        >
-          <Menu.Target>
-            <Button variant="transparent" px={8}>
-              {menuTitle}{" "}
-              {opened ? <IconCaretUp size={16} /> : <IconCaretDown size={16} />}
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item>
-              <Button
-                p={0}
-                variant="transparent"
-                onClick={() => setSortValue("new")}
-              >
-                Latest
-              </Button>
-            </Menu.Item>
-            <Menu.Item>
-              <Button
-                p={0}
-                variant="transparent"
-                onClick={() => setSortValue("likes")}
-              >
-                Top
-              </Button>
-            </Menu.Item>
-            <Menu.Item>
-              <Button
-                p={0}
-                variant="transparent"
-                onClick={() => setSortValue("comments")}
-              >
-                Comments
-              </Button>
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+        <SortMenu
+          sortValue={sortValue as SortOptions}
+          setSortValue={setSortValue}
+        />
       </Group>
       {name?.length > 0 &&
         data?.status === 200 &&

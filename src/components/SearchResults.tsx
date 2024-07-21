@@ -1,4 +1,13 @@
-import { Flex, Modal, Pagination } from "@mantine/core";
+"use client";
+
+import {
+  Flex,
+  Group,
+  LoadingOverlay,
+  Modal,
+  Pagination,
+  Text,
+} from "@mantine/core";
 import Post from "./Post";
 import PostCard from "./PostCard";
 import { useState } from "react";
@@ -6,6 +15,7 @@ import { PostWithMedia, boards } from "@/db/schema";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { UserLike } from "@/types/userTypes";
 import { useGetPostsBySearchTerm } from "@/queries/posts";
+import SortMenu from "./SortMenu";
 
 interface SearchResultsProps {
   initialPosts: PostWithMedia[] | null;
@@ -28,7 +38,7 @@ const SearchResults = ({
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const { data } = useGetPostsBySearchTerm(
+  const { data, isLoading } = useGetPostsBySearchTerm(
     initialPosts,
     searchTerm,
     page,
@@ -56,6 +66,15 @@ const SearchResults = ({
         w="100%"
         h="100%"
       >
+        <LoadingOverlay visible={isLoading} />
+        <Group align="center" justify="space-between" gap={16}>
+          <Group align="center" gap={8}>
+            <Text fz="h1" fw={"bold"}>
+              Search results for {searchTerm}
+            </Text>
+            <SortMenu sortValue={sortValue} setSortValue={setSortValue} />
+          </Group>
+        </Group>
         {data?.map((post) => {
           return (
             <PostCard

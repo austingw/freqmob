@@ -5,11 +5,13 @@ import AuthModal from "@/components/AuthModal";
 import { profiles } from "@/db/schema";
 import { useGetBoardList } from "@/queries/boards";
 import {
+  ActionIcon,
   AppShell,
   Avatar,
   Burger,
   Button,
   Group,
+  Indicator,
   Menu,
   Modal,
   Skeleton,
@@ -20,7 +22,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconBell, IconPlus, IconSearch } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
@@ -122,7 +124,18 @@ export default function FMAppShell({
               >
                 Logout
               </Button> */}
-
+            <Indicator
+              position="top-end"
+              size={8}
+              processing
+              inline
+              mr={8}
+              mt={4}
+            >
+              <ActionIcon variant="outline">
+                <IconBell size={20} />
+              </ActionIcon>
+            </Indicator>
             {user.user ? (
               <Menu
                 trigger="click-hover"

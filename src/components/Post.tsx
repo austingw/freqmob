@@ -13,6 +13,7 @@ import {
   rem,
   Button,
   Avatar,
+  Skeleton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -253,41 +254,49 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
-            {comments?.map((comment) => (
-              <Paper withBorder radius="md" key={comment.comments.id} px={10}>
-                <Stack gap={0} p={4} pb={12}>
-                  <Group gap={4} align="center" justify="flex-start">
-                    <Avatar
-                      src={comment?.profiles?.avatar}
-                      name={comment?.profiles?.name}
-                      size={"sm"}
-                      color={theme.primaryColor}
-                    />
-                    <Button
-                      fz="xs"
-                      variant="transparent"
-                      p={0}
-                      onClick={() => {
-                        router.push(`/u/${comment.profiles.name}`);
-                      }}
-                    >
-                      {comment.profiles.name}
-                    </Button>
-                    <Text fz="xs" c="dimmed">
-                      -{" "}
-                      {dayjs(dayjs().utc().format()).to(
-                        dayjs(comment.comments.createdAt)
-                          .utc()
-                          .local()
-                          .tz()
-                          .format("YYYY-MM-DDTHH:mm:ss") + "Z",
-                      )}
-                    </Text>
-                  </Group>
-                  <Text fz="sm">{comment.comments.content}</Text>
-                </Stack>
-              </Paper>
-            ))}
+            {isLoading ? (
+              <>
+                <Skeleton w={"100%"} h={60} />
+                <Skeleton w={"100%"} h={60} />
+                <Skeleton w={"100%"} h={60} />
+              </>
+            ) : (
+              comments?.map((comment) => (
+                <Paper withBorder radius="md" key={comment.comments.id} px={10}>
+                  <Stack gap={0} p={4} pb={12}>
+                    <Group gap={4} align="center" justify="flex-start">
+                      <Avatar
+                        src={comment?.profiles?.avatar}
+                        name={comment?.profiles?.name}
+                        size={"sm"}
+                        color={theme.primaryColor}
+                      />
+                      <Button
+                        fz="xs"
+                        variant="transparent"
+                        p={0}
+                        onClick={() => {
+                          router.push(`/u/${comment.profiles.name}`);
+                        }}
+                      >
+                        {comment.profiles.name}
+                      </Button>
+                      <Text fz="xs" c="dimmed">
+                        -{" "}
+                        {dayjs(dayjs().utc().format()).to(
+                          dayjs(comment.comments.createdAt)
+                            .utc()
+                            .local()
+                            .tz()
+                            .format("YYYY-MM-DDTHH:mm:ss") + "Z",
+                        )}
+                      </Text>
+                    </Group>
+                    <Text fz="sm">{comment.comments.content}</Text>
+                  </Stack>
+                </Paper>
+              ))
+            )}
           </Stack>
         </Card>
       </ScrollArea.Autosize>

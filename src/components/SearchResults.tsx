@@ -71,7 +71,6 @@ const SearchResults = ({
         w="100%"
         h="100%"
       >
-        <LoadingOverlay visible={isLoading} />
         <Group align="center" justify="space-between" gap={16} w={"100%"}>
           <Group align="center" gap={8}>
             <Text fz="h1" fw={"bold"}>

@@ -229,7 +229,7 @@ export default function FMAppShell({
           >
             <TextInput
               variant="filled"
-              radius={"lg"}
+              radius={"sm"}
               placeholder="Search for boards/posts"
               w={"100%"}
               value={searchTerm}

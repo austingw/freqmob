@@ -87,6 +87,27 @@ export const likes = sqliteTable("likes", {
     .references(() => posts.id),
 });
 
+export const notifications = sqliteTable("notifications", {
+  id: integer("id", {
+    mode: "number",
+  })
+    .notNull()
+    .primaryKey({ autoIncrement: true }),
+  content: text("content").notNull(),
+  profileId: text("profile_id")
+    .notNull()
+    .references(() => profiles.id),
+  postId: integer("post_id").references(() => posts.id),
+  boardId: integer("board_id").references(() => boards.id),
+  isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+});
+
 export const posts = sqliteTable("posts", {
   id: integer("id", {
     mode: "number",

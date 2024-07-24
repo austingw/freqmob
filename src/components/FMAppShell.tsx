@@ -14,6 +14,7 @@ import {
   Indicator,
   Menu,
   Modal,
+  Popover,
   Skeleton,
   Stack,
   Text,
@@ -124,18 +125,26 @@ export default function FMAppShell({
               >
                 Logout
               </Button> */}
-            <Indicator
-              position="top-end"
-              size={8}
-              processing
-              inline
-              mr={8}
-              mt={4}
-            >
-              <ActionIcon variant="outline">
-                <IconBell size={20} />
-              </ActionIcon>
-            </Indicator>
+            <Popover width={300} position="bottom" withArrow shadow="md">
+              <Popover.Target>
+                <Indicator
+                  position="top-end"
+                  size={8}
+                  processing
+                  inline
+                  mr={8}
+                  mt={4}
+                  disabled={!user.user}
+                >
+                  <ActionIcon variant="outline" disabled={!user.user}>
+                    <IconBell size={20} />
+                  </ActionIcon>
+                </Indicator>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <Text size="xs">All caught up!</Text>
+              </Popover.Dropdown>
+            </Popover>
             {user.user ? (
               <Menu
                 trigger="click-hover"
@@ -201,6 +210,7 @@ export default function FMAppShell({
             ) : (
               <Button
                 variant="transparent"
+                p={0}
                 onClick={() => {
                   setModalContent("login");
                   setModalTitle("Login");

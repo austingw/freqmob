@@ -111,20 +111,6 @@ export default function FMAppShell({
             >
               <IconPlus size={16} /> Post
             </Button>
-            {/*
-              <Button
-                variant="transparent"
-                onClick={async () =>
-                  await logout().then(() => {
-                    queryClient.invalidateQueries({
-                      queryKey: ["boardList", profileValue?.id],
-                    });
-                    setProfileValue(profiles.$inferSelect);
-                  })
-                }
-              >
-                Logout
-              </Button> */}
             <Popover width={300} position="bottom" withArrow shadow="md">
               <Popover.Target>
                 <Indicator

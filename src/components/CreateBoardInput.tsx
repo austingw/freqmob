@@ -61,7 +61,7 @@ const CreateBoardInput = () => {
   return (
     <>
       {editable ? (
-        <Group align="center" justify="flex-start" gap="sm">
+        <Group align="center" justify="flex-start" gap="sm" w={"100%"}>
           <TextInput
             value={name}
             left="fm/"

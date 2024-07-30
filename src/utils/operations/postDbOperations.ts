@@ -2,6 +2,7 @@ import { db } from "@/db/db";
 import { audio, images, posts, profiles } from "@/db/schema";
 import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
+import { title } from "process";
 
 type NewPost = typeof posts.$inferInsert;
 
@@ -102,4 +103,21 @@ export const queryPostsCountBySearchTerm = async (searchTerm: string) => {
         like(posts.description, `%${searchTerm}%`),
       ),
     );
+};
+
+export const queryPostById = (postId: number) => {
+  return db
+    .select()
+    .from(posts)
+    .leftJoin(audio, eq(posts.audioId, audio.id))
+    .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(profiles, eq(posts.profileId, profiles.id))
+    .where(eq(posts.id, postId));
+};
+
+export const queryPostDetailsById = async (postId: number) => {
+  return await db
+    .select({ profileId: posts.profileId, title: posts.title })
+    .from(posts)
+    .where(eq(posts.id, postId));
 };

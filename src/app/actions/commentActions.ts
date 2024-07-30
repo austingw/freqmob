@@ -6,6 +6,8 @@ import {
   queryCommentCount,
   queryComments,
 } from "@/utils/operations/commentDbOperations";
+import { insertNotification } from "@/utils/operations/notificationDbOperations";
+import { queryPostDetailsById } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export const createComment = async (comment: FormData) => {
@@ -28,7 +30,14 @@ export const createComment = async (comment: FormData) => {
       content,
       profileId: profile[0].id,
     });
-    return { status: 201, message: "Comment created" };
+    return {
+      status: 201,
+      message: "Comment created",
+      data: {
+        id: profile[0].id,
+        name: profile[0].name,
+      },
+    };
   } catch {
     throw new Error("There was an error creating the comment");
   }

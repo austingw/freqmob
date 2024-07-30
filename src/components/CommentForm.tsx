@@ -1,6 +1,7 @@
 "use client";
 
 import { createComment } from "@/app/actions/commentActions";
+import { postCommentNotification } from "@/app/actions/notificationActions";
 import generateFormData from "@/utils/generateFormData";
 import { Button, Flex, Group, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
@@ -51,7 +52,7 @@ const CommentForm = ({ postId, setValue }: CommentFormProps) => {
                 autoClose: 3000,
               });
             })
-            .then((res) => {
+            .then(async (res) => {
               if (res?.status === 201) {
                 notifications.show({
                   message: "Comment created!",
@@ -66,6 +67,13 @@ const CommentForm = ({ postId, setValue }: CommentFormProps) => {
                 queryClient.invalidateQueries({
                   queryKey: ["commentCount", postId],
                 });
+                res?.data?.id &&
+                  res?.data?.name &&
+                  (await postCommentNotification(
+                    postId,
+                    res.data.id,
+                    res.data.name,
+                  ));
               } else {
                 notifications.show({
                   message: "Failed to create comment, please try again",

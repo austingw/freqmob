@@ -2,12 +2,13 @@ import { db } from "@/db/db";
 import { audio, images, posts, profiles } from "@/db/schema";
 import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
-import { title } from "process";
 
 type NewPost = typeof posts.$inferInsert;
 
 export const insertPost = async (post: NewPost) => {
-  return await db.insert(posts).values(post);
+  return await db.insert(posts).values(post).returning({
+    id: posts.id,
+  });
 };
 
 export const queryPosts = async (page: number, sort: SortOptions) => {

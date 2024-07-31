@@ -117,7 +117,7 @@ export const createPost = async (post: FormData) => {
   }
 
   try {
-    await insertPost({
+    const post = await insertPost({
       title,
       description,
       type,
@@ -128,7 +128,11 @@ export const createPost = async (post: FormData) => {
       boardId: boardData[0].id,
     });
 
-    return { status: 201, message: "Post created" };
+    return {
+      status: 201,
+      message: "Post created",
+      data: { title, boardId: boardData[0].id, postId: post[0].id },
+    };
   } catch (e) {
     return { status: 500, message: "There was an error creating the post" };
   }

@@ -6,8 +6,6 @@ import {
   queryCommentCount,
   queryComments,
 } from "@/utils/operations/commentDbOperations";
-import { insertNotification } from "@/utils/operations/notificationDbOperations";
-import { queryPostDetailsById } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 export const createComment = async (comment: FormData) => {

@@ -23,6 +23,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import ImageUpload from "./ImageUpload";
+import { postPostNotification } from "@/app/actions/notificationActions";
 
 interface FormValues {
   title: string;
@@ -116,13 +117,20 @@ const PostForm = ({
                 autoClose: 3000,
               });
             })
-            .then((res) => {
+            .then(async (res) => {
               if (res?.status === 201) {
                 notifications.show({
                   message: "Post created!",
                   icon: <IconCheck />,
                   autoClose: 3000,
                 });
+                res.data &&
+                  (await postPostNotification({
+                    boardId: res.data.boardId,
+                    postId: res.data.postId,
+                    posterId: res.data.profileId,
+                    postTitle: res.data.title,
+                  }));
                 form.reset();
                 close();
               } else {

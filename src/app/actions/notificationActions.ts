@@ -24,20 +24,19 @@ export const postCommentNotification = async (
   }
 };
 
-export const postPostNotification = async (
-  boardId: number,
-  postTitle: number,
-  postId: number,
-  posterId: string,
-  username: string,
-) => {
-  const boardDetails = await queryBoardById(boardId);
-  if (posterId !== boardDetails[0].profileId) {
+export const postPostNotification = async (req: {
+  boardId: number;
+  postId: number;
+  posterId: string;
+  postTitle: string;
+}) => {
+  const boardDetails = await queryBoardById(req.boardId);
+  if (req.posterId !== boardDetails[0].profileId) {
     try {
       await insertNotification({
-        boardId,
-        content: `New post ${postTitle} by u/${username} posted in your board "${boardDetails[0].name}"`,
-        postId,
+        boardId: req.boardId,
+        content: `New post ${req.postTitle} posted in your board "${boardDetails[0].name}"`,
+        postId: req.postId,
         profileId: boardDetails[0].profileId,
       });
     } catch (e) {

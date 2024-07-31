@@ -131,7 +131,12 @@ export const createPost = async (post: FormData) => {
     return {
       status: 201,
       message: "Post created",
-      data: { title, boardId: boardData[0].id, postId: post[0].id },
+      data: {
+        title,
+        boardId: boardData[0].id,
+        postId: post[0].id,
+        profileId: profile[0].id,
+      },
     };
   } catch (e) {
     return { status: 500, message: "There was an error creating the post" };

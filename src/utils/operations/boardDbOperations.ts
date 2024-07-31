@@ -11,6 +11,10 @@ export const queryBoardByName = async (name: string) => {
     .where(eq(boards.name, name.toLowerCase().trim()));
 };
 
+export const queryBoardById = async (id: number) => {
+  return await db.select().from(boards).where(eq(boards.id, id));
+};
+
 export const insertBoard = async (board: NewBoard) => {
   return await db.insert(boards).values(board);
 };

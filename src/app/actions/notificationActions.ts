@@ -1,7 +1,10 @@
 "use server";
 
 import { queryBoardById } from "@/utils/operations/boardDbOperations";
-import { insertNotification } from "@/utils/operations/notificationDbOperations";
+import {
+  insertNotification,
+  queryUserNotifications,
+} from "@/utils/operations/notificationDbOperations";
 import { queryPostDetailsById } from "@/utils/operations/postDbOperations";
 
 export const postCommentNotification = async (
@@ -43,4 +46,9 @@ export const postPostNotification = async (req: {
       console.error(e);
     }
   }
+};
+
+export const getNotifications = async (profileId: string, page: number) => {
+  const notifications = await queryUserNotifications(profileId, page);
+  return notifications;
 };

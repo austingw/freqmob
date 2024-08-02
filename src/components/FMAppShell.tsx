@@ -32,6 +32,7 @@ import PostForm from "./PostForm";
 import CreateBoardInput from "./CreateBoardInput";
 import { useQueryClient } from "@tanstack/react-query";
 import ProfileUpdateForm from "./ProfileUpdateForm";
+import { useGetNotifications } from "@/queries/notifications";
 
 export const profileAtom = atom(profiles.$inferSelect);
 
@@ -65,6 +66,8 @@ export default function FMAppShell({
   }, [profile, setProfileValue]);
 
   const { data, isLoading } = useGetBoardList(profileValue?.id);
+  const { data: notifications } = useGetNotifications(profileValue?.id, 1);
+  const isUnread = notifications?.some((n) => n.isRead === false);
 
   const router = useRouter();
 
@@ -116,11 +119,11 @@ export default function FMAppShell({
                 <Indicator
                   position="top-end"
                   size={8}
-                  processing
+                  processing={isUnread}
                   inline
                   mr={8}
                   mt={4}
-                  disabled={!user.user}
+                  disabled={!user.user || !isUnread}
                 >
                   <ActionIcon variant="outline" disabled={!user.user}>
                     <IconBell size={20} />
@@ -128,7 +131,7 @@ export default function FMAppShell({
                 </Indicator>
               </Popover.Target>
               <Popover.Dropdown>
-                <Text size="xs">All caught up!</Text>
+                <Text size="xs">{notifications?.[0]?.content}</Text>
               </Popover.Dropdown>
             </Popover>
             {user.user ? (

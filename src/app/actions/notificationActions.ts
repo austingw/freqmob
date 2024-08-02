@@ -4,6 +4,7 @@ import { queryBoardById } from "@/utils/operations/boardDbOperations";
 import {
   insertNotification,
   queryUserNotifications,
+  updateNotificationAsRead,
 } from "@/utils/operations/notificationDbOperations";
 import { queryPostDetailsById } from "@/utils/operations/postDbOperations";
 
@@ -51,4 +52,17 @@ export const postPostNotification = async (req: {
 export const getNotifications = async (profileId: string, page: number) => {
   const notifications = await queryUserNotifications(profileId, page);
   return notifications;
+};
+
+export const putNotificationRead = async (notificationId: number) => {
+  try {
+    await updateNotificationAsRead(notificationId);
+    return { status: 200, message: "Notification read" };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error reading the notification",
+    };
+  }
 };

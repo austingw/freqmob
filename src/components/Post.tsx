@@ -27,10 +27,6 @@ import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
 import CommentForm from "./CommentForm";
 import { useGetCommentCount, useGetComments } from "@/queries/comments";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import tz from "dayjs/plugin/timezone";
 import { useEffect, useState } from "react";
 import { useGetLikeCount, useGetUserLike } from "@/queries/likes";
 import { useAtomValue } from "jotai";
@@ -39,10 +35,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { UserLike } from "@/types/userTypes";
 import { toggleLike } from "@/app/actions/likeActions";
 import { useRouter } from "next/navigation";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(tz);
+import formatDate from "@/utils/formatDate";
 
 interface PostProps {
   clickClose: () => void;
@@ -282,14 +275,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
                         {comment.profiles.name}
                       </Button>
                       <Text fz="xs" c="dimmed">
-                        -{" "}
-                        {dayjs(dayjs().utc().format()).to(
-                          dayjs(comment.comments.createdAt)
-                            .utc()
-                            .local()
-                            .tz()
-                            .format("YYYY-MM-DDTHH:mm:ss") + "Z",
-                        )}
+                        - {formatDate(comment.comments.createdAt)}
                       </Text>
                     </Group>
                     <Text fz="sm">{comment.comments.content}</Text>

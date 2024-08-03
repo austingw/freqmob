@@ -1,14 +1,6 @@
 import { CommentWithPost } from "@/db/schema";
+import formatDate from "@/utils/formatDate";
 import { Card, Group, Stack, Text, useMantineTheme } from "@mantine/core";
-
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import tz from "dayjs/plugin/timezone";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(tz);
 
 interface CommentCardProps {
   clickPost: () => void;
@@ -35,13 +27,7 @@ const CommentCard = ({ clickPost, comment, name }: CommentCardProps) => {
           </Text>
           <Text fz="sm" c="dimmed">
             {" "}
-            {dayjs(dayjs().utc().format()).to(
-              dayjs(comment.comments.createdAt)
-                .utc()
-                .local()
-                .tz()
-                .format("YYYY-MM-DDTHH:mm:ss") + "Z",
-            )}
+            {formatDate(comment.comments.createdAt)}
           </Text>
         </Group>
         <Group gap={0} align="center">

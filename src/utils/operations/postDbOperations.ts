@@ -11,6 +11,10 @@ export const insertPost = async (post: NewPost) => {
   });
 };
 
+export const updatePost = async (postId: number, post: NewPost) => {
+  return await db.update(posts).set(post).where(eq(posts.id, postId));
+};
+
 export const deletePost = async (postId: number) => {
   return await db.delete(posts).where(eq(posts.id, postId));
 };

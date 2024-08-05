@@ -15,6 +15,13 @@ export const insertComment = async (comment: NewComment) => {
   return await db.insert(comments).values(comment);
 };
 
+export const updateComment = async (commentId: number, content: string) => {
+  return await db
+    .update(comments)
+    .set({ content })
+    .where(eq(comments.id, commentId));
+};
+
 export const deleteComment = async (commentId: number, postId: number) => {
   await db
     .update(posts)

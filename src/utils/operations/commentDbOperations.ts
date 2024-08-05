@@ -15,6 +15,17 @@ export const insertComment = async (comment: NewComment) => {
   return await db.insert(comments).values(comment);
 };
 
+export const deleteComment = async (commentId: number, postId: number) => {
+  await db
+    .update(posts)
+    .set({
+      commentCount: sql`${posts.commentCount} - 1`,
+    })
+    .where(eq(posts.id, postId));
+
+  return await db.delete(comments).where(eq(comments.id, commentId));
+};
+
 export const queryComments = async (postId: number) => {
   return await db
     .select()

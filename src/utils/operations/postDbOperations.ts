@@ -126,8 +126,8 @@ export const queryPostsCountBySearchTerm = async (searchTerm: string) => {
     );
 };
 
-export const queryPostById = (postId: number) => {
-  return db
+export const queryPostById = async (postId: number) => {
+  return await db
     .select()
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))

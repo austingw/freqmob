@@ -5,6 +5,7 @@ import {
   insertComment,
   queryCommentCount,
   queryComments,
+  updateComment,
 } from "@/utils/operations/commentDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
@@ -52,5 +53,15 @@ export const getCommentCount = async (postId: number) => {
   } catch (e) {
     console.error(e);
     return 0;
+  }
+};
+
+export const putCommentContent = async (commentId: number, content: string) => {
+  try {
+    await updateComment(commentId, content);
+    return { status: 200, message: "Comment updated" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, message: "There was an error updating the comment" };
   }
 };

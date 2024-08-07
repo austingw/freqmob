@@ -4,6 +4,11 @@ import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
 
 type NewPost = typeof posts.$inferInsert;
+type UpdateDetails = {
+  title: string;
+  description: string;
+  type: (typeof posts.type.enumValues)[number];
+};
 
 export const insertPost = async (post: NewPost) => {
   return await db.insert(posts).values(post).returning({
@@ -11,8 +16,15 @@ export const insertPost = async (post: NewPost) => {
   });
 };
 
-export const updatePost = async (postId: number, post: NewPost) => {
-  return await db.update(posts).set(post).where(eq(posts.id, postId));
+export const updatePost = async (postId: number, changes: UpdateDetails) => {
+  return await db
+    .update(posts)
+    .set({
+      title: changes.title,
+      description: changes.description,
+      type: changes.type,
+    })
+    .where(eq(posts.id, postId));
 };
 
 export const deletePost = async (postId: number) => {

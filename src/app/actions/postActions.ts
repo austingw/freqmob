@@ -9,9 +9,11 @@ import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import { insertImage } from "@/utils/operations/imageDbOperations";
 import {
   insertPost,
+  queryPostById,
   queryPosts,
   queryPostsByBoard,
   queryPostsBySearchTerm,
+  updatePost,
 } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
@@ -169,5 +171,53 @@ export const getPostsBySearchTerm = async (
   } catch (e) {
     console.error(e);
     return null;
+  }
+};
+
+export const putPost = async (postId: number, post: FormData) => {
+  const title = String(post.get("title"));
+  const description = String(post.get("description"));
+  const typeString = String(post.get("type"));
+  const type = posts.type.enumValues.filter((t) => t === typeString)[0];
+
+  if (!description || !type) {
+    return {
+      status: 400,
+      message: "Missing required fields",
+    };
+  }
+
+  const user = await validateRequest();
+  const profile = user.user && (await getProfileFromUserId(user.user.id));
+
+  const ogPost = await queryPostById(postId);
+
+  if (!profile || !profile[0] || !ogPost[0]) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  if (profile[0].id !== ogPost[0].posts.profileId) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  try {
+    await updatePost(postId, {
+      title,
+      description,
+      type,
+    });
+    return { status: 200, message: "Post updated" };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error updating the post",
+    };
   }
 };

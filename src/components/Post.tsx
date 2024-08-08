@@ -39,11 +39,12 @@ import formatDate from "@/utils/formatDate";
 
 interface PostProps {
   clickClose: () => void;
+  hideClose?: boolean;
   userLike: UserLike | null;
   post: PostWithMedia;
 }
 
-const Post = ({ clickClose, userLike, post }: PostProps) => {
+const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [value, setValue] = useState<string | null>(null);
   const theme = useMantineTheme();
@@ -77,23 +78,25 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
     <>
       <ScrollArea.Autosize scrollbarSize={10}>
         <Card radius="md" w={"100%"} shadow="sm" pt={0}>
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            radius="xl"
-            size="sm"
-            onClick={() => {
-              clickClose();
-            }}
-            style={{
-              position: "absolute",
-              top: 15,
-              right: 15,
-              zIndex: 999,
-            }}
-          >
-            <IconX />
-          </ActionIcon>
+          {!hideClose && (
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              radius="xl"
+              size="sm"
+              onClick={() => {
+                clickClose();
+              }}
+              style={{
+                position: "absolute",
+                top: 15,
+                right: 15,
+                zIndex: 999,
+              }}
+            >
+              <IconX />
+            </ActionIcon>
+          )}
 
           {post?.audio?.url && (
             <Card.Section>
@@ -229,7 +232,7 @@ const Post = ({ clickClose, userLike, post }: PostProps) => {
               chevron={
                 value ? <IconMinus size="1rem" /> : <IconPlus size="1rem" />
               }
-              variant="filled"
+              variant={hideClose ? "contained" : "filled"}
               value={value}
               onChange={setValue}
               styles={{

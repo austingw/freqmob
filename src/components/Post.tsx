@@ -7,12 +7,9 @@ import {
   Stack,
   Badge,
   ScrollArea,
-  Paper,
   Accordion,
   useMantineTheme,
   rem,
-  Button,
-  Avatar,
   Skeleton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -35,7 +32,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { UserLike } from "@/types/userTypes";
 import { toggleLike } from "@/app/actions/likeActions";
 import { useRouter } from "next/navigation";
-import formatDate from "@/utils/formatDate";
+import Comment from "./Comment";
 
 interface PostProps {
   clickClose: () => void;
@@ -258,32 +255,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
               </>
             ) : (
               comments?.map((comment) => (
-                <Paper withBorder radius="md" key={comment.comments.id} px={10}>
-                  <Stack gap={0} p={4} pb={12}>
-                    <Group gap={4} align="center" justify="flex-start">
-                      <Avatar
-                        src={comment?.profiles?.avatar}
-                        name={comment?.profiles?.name}
-                        size={"sm"}
-                        color={theme.primaryColor}
-                      />
-                      <Button
-                        fz="xs"
-                        variant="transparent"
-                        p={0}
-                        onClick={() => {
-                          router.push(`/u/${comment.profiles.name}`);
-                        }}
-                      >
-                        {comment.profiles.name}
-                      </Button>
-                      <Text fz="xs" c="dimmed">
-                        - {formatDate(comment.comments.createdAt)}
-                      </Text>
-                    </Group>
-                    <Text fz="sm">{comment.comments.content}</Text>
-                  </Stack>
-                </Paper>
+                <Comment key={comment.comments.id} comment={comment} />
               ))
             )}
           </Stack>

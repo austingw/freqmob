@@ -3,6 +3,7 @@
 import { PostWithMedia } from "@/db/schema";
 import { UserLike } from "@/types/userTypes";
 import Post from "./Post";
+import { Card, Stack } from "@mantine/core";
 
 interface PostWrapperProps {
   userLike: UserLike | null;
@@ -11,9 +12,11 @@ interface PostWrapperProps {
 
 const PostWrapper = ({ userLike, post }: PostWrapperProps) => {
   return (
-    <div>
-      <Post clickClose={() => {}} userLike={userLike} post={post} />
-    </div>
+    <Stack>
+      <Card withBorder>
+        <Post clickClose={() => {}} hideClose userLike={userLike} post={post} />
+      </Card>
+    </Stack>
   );
 };
 

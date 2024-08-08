@@ -186,6 +186,11 @@ export type CommentWithPost = {
   posts: typeof posts.$inferSelect;
 };
 
+export type CommentWithProfile = {
+  comments: typeof comments.$inferSelect;
+  profiles: typeof profiles.$inferSelect;
+};
+
 export type PostWithAudio = {
   posts: typeof posts.$inferSelect;
   audio: typeof audio.$inferSelect | null;

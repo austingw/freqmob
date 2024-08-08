@@ -8,6 +8,7 @@ import { insertAudio } from "@/utils/operations/audioDbOperations";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import { insertImage } from "@/utils/operations/imageDbOperations";
 import {
+  deletePost,
   insertPost,
   queryPostById,
   queryPosts,
@@ -218,6 +219,39 @@ export const putPost = async (postId: number, post: FormData) => {
     return {
       status: 500,
       message: "There was an error updating the post",
+    };
+  }
+};
+
+export const delPost = async (postId: number) => {
+  const user = await validateRequest();
+  const profile = user.user && (await getProfileFromUserId(user.user.id));
+
+  const ogPost = await queryPostById(postId);
+
+  if (!profile || !profile[0] || !ogPost[0]) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  //todo: add moderator role check
+  if (profile[0].id !== ogPost[0].posts.profileId) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  try {
+    await deletePost(postId);
+    return { status: 200, message: "Post deleted" };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error deleting the post",
     };
   }
 };

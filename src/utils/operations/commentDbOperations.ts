@@ -42,6 +42,10 @@ export const queryComments = async (postId: number) => {
     .orderBy(desc(comments.createdAt));
 };
 
+export const queryCommentById = async (commentId: number) => {
+  return await db.select().from(comments).where(eq(comments.id, commentId));
+};
+
 export const queryCommentsByProfile = async (profileId: string) => {
   return await db
     .select()

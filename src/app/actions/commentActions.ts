@@ -2,7 +2,9 @@
 
 import { validateRequest } from "@/db/auth";
 import {
+  deleteComment,
   insertComment,
+  queryCommentById,
   queryCommentCount,
   queryComments,
   updateComment,
@@ -63,5 +65,34 @@ export const putCommentContent = async (commentId: number, content: string) => {
   } catch (e) {
     console.error(e);
     return { status: 500, message: "There was an error updating the comment" };
+  }
+};
+
+export const delComment = async (commentId: number) => {
+  const user = await validateRequest();
+  const profile = user.user && (await getProfileFromUserId(user.user.id));
+  const ogComment = await queryCommentById(commentId);
+
+  if (!profile || !profile[0]) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  //todo: add moderator role check
+  if (profile[0].id !== ogComment[0].profileId) {
+    return {
+      status: 401,
+      message: "Unauthorized",
+    };
+  }
+
+  try {
+    await deleteComment(commentId, ogComment[0].postId);
+    return { status: 200, message: "Comment deleted" };
+  } catch (e) {
+    console.error(e);
+    return { status: 500, message: "There was an error deleting the comment" };
   }
 };

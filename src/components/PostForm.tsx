@@ -24,6 +24,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import ImageUpload from "./ImageUpload";
 import { postPostNotification } from "@/app/actions/notificationActions";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface FormValues {
   title: string;
@@ -68,6 +69,7 @@ const PostForm = ({
   boardList?: string[] | null;
 }) => {
   const [showUpload, setShowUpload] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -101,7 +103,7 @@ const PostForm = ({
 
   console.log(form.errors);
   return (
-    <Flex direction="column" gap="xs" w={"75vw"} align="center" pb={10}>
+    <Flex direction="column" gap="xs" w={"100%"} align="center" pb={10}>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -165,7 +167,7 @@ const PostForm = ({
                 value={form.values.type}
                 onChange={(value) => form.setFieldValue("type", value)}
                 radius="md"
-                size="sm"
+                size={isMobile ? "xs" : "sm"}
                 classNames={{
                   indicator: classes.segmentedIndicator,
                 }}
@@ -185,30 +187,40 @@ const PostForm = ({
             resize="vertical"
           />
           {showUpload && (
-            <Group align="center" justify="space-between" gap={"md"}>
+            <Flex
+              direction={isMobile ? "column" : "row"}
+              align={isMobile ? "flex-start" : "center"}
+              justify="space-between"
+              gap={"md"}
+              w={"100%"}
+              wrap="nowrap"
+            >
               <NumberInput
                 label="BPM"
                 placeholder="Enter the BPM..."
                 {...form.getInputProps("bpm")}
-                w={"90px"}
+                w={isMobile ? "100%" : "calc(50% - 0.5rem)"}
               />
               <TextInput
                 label="Key"
-                placeholder="Enter the key..."
+                placeholder="What key..."
                 {...form.getInputProps("key")}
+                w={isMobile ? "100%" : "calc(50% - 0.5rem)"}
               />
               <TextInput
                 label="Inspiration"
-                placeholder="Enter the inspiration..."
+                placeholder="What inspired you..."
                 {...form.getInputProps("inspiration")}
+                w={isMobile ? "100%" : "calc(50% - 0.5rem)"}
               />
               <TextInput
                 label="Genre"
-                placeholder="Enter the genre..."
+                placeholder="What genre..."
                 {...form.getInputProps("genre")}
+                w={isMobile ? "100%" : "calc(50% - 0.5rem)"}
               />
               <ImageUpload addFile={addFile} title={"Track Art"} />
-            </Group>
+            </Flex>
           )}
           {showUpload && <FileUpload addFile={addFile} />}
         </Stack>

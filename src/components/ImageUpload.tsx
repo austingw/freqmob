@@ -12,6 +12,7 @@ const ImageUpload = ({
   return (
     <FileInput
       w={"100%"}
+      m="auto"
       leftSection={icon}
       label={title}
       placeholder={"Add .png or .jpg here"}

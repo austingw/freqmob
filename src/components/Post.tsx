@@ -11,10 +11,12 @@ import {
   useMantineTheme,
   rem,
   Skeleton,
+  Tooltip,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   IconHeart,
+  IconLink,
   IconMessageCircle2,
   IconMinus,
   IconPlus,
@@ -48,6 +50,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
   const [tempLike, setTempLike] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const { data } = useGetUserLike(
     post.posts.id,
@@ -184,6 +187,30 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                     {commentCount === 1 ? "comment" : "comments"}
                   </Text>
                 </Group>
+                <Tooltip
+                  opened={showTooltip}
+                  label="Direct link copied to clipboard!"
+                  position="top"
+                  color={theme.primaryColor}
+                  withArrow
+                >
+                  <ActionIcon
+                    variant="subtle"
+                    size="sm"
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `https://freqmob.com/post/${post.posts.id}`,
+                      );
+                      setShowTooltip(true);
+                      setTimeout(() => {
+                        setShowTooltip(false);
+                      }, 1000);
+                    }}
+                  >
+                    <IconLink />
+                  </ActionIcon>
+                </Tooltip>
+
                 <Group gap={"xs"} align="center">
                   {post.posts.genre && (
                     <Text fz="xs" c="dimmed">

@@ -7,6 +7,9 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { theme } from "../../theme";
 import Providers from "@/app/providers";
 import { Notifications } from "@mantine/notifications";
+import FMAppShell from "@/components/FMAppShell";
+import { validateRequest } from "@/db/auth";
+import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +18,14 @@ export const metadata: Metadata = {
   description: "A platform for artists.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await validateRequest();
+  const profile = user.user && (await getProfileFromUserId(user.user.id))?.[0];
+
   return (
     <html lang="en">
       <head>
@@ -28,7 +34,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <MantineProvider theme={theme}>
           <Notifications />
-          <Providers>{children}</Providers>
+          <Providers>
+            <FMAppShell user={user} profile={profile}>
+              {children}{" "}
+            </FMAppShell>
+          </Providers>
         </MantineProvider>
       </body>
     </html>

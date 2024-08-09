@@ -1,4 +1,4 @@
-import { IconHeart, IconMessageCircle2 } from "@tabler/icons-react";
+import { IconHeart, IconLink, IconMessageCircle2 } from "@tabler/icons-react";
 import {
   Card,
   Text,
@@ -9,6 +9,7 @@ import {
   rem,
   Stack,
   Flex,
+  Tooltip,
 } from "@mantine/core";
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
@@ -33,6 +34,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
   const [tempLike, setTempLike] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const { data } = useGetUserLike(
     post.posts.id,
@@ -200,6 +202,29 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                 {commentCount === 1 ? "comment" : "comments"}
               </Text>
             </Group>
+            <Tooltip
+              opened={showTooltip}
+              label="Direct link copied to clipboard!"
+              position="top"
+              color={theme.primaryColor}
+              withArrow
+            >
+              <ActionIcon
+                variant="subtle"
+                size="sm"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://freqmob.com/post/${post.posts.id}`,
+                  );
+                  setShowTooltip(true);
+                  setTimeout(() => {
+                    setShowTooltip(false);
+                  }, 1000);
+                }}
+              >
+                <IconLink />
+              </ActionIcon>
+            </Tooltip>
           </Group>
           <Badge
             variant="outline"

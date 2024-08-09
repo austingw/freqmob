@@ -32,7 +32,7 @@ const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
           mt={4}
           disabled={!isUnread}
         >
-          <ActionIcon variant="outline">
+          <ActionIcon variant="subtle">
             <IconBell size={20} />
           </ActionIcon>
         </Indicator>

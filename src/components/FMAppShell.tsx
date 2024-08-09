@@ -97,7 +97,7 @@ export default function FMAppShell({
             size="sm"
           />
           <Group align="center" justify="flex-end" p={0} gap={8}>
-            <Button
+            <ActionIcon
               variant="subtle"
               p={4}
               onClick={() => {
@@ -112,8 +112,8 @@ export default function FMAppShell({
                 }
               }}
             >
-              <IconPlus size={16} /> Post
-            </Button>
+              <IconPlus size={20} />
+            </ActionIcon>
             {user.user && <NotificationPopover notifications={notifications} />}
             {user.user ? (
               <Menu

@@ -46,6 +46,8 @@ export default function FMAppShell({
   user: { user: User; session: Session } | { user: null; session: null };
   profile: typeof profiles.$inferSelect | null;
 }>) {
+  const [profileValue, setProfileValue] = useAtom(profileAtom);
+
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
@@ -59,7 +61,6 @@ export default function FMAppShell({
   const queryClient = useQueryClient();
 
   //global state for logged in profile
-  const [profileValue, setProfileValue] = useAtom(profileAtom);
   useEffect(() => {
     if (profile) {
       setProfileValue(profile);
@@ -84,18 +85,23 @@ export default function FMAppShell({
     >
       <AppShell.Header>
         <Group h="100%" px="md" align="center" justify="space-between">
-          <Burger
-            opened={mobileOpened}
-            onClick={toggleMobile}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Burger
-            opened={desktopOpened}
-            onClick={toggleDesktop}
-            visibleFrom="sm"
-            size="sm"
-          />
+          <Group align="center" justify="flex-start" p={0} gap={8}>
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Burger
+              opened={desktopOpened}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              size="sm"
+            />
+            <Text fz="h1" fw="bold" c={theme.primaryColor}>
+              freqmob
+            </Text>
+          </Group>
           <Group align="center" justify="flex-end" p={0} gap={8}>
             <ActionIcon
               variant="subtle"

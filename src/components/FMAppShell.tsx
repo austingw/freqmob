@@ -22,7 +22,7 @@ import {
   UnstyledButton,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconPlus, IconSearch } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
@@ -47,6 +47,7 @@ export default function FMAppShell({
   profile: typeof profiles.$inferSelect | null;
 }>) {
   const [profileValue, setProfileValue] = useAtom(profileAtom);
+  const isSm = useMediaQuery("(max-width: 345px)");
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -99,7 +100,7 @@ export default function FMAppShell({
               size="sm"
             />
             <Text fz="h1" fw="bold" c={theme.primaryColor}>
-              freqmob
+              {isSm ? "fm" : "freqmob"}
             </Text>
           </Group>
           <Group align="center" justify="flex-end" p={0} gap={8}>

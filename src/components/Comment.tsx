@@ -86,13 +86,20 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
                 variant="subtle"
                 size={"xs"}
                 onClick={async () => {
-                  await delComment(comment.comments.id).then(() => {
-                    queryClient.invalidateQueries({
-                      queryKey: ["comments", comment.comments.postId],
-                    });
-                    queryClient.invalidateQueries({
-                      queryKey: ["commentCount", comment.comments.postId],
-                    });
+                  await delComment(comment.comments.id).then((res) => {
+                    if (res?.status === 200) {
+                      notifications.show({
+                        message: "Comment deleted!",
+                        icon: <IconCheck />,
+                        autoClose: 3000,
+                      });
+                      queryClient.invalidateQueries({
+                        queryKey: ["comments", comment.comments.postId],
+                      });
+                      queryClient.invalidateQueries({
+                        queryKey: ["commentCount", comment.comments.postId],
+                      });
+                    }
                   });
                 }}
               >

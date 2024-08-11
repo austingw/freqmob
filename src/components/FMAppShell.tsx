@@ -101,7 +101,13 @@ export default function FMAppShell({
               visibleFrom="sm"
               size="sm"
             />
-            <Text fz="h1" fw="bold" c={theme.primaryColor}>
+            <Text
+              fz="h1"
+              fw="bold"
+              c={theme.primaryColor}
+              onClick={() => router.push(`/fm/main`)}
+              style={{ cursor: "pointer" }}
+            >
               {isSm ? "fm" : "freqmob"}
             </Text>
           </Group>

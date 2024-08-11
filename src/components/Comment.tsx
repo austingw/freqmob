@@ -14,12 +14,13 @@ import {
 import { useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
 import { profileAtom } from "./FMAppShell";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { delComment } from "@/app/actions/commentActions";
+import { IconCheck, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
+import { delComment, putCommentContent } from "@/app/actions/commentActions";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { useState } from "react";
+import { notifications } from "@mantine/notifications";
 
 interface CommentFormValues {
   content: string;
@@ -35,10 +36,11 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
   const queryClient = useQueryClient();
   const profileValue = useAtomValue(profileAtom);
   const [isEditing, setIsEditing] = useState(false);
+  const [tempUpdate, setTempUpdate] = useState(comment.comments.content);
 
   const form = useForm<CommentFormValues>({
     initialValues: {
-      content: comment.comments.content,
+      content: tempUpdate,
     },
     validate: zodResolver(schema),
   });
@@ -102,7 +104,42 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
 
         {isEditing ? (
           <Stack pt={8}>
-            <form>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                form.validate();
+                if (form.errors.content || form.errors.commentId) return;
+                await putCommentContent(
+                  comment.comments.id,
+                  form.values.content,
+                )
+                  .catch((err) => {
+                    console.error(err);
+                    notifications.show({
+                      message: "Error updating comment",
+                      icon: <IconX />,
+                      autoClose: 3000,
+                    });
+                  })
+                  .then(async (res) => {
+                    if (res?.status === 200) {
+                      notifications.show({
+                        message: "Comment successfully updated!",
+                        icon: <IconCheck />,
+                        autoClose: 3000,
+                      });
+                      setTempUpdate(form.values.content);
+                      setIsEditing(false);
+                    } else {
+                      notifications.show({
+                        message: "Failed to create comment, please try again",
+                        icon: <IconX />,
+                        autoClose: 3000,
+                      });
+                    }
+                  });
+              }}
+            >
               <Textarea
                 placeholder="Enter your comment here..."
                 required
@@ -113,7 +150,7 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
                 <Button
                   variant="light"
                   onClick={() => {
-                    form.reset();
+                    form.setFieldValue("content", tempUpdate);
                     setIsEditing(false);
                   }}
                 >
@@ -123,7 +160,7 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
             </form>
           </Stack>
         ) : (
-          <Text fz="sm">{comment.comments.content}</Text>
+          <Text fz="sm">{tempUpdate}</Text>
         )}
       </Stack>
     </Paper>

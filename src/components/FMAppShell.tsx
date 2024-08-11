@@ -11,10 +11,8 @@ import {
   Burger,
   Button,
   Group,
-  Indicator,
   Menu,
   Modal,
-  Popover,
   Skeleton,
   Stack,
   Text,
@@ -23,7 +21,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { IconBell, IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";

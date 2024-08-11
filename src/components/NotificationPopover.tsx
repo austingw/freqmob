@@ -11,7 +11,6 @@ import {
   Text,
 } from "@mantine/core";
 import { IconBell } from "@tabler/icons-react";
-import { useState } from "react";
 
 interface NotificationPopoverProps {
   notifications?: (typeof notifications.$inferSelect)[];

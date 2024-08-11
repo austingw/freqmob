@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { Dispatch, SetStateAction, useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";

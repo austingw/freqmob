@@ -88,12 +88,14 @@ export default function FMAppShell({
         <Group h="100%" px="md" align="center" justify="space-between">
           <Group align="center" justify="flex-start" p={0} gap={8}>
             <Burger
+              color={theme.primaryColor}
               opened={mobileOpened}
               onClick={toggleMobile}
               hiddenFrom="sm"
               size="sm"
             />
             <Burger
+              color={theme.primaryColor}
               opened={desktopOpened}
               onClick={toggleDesktop}
               visibleFrom="sm"

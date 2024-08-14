@@ -14,7 +14,9 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import {
+  IconCheck,
   IconHeart,
   IconLink,
   IconMessageCircle2,
@@ -37,6 +39,7 @@ import { UserLike } from "@/types/userTypes";
 import { toggleLike } from "@/app/actions/likeActions";
 import { useRouter } from "next/navigation";
 import Comment from "./Comment";
+import { delPost } from "@/app/actions/postActions";
 
 interface PostProps {
   clickClose: () => void;
@@ -218,7 +221,22 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                   </ActionIcon>
                 )}
                 {profileValue.id === post.posts.profileId && (
-                  <ActionIcon variant="subtle" size="sm" onClick={() => {}}>
+                  <ActionIcon
+                    variant="subtle"
+                    size="sm"
+                    onClick={async () => {
+                      await delPost(post.posts.id).then((res) => {
+                        if (res?.status === 200) {
+                          notifications.show({
+                            message: "Comment deleted!",
+                            icon: <IconCheck />,
+                            autoClose: 3000,
+                          });
+                          clickClose();
+                        }
+                      });
+                    }}
+                  >
                     <IconTrash />
                   </ActionIcon>
                 )}

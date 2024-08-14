@@ -90,7 +90,7 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
       </Dropzone>
 
       <Button variant="filled" size="lg" onClick={() => openRef.current?.()}>
-        Select files
+        {validFile ? "Change File" : "Upload File"}
       </Button>
     </div>
   );

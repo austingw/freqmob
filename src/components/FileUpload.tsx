@@ -26,6 +26,7 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
         openRef={openRef}
         className={classes.dropzone}
         radius="md"
+        accept={{ "audio/mp3": [".mp3"] }}
         onDrop={(files) => {
           addFile("audioFile", files[0]);
           setValidFile(true);
@@ -80,9 +81,8 @@ const FileUpload = ({ addFile }: FileUploadProps) => {
                 <Dropzone.Idle>Upload audio</Dropzone.Idle>
               </Text>
               <Text ta="center" fz="sm" mt="xs" c="dimmed">
-                Drag files here or use the button below to upload. We can accept
-                only <i>.wav, .mp3, .flac, .acc, and .ogg</i> files that are
-                less than 30mb in size.
+                Drag files here or use the button below to upload. We currently
+                only accept <i>.mp3</i> files that are less than 30mb in size.
               </Text>
             </>
           )}

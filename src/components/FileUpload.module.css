@@ -1,9 +1,13 @@
 .wrapper {
   position: relative;
-  margin-bottom: rem(30px);
+  padding-top: rem(10px);
+  padding-bottom: rem(20px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: rem(1px) dashed var(--mantine-color-gray-4);
+  border-radius: rem(5px);
+  background-color: var(--mantine-color-gray-2);
 }
 
 .dropzone {

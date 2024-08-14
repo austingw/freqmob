@@ -19,7 +19,9 @@ import {
   IconLink,
   IconMessageCircle2,
   IconMinus,
+  IconPencil,
   IconPlus,
+  IconTrash,
   IconX,
 } from "@tabler/icons-react";
 import AudioPlayer from "./AudioPlayer";
@@ -210,6 +212,16 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                     <IconLink />
                   </ActionIcon>
                 </Tooltip>
+                {profileValue.id === post.posts.profileId && (
+                  <ActionIcon variant="subtle" size="sm" onClick={() => {}}>
+                    <IconPencil />
+                  </ActionIcon>
+                )}
+                {profileValue.id === post.posts.profileId && (
+                  <ActionIcon variant="subtle" size="sm" onClick={() => {}}>
+                    <IconTrash />
+                  </ActionIcon>
+                )}
 
                 <Group gap={"xs"} align="center">
                   {post.posts.genre && (

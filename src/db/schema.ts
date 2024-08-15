@@ -52,10 +52,10 @@ export const comments = sqliteTable("comments", {
   content: text("content").notNull(),
   profileId: text("profile_id")
     .notNull()
-    .references(() => profiles.id),
+    .references(() => profiles.id, { onDelete: "cascade" }),
   postId: integer("post_id")
     .notNull()
-    .references(() => posts.id),
+    .references(() => posts.id, { onDelete: "cascade" }),
 });
 
 export const images = sqliteTable("images", {
@@ -81,10 +81,10 @@ export const likes = sqliteTable("likes", {
     .primaryKey({ autoIncrement: true }),
   profileId: text("profile_id")
     .notNull()
-    .references(() => profiles.id),
+    .references(() => profiles.id, { onDelete: "cascade" }),
   postId: integer("post_id")
     .notNull()
-    .references(() => posts.id),
+    .references(() => posts.id, { onDelete: "cascade" }),
 });
 
 export const notifications = sqliteTable("notifications", {
@@ -96,8 +96,10 @@ export const notifications = sqliteTable("notifications", {
   content: text("content").notNull(),
   profileId: text("profile_id")
     .notNull()
-    .references(() => profiles.id),
-  postId: integer("post_id").references(() => posts.id),
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  postId: integer("post_id").references(() => posts.id, {
+    onDelete: "cascade",
+  }),
   boardId: integer("board_id").references(() => boards.id),
   isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at")
@@ -132,12 +134,18 @@ export const posts = sqliteTable("posts", {
   genre: text("genre"),
   likeCount: integer("like_count").notNull().default(0),
   commentCount: integer("comment_count").notNull().default(0),
-  boardId: integer("board_id").references(() => boards.id),
-  audioId: integer("audio_id").references(() => audio.id),
-  imageId: integer("image_id").references(() => images.id),
+  boardId: integer("board_id").references(() => boards.id, {
+    onDelete: "cascade",
+  }),
+  audioId: integer("audio_id").references(() => audio.id, {
+    onDelete: "cascade",
+  }),
+  imageId: integer("image_id").references(() => images.id, {
+    onDelete: "cascade",
+  }),
   profileId: text("profile_id")
     .notNull()
-    .references(() => profiles.id),
+    .references(() => profiles.id, { onDelete: "cascade" }),
 });
 
 export const profiles = sqliteTable("profiles", {
@@ -160,7 +168,7 @@ export const profiles = sqliteTable("profiles", {
   userId: text("user_id")
     .notNull()
     .unique()
-    .references(() => userTable.id),
+    .references(() => userTable.id, { onDelete: "cascade" }),
 });
 
 export const userTable = sqliteTable("users", {

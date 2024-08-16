@@ -12,8 +12,10 @@ import {
   rem,
   Skeleton,
   Tooltip,
+  Modal,
+  Button,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import {
   IconCheck,
@@ -56,6 +58,8 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
   const profileValue = useAtomValue(profileAtom);
   const [tempLike, setTempLike] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const { data } = useGetUserLike(
     post.posts.id,
@@ -221,22 +225,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                   </ActionIcon>
                 )}
                 {profileValue.id === post.posts.profileId && (
-                  <ActionIcon
-                    variant="subtle"
-                    size="sm"
-                    onClick={async () => {
-                      await delPost(post.posts.id).then((res) => {
-                        if (res?.status === 200) {
-                          notifications.show({
-                            message: "Comment deleted!",
-                            icon: <IconCheck />,
-                            autoClose: 3000,
-                          });
-                          clickClose();
-                        }
-                      });
-                    }}
-                  >
+                  <ActionIcon variant="subtle" size="sm" onClick={open}>
                     <IconTrash />
                   </ActionIcon>
                 )}
@@ -318,6 +307,46 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
           </Stack>
         </Card>
       </ScrollArea.Autosize>
+      <Modal
+        opened={opened}
+        onClose={close}
+        size={"auto"}
+        title={"Confirm Delete"}
+        style={{
+          ".mantine-Modal-title": {
+            fontWeight: 6000,
+          },
+        }}
+      >
+        <Stack align="flex-start" justify="center" miw={"100%"} gap={0}>
+          <Text fz="sm">Are you sure you want to delete this post?</Text>
+          <Text fz="sm" c="dimmed">
+            This action cannot be undone.
+          </Text>
+          <Group align="center" justify="flex-end" w={"100%"} pt={16}>
+            <Button
+              onClick={async () => {
+                await delPost(post.posts.id).then((res) => {
+                  if (res?.status === 200) {
+                    notifications.show({
+                      message: "Post deleted!",
+                      icon: <IconCheck />,
+                      autoClose: 3000,
+                    });
+                    close();
+                    clickClose();
+                  }
+                });
+              }}
+            >
+              Confirm
+            </Button>
+            <Button onClick={close} variant="light">
+              Cancel
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </>
   );
 };

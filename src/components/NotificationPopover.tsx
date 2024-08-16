@@ -14,8 +14,14 @@ import {
   Spoiler,
   Stack,
   Text,
+  ThemeIcon,
 } from "@mantine/core";
-import { IconBell, IconTrash } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconMessageCircle2,
+  IconTrash,
+  IconWriting,
+} from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -59,49 +65,55 @@ const NotificationPopover = ({
                   disabled={n.isRead}
                 >
                   <Card withBorder radius="md" w={"100%"} shadow="sm">
-                    <Group align="center" justify="flex-start">
-                      <Group align="center" justify="space-between">
-                        <Text fw={600}>
-                          {n.boardId
-                            ? "New Post"
-                            : "New Comment" + " - " + formatDate(n.createdAt)}
-                        </Text>
-                        <ActionIcon
-                          variant="subtle"
-                          onClick={async () => {
-                            await delNotification(n.id).then(() => {
-                              queryClient.invalidateQueries({
-                                queryKey: ["notifications", n.profileId, 1],
+                    <Group align="flex-start" justify="flex-start">
+                      <ThemeIcon size="xl">
+                        {n.postId ? <IconMessageCircle2 /> : <IconWriting />}
+                      </ThemeIcon>
+                      <Stack gap={0}>
+                        <Group align="center" justify="space-between">
+                          <Text fw={600}>
+                            {n.boardId
+                              ? "New Post"
+                              : "New Comment" + " - " + formatDate(n.createdAt)}
+                          </Text>
+                          <ActionIcon
+                            variant="subtle"
+                            onClick={async () => {
+                              await delNotification(n.id).then(() => {
+                                queryClient.invalidateQueries({
+                                  queryKey: ["notifications", n.profileId, 1],
+                                });
                               });
-                            });
+                            }}
+                          >
+                            <IconTrash size={16} />
+                          </ActionIcon>
+                        </Group>
+                        <Spoiler
+                          maxHeight={0}
+                          showLabel="View Details"
+                          hideLabel="Hide Details"
+                          onExpandedChange={async () => {
+                            if (!n.isRead) {
+                              await putNotificationRead(n.id);
+                              n.isRead = true;
+                            }
                           }}
                         >
-                          <IconTrash size={16} />
-                        </ActionIcon>
-                      </Group>
-                      <Spoiler
-                        maxHeight={0}
-                        showLabel="View Details"
-                        hideLabel="Hide Details"
-                        onExpandedChange={async () => {
-                          if (!n.isRead) {
-                            await putNotificationRead(n.id);
-                            n.isRead = true;
-                          }
-                        }}
-                      >
-                        <Text>{n.content}</Text>
-                        <Button
-                          variant="link"
-                          onClick={() =>
-                            n.postId
-                              ? router.push(`/post/${n.postId}`)
-                              : router.push(`/fm/${n.boardId}`)
-                          }
-                        >
-                          {n.postId ? "View Post" : "View Board"}
-                        </Button>
-                      </Spoiler>
+                          <Text>{n.content}</Text>
+                          <Button
+                            variant="outline"
+                            size="md"
+                            onClick={() =>
+                              n.postId
+                                ? router.push(`/post/${n.postId}`)
+                                : router.push(`/fm/${n.boardId}`)
+                            }
+                          >
+                            {n.postId ? "View Post" : "View Board"}
+                          </Button>
+                        </Spoiler>
+                      </Stack>
                     </Group>
                   </Card>
                 </Indicator>

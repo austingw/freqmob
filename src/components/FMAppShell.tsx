@@ -67,7 +67,7 @@ export default function FMAppShell({
   }, [profile, setProfileValue]);
 
   const { data, isLoading } = useGetBoardList(profileValue?.id);
-  const { data: notifications } = useGetNotifications(profileValue?.id, 1);
+  const { data: notificationsList } = useGetNotifications(profileValue?.id, 1);
 
   const router = useRouter();
 
@@ -127,7 +127,9 @@ export default function FMAppShell({
             >
               <IconPlus size={20} />
             </ActionIcon>
-            {user.user && <NotificationPopover notifications={notifications} />}
+            {user.user && (
+              <NotificationPopover notificationsList={notificationsList} />
+            )}
             {user.user ? (
               <Menu
                 trigger="click-hover"

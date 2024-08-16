@@ -2,6 +2,7 @@
 
 import { queryBoardById } from "@/utils/operations/boardDbOperations";
 import {
+  deleteNotification,
   insertNotification,
   queryUserNotifications,
   updateNotificationAsRead,
@@ -63,6 +64,19 @@ export const putNotificationRead = async (notificationId: number) => {
     return {
       status: 500,
       message: "There was an error reading the notification",
+    };
+  }
+};
+
+export const delNotification = async (notificationId: number) => {
+  try {
+    await deleteNotification(notificationId);
+    return { status: 200, message: "Notification deleted" };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 500,
+      message: "There was an error deleting the notification",
     };
   }
 };

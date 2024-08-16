@@ -20,7 +20,7 @@ const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
   const isUnread = notifications?.some((n) => n.isRead === false);
 
   return (
-    <Popover width={300} position="bottom" withArrow shadow="md">
+    <Popover width={"fit-content"} position="bottom" withArrow shadow="md">
       <Popover.Target>
         <Indicator
           position="top-end"
@@ -38,36 +38,40 @@ const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
       </Popover.Target>
       <Popover.Dropdown>
         <Stack>
-          {notifications?.map((n) => {
-            return (
-              <Indicator
-                key={n.id}
-                position="top-end"
-                size={12}
-                disabled={n.isRead}
-              >
-                <Card withBorder radius="md" w={"100%"} shadow="sm">
-                  <Text>
-                    {n.boardId
-                      ? "New Post"
-                      : "New Comment" + " - " + formatDate(n.createdAt)}
-                  </Text>
-                  <Spoiler
-                    maxHeight={0}
-                    showLabel="View Details"
-                    hideLabel="Hide Details"
-                    onExpandedChange={async () => {
-                      if (!n.isRead) {
-                        await putNotificationRead(n.id);
-                      }
-                    }}
-                  >
-                    <Text>{n.content}</Text>
-                  </Spoiler>
-                </Card>
-              </Indicator>
-            );
-          })}
+          {notifications?.length ? (
+            notifications?.map((n) => {
+              return (
+                <Indicator
+                  key={n.id}
+                  position="top-end"
+                  size={12}
+                  disabled={n.isRead}
+                >
+                  <Card withBorder radius="md" w={"100%"} shadow="sm">
+                    <Text>
+                      {n.boardId
+                        ? "New Post"
+                        : "New Comment" + " - " + formatDate(n.createdAt)}
+                    </Text>
+                    <Spoiler
+                      maxHeight={0}
+                      showLabel="View Details"
+                      hideLabel="Hide Details"
+                      onExpandedChange={async () => {
+                        if (!n.isRead) {
+                          await putNotificationRead(n.id);
+                        }
+                      }}
+                    >
+                      <Text>{n.content}</Text>
+                    </Spoiler>
+                  </Card>
+                </Indicator>
+              );
+            })
+          ) : (
+            <Text fz={"sm"}>No new notifications</Text>
+          )}
         </Stack>
       </Popover.Dropdown>
     </Popover>

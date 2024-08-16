@@ -1,23 +1,34 @@
-import { putNotificationRead } from "@/app/actions/notificationActions";
+import {
+  delNotification,
+  putNotificationRead,
+} from "@/app/actions/notificationActions";
 import { notifications } from "@/db/schema";
 import formatDate from "@/utils/formatDate";
 import {
   ActionIcon,
+  Button,
   Card,
+  Group,
   Indicator,
   Popover,
   Spoiler,
   Stack,
   Text,
 } from "@mantine/core";
-import { IconBell } from "@tabler/icons-react";
+import { IconBell, IconTrash } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface NotificationPopoverProps {
-  notifications?: (typeof notifications.$inferSelect)[];
+  notificationsList?: (typeof notifications.$inferSelect)[];
 }
 
-const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
-  const isUnread = notifications?.some((n) => n.isRead === false);
+const NotificationPopover = ({
+  notificationsList,
+}: NotificationPopoverProps) => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const isUnread = notificationsList?.some((n) => n.isRead === false);
 
   return (
     <Popover width={"fit-content"} position="bottom" withArrow shadow="md">
@@ -38,8 +49,8 @@ const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
       </Popover.Target>
       <Popover.Dropdown>
         <Stack>
-          {notifications?.length ? (
-            notifications?.map((n) => {
+          {notificationsList?.length ? (
+            notificationsList?.map((n) => {
               return (
                 <Indicator
                   key={n.id}
@@ -48,23 +59,50 @@ const NotificationPopover = ({ notifications }: NotificationPopoverProps) => {
                   disabled={n.isRead}
                 >
                   <Card withBorder radius="md" w={"100%"} shadow="sm">
-                    <Text>
-                      {n.boardId
-                        ? "New Post"
-                        : "New Comment" + " - " + formatDate(n.createdAt)}
-                    </Text>
-                    <Spoiler
-                      maxHeight={0}
-                      showLabel="View Details"
-                      hideLabel="Hide Details"
-                      onExpandedChange={async () => {
-                        if (!n.isRead) {
-                          await putNotificationRead(n.id);
-                        }
-                      }}
-                    >
-                      <Text>{n.content}</Text>
-                    </Spoiler>
+                    <Group align="center" justify="flex-start">
+                      <Group align="center" justify="space-between">
+                        <Text fw={600}>
+                          {n.boardId
+                            ? "New Post"
+                            : "New Comment" + " - " + formatDate(n.createdAt)}
+                        </Text>
+                        <ActionIcon
+                          variant="subtle"
+                          onClick={async () => {
+                            await delNotification(n.id).then(() => {
+                              queryClient.invalidateQueries({
+                                queryKey: ["notifications", n.profileId, 1],
+                              });
+                            });
+                          }}
+                        >
+                          <IconTrash size={16} />
+                        </ActionIcon>
+                      </Group>
+                      <Spoiler
+                        maxHeight={0}
+                        showLabel="View Details"
+                        hideLabel="Hide Details"
+                        onExpandedChange={async () => {
+                          if (!n.isRead) {
+                            await putNotificationRead(n.id);
+                            n.isRead = true;
+                          }
+                        }}
+                      >
+                        <Text>{n.content}</Text>
+                        <Button
+                          variant="link"
+                          onClick={() =>
+                            n.postId
+                              ? router.push(`/post/${n.postId}`)
+                              : router.push(`/fm/${n.boardId}`)
+                          }
+                        >
+                          {n.postId ? "View Post" : "View Board"}
+                        </Button>
+                      </Spoiler>
+                    </Group>
                   </Card>
                 </Indicator>
               );

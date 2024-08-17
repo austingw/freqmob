@@ -84,7 +84,6 @@ const NotificationPopover = ({
                             variant="transparent"
                             p={0}
                             size="compact-md"
-                            c="black"
                             onClick={async () => {
                               if (!n.isRead) {
                                 await putNotificationRead(n?.id);

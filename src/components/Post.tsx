@@ -129,6 +129,17 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
               <Text fz="xl" fw={600}>
                 {post?.posts?.title}
               </Text>
+              <Button
+                variant="transparent"
+                size="compact-sm"
+                p={0}
+                c="dimmed"
+                onClick={() => {
+                  router.push(`/fm/${post?.boards?.name}`);
+                }}
+              >
+                {`fm/${post.boards.name}`}
+              </Button>
             </Flex>
 
             {post.posts.description && (
@@ -255,19 +266,17 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
               </Group>
               <Badge
                 variant="outline"
-                w={isMobile ? "100%" : "fit-content"}
-                style={{
-                  cursor: "pointer",
-                  ":hover": {
-                    opacity: 0.8,
-                    backgroundColor: "gray",
-                  },
-                }}
                 onClick={() => {
                   router.push(`/u/${post?.profiles?.name}`);
                 }}
+                style={{
+                  cursor: "pointer",
+                  ":hover": {
+                    backgroundColor: "gray",
+                  },
+                }}
               >
-                Posted by <b>{post?.profiles?.name}</b>
+                Posted by {post.profiles.name}
               </Badge>
             </Group>
 

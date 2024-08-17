@@ -10,6 +10,7 @@ import {
   Stack,
   Flex,
   Tooltip,
+  Button,
 } from "@mantine/core";
 import AudioPlayer from "./AudioPlayer";
 import { PostWithMedia } from "@/db/schema";
@@ -78,7 +79,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
         <Group
           gap={"xs"}
           align="center"
-          onClick={() => clickPost()}
+          justify="space-between"
           style={{
             cursor: "pointer",
           }}
@@ -87,6 +88,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
             fz="xl"
             fw={600}
             lineClamp={1}
+            onClick={() => clickPost()}
             style={{
               cursor: "pointer",
               ":hover": {
@@ -98,6 +100,17 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
           >
             {post.posts.title}
           </Text>
+          <Button
+            variant="transparent"
+            size="compact-sm"
+            p={0}
+            c="dimmed"
+            onClick={() => {
+              router.push(`/fm/${post?.boards?.name}`);
+            }}
+          >
+            {`fm/${post.boards.name}`}
+          </Button>
         </Group>
         <Group gap={0} align="center">
           {post.posts.description && (

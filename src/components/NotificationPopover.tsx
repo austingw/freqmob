@@ -59,27 +59,52 @@ const NotificationPopover = ({
             notificationsList?.map((n) => {
               return (
                 <Indicator
-                  key={n.id}
+                  key={n?.id}
                   position="top-end"
                   size={12}
                   disabled={n.isRead}
                 >
                   <Card withBorder radius="md" w={"100%"} shadow="sm">
                     <Group align="flex-start" justify="flex-start">
-                      <ThemeIcon size="xl">
+                      <ActionIcon
+                        size="xl"
+                        onClick={async () => {
+                          if (!n.isRead) {
+                            await putNotificationRead(n?.id);
+                            n.isRead = true;
+                          }
+                          n.postId
+                            ? router.push(`/post/${n.postId}`)
+                            : router.push(`/fm/${n.boardId}`);
+                        }}
+                      >
                         {n.postId ? <IconMessageCircle2 /> : <IconWriting />}
-                      </ThemeIcon>
+                      </ActionIcon>
                       <Stack gap={0}>
-                        <Group align="center" justify="space-between">
-                          <Text fw={600}>
+                        <Group align="center" justify="space-between" mt={-6}>
+                          <Button
+                            variant="transparent"
+                            p={0}
+                            size="compact-md"
+                            c="black"
+                            onClick={async () => {
+                              if (!n.isRead) {
+                                await putNotificationRead(n?.id);
+                                n.isRead = true;
+                              }
+                              n.postId
+                                ? router.push(`/post/${n.postId}`)
+                                : router.push(`/fm/${n.boardId}`);
+                            }}
+                          >
                             {n.boardId
                               ? "New Post"
                               : "New Comment" + " - " + formatDate(n.createdAt)}
-                          </Text>
+                          </Button>
                           <ActionIcon
                             variant="subtle"
                             onClick={async () => {
-                              await delNotification(n.id).then(() => {
+                              await delNotification(n?.id).then(() => {
                                 queryClient.invalidateQueries({
                                   queryKey: ["notifications", n.profileId, 1],
                                 });
@@ -95,23 +120,12 @@ const NotificationPopover = ({
                           hideLabel="Hide Details"
                           onExpandedChange={async () => {
                             if (!n.isRead) {
-                              await putNotificationRead(n.id);
+                              await putNotificationRead(n?.id);
                               n.isRead = true;
                             }
                           }}
                         >
                           <Text>{n.content}</Text>
-                          <Button
-                            variant="outline"
-                            size="md"
-                            onClick={() =>
-                              n.postId
-                                ? router.push(`/post/${n.postId}`)
-                                : router.push(`/fm/${n.boardId}`)
-                            }
-                          >
-                            {n.postId ? "View Post" : "View Board"}
-                          </Button>
                         </Spoiler>
                       </Stack>
                     </Group>

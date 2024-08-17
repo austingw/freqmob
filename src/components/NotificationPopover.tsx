@@ -37,7 +37,7 @@ const NotificationPopover = ({
   const isUnread = notificationsList?.some((n) => n.isRead === false);
 
   return (
-    <Popover width={"fit-content"} position="bottom" withArrow shadow="md">
+    <Popover width={"440px"} position="bottom" withArrow shadow="md">
       <Popover.Target>
         <Indicator
           position="top-end"
@@ -93,9 +93,9 @@ const NotificationPopover = ({
                               router.push(`/post/${n.postId}`);
                             }}
                           >
-                            {n.boardId
-                              ? "New Post"
-                              : "New Comment" + " - " + formatDate(n.createdAt)}
+                            {(n.boardId ? "New Post" : "New Comment") +
+                              " - " +
+                              formatDate(n.createdAt)}
                           </Button>
                           <ActionIcon
                             variant="subtle"
@@ -112,6 +112,7 @@ const NotificationPopover = ({
                         </Group>
                         <Spoiler
                           maxHeight={0}
+                          maw={"300px"}
                           showLabel="View Details"
                           hideLabel="Hide Details"
                           onExpandedChange={async () => {

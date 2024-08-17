@@ -73,12 +73,10 @@ const NotificationPopover = ({
                             await putNotificationRead(n?.id);
                             n.isRead = true;
                           }
-                          n.postId
-                            ? router.push(`/post/${n.postId}`)
-                            : router.push(`/fm/${n.boardId}`);
+                          router.push(`/post/${n.postId}`);
                         }}
                       >
-                        {n.postId ? <IconMessageCircle2 /> : <IconWriting />}
+                        {n.boardId ? <IconWriting /> : <IconMessageCircle2 />}
                       </ActionIcon>
                       <Stack gap={0}>
                         <Group align="center" justify="space-between" mt={-6}>
@@ -92,9 +90,7 @@ const NotificationPopover = ({
                                 await putNotificationRead(n?.id);
                                 n.isRead = true;
                               }
-                              n.postId
-                                ? router.push(`/post/${n.postId}`)
-                                : router.push(`/fm/${n.boardId}`);
+                              router.push(`/post/${n.postId}`);
                             }}
                           >
                             {n.boardId

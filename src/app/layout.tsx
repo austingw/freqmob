@@ -2,7 +2,6 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { theme } from "../../theme";
 import Providers from "@/app/providers";

@@ -32,11 +32,11 @@ export default async function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={inter.className}>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
           <Notifications />
           <Providers>
             <FMAppShell user={user} profile={profile}>
-              {children}{" "}
+              {children}
             </FMAppShell>
           </Providers>
         </MantineProvider>

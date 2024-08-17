@@ -4,7 +4,7 @@ import { Modal, createTheme } from "@mantine/core";
 
 export const theme = createTheme({
   primaryColor: "wild-pink",
-  primaryShade: 6,
+  primaryShade: { light: 6, dark: 3 },
   colors: {
     "cool-blue": [
       "#dffcff",
@@ -43,16 +43,16 @@ export const theme = createTheme({
       "#ac9500",
     ],
     "wild-pink": [
-      "#ffe9fb",
-      "#ffd1ed",
-      "#f9a2d7",
       "#f470bf",
-      "#ef45ab",
-      "#ed2a9f",
+      "#f470bf",
+      "#f470bf",
+      "#f470bf",
+      "#f470bf",
+      "#f470bf",
       "#F15BB5",
-      "#d30885",
-      "#bd0077",
-      "#a60067",
+      "#F15BB5",
+      "#F15BB5",
+      "#F15BB5",
     ],
     "swag-purp": [
       "#f7ebff",

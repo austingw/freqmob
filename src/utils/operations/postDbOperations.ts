@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { audio, images, posts, profiles } from "@/db/schema";
+import { audio, boards, images, posts, profiles } from "@/db/schema";
 import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
 
@@ -38,6 +38,7 @@ export const queryPosts = async (page: number, sort: SortOptions) => {
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(boards, eq(posts.boardId, boards.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .limit(10)
     .offset((page - 1) * 10)
@@ -55,6 +56,7 @@ export const queryPostsByBoard = async (
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(boards, eq(posts.boardId, boards.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.boardId, boardId))
     .limit(10)
@@ -68,6 +70,7 @@ export const queryPostsByProfile = async (profileId: string) => {
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(boards, eq(posts.boardId, boards.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.profileId, profileId))
     .orderBy(desc(posts.createdAt));
@@ -132,6 +135,7 @@ export const queryPostById = async (postId: number) => {
     .from(posts)
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
+    .innerJoin(boards, eq(posts.boardId, boards.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.id, postId));
 };

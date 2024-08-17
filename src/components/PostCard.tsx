@@ -217,7 +217,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
             </Group>
             <Tooltip
               opened={showTooltip}
-              label="Direct link copied to clipboard!"
+              label="Link copied!"
               position="top"
               color={theme.primaryColor}
               withArrow

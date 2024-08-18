@@ -13,15 +13,25 @@ import {
   Group,
   Menu,
   Modal,
+  rem,
   Skeleton,
+  Slider,
   Stack,
+  Switch,
   Text,
   TextInput,
   UnstyledButton,
+  useComputedColorScheme,
+  useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import {
+  IconMoonStars,
+  IconPlus,
+  IconSearch,
+  IconSun,
+} from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { Session, User } from "lucia";
 import { useRouter } from "next/navigation";
@@ -44,6 +54,14 @@ export default function FMAppShell({
   user: { user: User; session: Session } | { user: null; session: null };
   profile: typeof profiles.$inferSelect | null;
 }>) {
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
+
+  const computedColorScheme = useComputedColorScheme("light");
+
+  const toggleColorScheme = () => {
+    setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
+  };
+
   const [profileValue, setProfileValue] = useAtom(profileAtom);
   const isSm = useMediaQuery("(max-width: 345px)");
 
@@ -70,6 +88,14 @@ export default function FMAppShell({
   const { data: notificationsList } = useGetNotifications(profileValue?.id, 1);
 
   const router = useRouter();
+
+  const sunIcon = (
+    <IconSun style={{ width: rem(16), height: rem(16) }} stroke={2.5} />
+  );
+
+  const moonIcon = (
+    <IconMoonStars style={{ width: rem(16), height: rem(16) }} stroke={2.5} />
+  );
 
   return (
     <AppShell
@@ -109,10 +135,9 @@ export default function FMAppShell({
               {isSm ? "fm" : "freqmob"}
             </Text>
           </Group>
-          <Group align="center" justify="flex-end" p={0} gap={8}>
+          <Group align="center" justify="flex-end" p={0} gap={4}>
             <ActionIcon
               variant="subtle"
-              p={4}
               onClick={() => {
                 if (user.user) {
                   setModalContent("post");
@@ -189,6 +214,15 @@ export default function FMAppShell({
                     >
                       Logout
                     </Button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Switch
+                      size="md"
+                      onLabel={moonIcon}
+                      offLabel={sunIcon}
+                      defaultChecked={computedColorScheme === "dark"}
+                      onChange={toggleColorScheme}
+                    />
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>

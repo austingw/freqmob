@@ -48,7 +48,7 @@ const NotificationPopover = ({
           mt={4}
           disabled={!isUnread}
         >
-          <ActionIcon variant="subtle">
+          <ActionIcon ml={4} variant="subtle">
             <IconBell size={20} />
           </ActionIcon>
         </Indicator>

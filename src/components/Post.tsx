@@ -230,11 +230,12 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                     <IconLink />
                   </ActionIcon>
                 </Tooltip>
-                {profileValue?.id === post.posts.profileId && (
+                {/* No post editing for now, thinking through the best flow
+                * profileValue?.id === post.posts.profileId && (
                   <ActionIcon variant="subtle" size="sm" onClick={() => {}}>
                     <IconPencil />
                   </ActionIcon>
-                )}
+                ) */}
                 {profileValue?.id === post.posts.profileId && (
                   <ActionIcon variant="subtle" size="sm" onClick={open}>
                     <IconTrash />

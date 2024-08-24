@@ -123,12 +123,13 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
           gap={10}
           pb={10}
         >
-          {!wavesurferRef.current ? (
+          {!wavesurferRef.current && (
             <>
               <Skeleton maw={140} mih={140} radius={10} />
               <Skeleton width={"100%"} height={140} radius={10} />
             </>
-          ) : art ? (
+          )}
+          {art && (
             <Box
               style={{
                 maxWidth: 140,
@@ -139,15 +140,6 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
             >
               <Image src={art} alt="cover art" radius={10} />
             </Box>
-          ) : (
-            <Box
-              style={{
-                minWidth: 140,
-                minHeight: 140,
-                backgroundColor: "gray",
-                borderRadius: 10,
-              }}
-            />
           )}
           <div
             style={{

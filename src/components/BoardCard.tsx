@@ -1,4 +1,4 @@
-import { boards } from "@/db/schema";
+import { boards } from "@/lib/db/schema";
 import { Button, Card, Group, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 

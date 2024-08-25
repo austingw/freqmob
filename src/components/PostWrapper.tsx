@@ -1,6 +1,6 @@
 "use client";
 
-import { PostWithMedia } from "@/db/schema";
+import { PostWithMedia } from "@/lib/db/schema";
 import { UserLike } from "@/types/userTypes";
 import Post from "./Post";
 import { Card, Stack } from "@mantine/core";

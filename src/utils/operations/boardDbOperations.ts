@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { boards } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { boards } from "@/lib/db/schema";
 import { asc, eq, like } from "drizzle-orm";
 
 type NewBoard = typeof boards.$inferInsert;

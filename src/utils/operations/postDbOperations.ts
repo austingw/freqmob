@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { audio, boards, images, posts, profiles } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { audio, boards, images, posts, profiles } from "@/lib/db/schema";
 import { count, desc, eq, like, or } from "drizzle-orm";
 import { getSortVal } from "../getSortVal";
 
@@ -48,7 +48,7 @@ export const queryPosts = async (page: number, sort: SortOptions) => {
 export const queryPostsByBoard = async (
   boardId: number,
   page: number,
-  sort: SortOptions,
+  sort: SortOptions
 ) => {
   const sortVal = getSortVal(sort);
   return await db
@@ -97,7 +97,7 @@ export const queryPostCountByProfileId = async (profileId: string) => {
 export const queryPostsBySearchTerm = async (
   searchTerm: string,
   page: number,
-  sort: SortOptions,
+  sort: SortOptions
 ) => {
   const sortVal = getSortVal(sort);
   return await db
@@ -109,8 +109,8 @@ export const queryPostsBySearchTerm = async (
     .where(
       or(
         like(posts.title, `%${searchTerm}%`),
-        like(posts.description, `%${searchTerm}%`),
-      ),
+        like(posts.description, `%${searchTerm}%`)
+      )
     )
     .limit(10)
     .offset((page - 1) * 10)
@@ -124,8 +124,8 @@ export const queryPostsCountBySearchTerm = async (searchTerm: string) => {
     .where(
       or(
         like(posts.title, `%${searchTerm}%`),
-        like(posts.description, `%${searchTerm}%`),
-      ),
+        like(posts.description, `%${searchTerm}%`)
+      )
     );
 };
 

@@ -2,7 +2,7 @@
 
 import { getUserLikes } from "@/app/actions/likeActions";
 import ProfileContent from "@/components/ProfileContent";
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import {
   queryCommentCountByProfileId,
   queryCommentsByProfile,

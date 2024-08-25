@@ -1,4 +1,4 @@
-import { posts } from "@/db/schema";
+import { posts } from "@/lib/db/schema";
 
 export const getSortVal = (sort: SortOptions) => {
   switch (sort) {

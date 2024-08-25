@@ -2,7 +2,7 @@
 
 import { logout } from "@/app/actions/authActions";
 import AuthModal from "@/components/AuthModal";
-import { profiles } from "@/db/schema";
+import { profiles } from "@/lib/db/schema";
 import { useGetBoardList } from "@/queries/boards";
 import {
   ActionIcon,
@@ -69,7 +69,7 @@ export default function FMAppShell({
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post" | "edit">(
-    "login",
+    "login"
   );
   const [modalTitle, setModalTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");

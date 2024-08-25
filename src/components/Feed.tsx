@@ -4,7 +4,7 @@ import { Flex, Modal, Pagination } from "@mantine/core";
 import PostCard from "./PostCard";
 import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { PostWithMedia } from "@/db/schema";
+import { PostWithMedia } from "@/lib/db/schema";
 import Post from "./Post";
 import { UserLike } from "@/types/userTypes";
 import { useGetPosts } from "@/queries/posts";
@@ -30,7 +30,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
     initialPosts,
     page,
     sortValue as SortOptions,
-    boardId,
+    boardId
   );
 
   const handleClickPost = (postId: number) => {
@@ -61,7 +61,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
               clickPost={() => handleClickPost(post.posts.id)}
               userLike={
                 initialLikes?.filter(
-                  (like) => like.postId === post.posts.id,
+                  (like) => like.postId === post.posts.id
                 )[0] || null
               }
               post={post}
@@ -88,7 +88,7 @@ const Feed = ({ initialPosts, initialLikes, boardId, count }: FeedProps) => {
             clickClose={handleClose}
             userLike={
               initialLikes?.filter(
-                (like) => like.postId === selectedPost.posts.id,
+                (like) => like.postId === selectedPost.posts.id
               )[0] || null
             }
             post={selectedPost}

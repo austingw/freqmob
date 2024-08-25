@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { images } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { images } from "@/lib/db/schema";
 
 type NewImage = typeof images.$inferInsert;
 

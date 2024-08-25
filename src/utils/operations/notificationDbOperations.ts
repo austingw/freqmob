@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { notifications } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { notifications } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
 
 type NewNotification = typeof notifications.$inferInsert;
@@ -21,7 +21,7 @@ export const updateNotificationAsRead = async (id: number) => {
 
 export const queryUserNotifications = async (
   profileId: string,
-  page: number,
+  page: number
 ) => {
   return await db
     .select()

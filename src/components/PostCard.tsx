@@ -13,7 +13,7 @@ import {
   Button,
 } from "@mantine/core";
 import AudioPlayer from "./AudioPlayer";
-import { PostWithMedia } from "@/db/schema";
+import { PostWithMedia } from "@/lib/db/schema";
 import { UserLike } from "@/types/userTypes";
 import { toggleLike } from "@/app/actions/likeActions";
 import { useAtomValue } from "jotai";
@@ -41,7 +41,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
     post.posts.id,
     profileValue?.id,
     userLike,
-    true,
+    true
   );
 
   const router = useRouter();
@@ -52,12 +52,12 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
 
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
-    post.posts.likeCount,
+    post.posts.likeCount
   );
 
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
-    post.posts.commentCount,
+    post.posts.commentCount
   );
 
   return (
@@ -227,7 +227,7 @@ const PostCard = ({ clickPost, userLike, post }: PostCardProps) => {
                 size="sm"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://freqmob.com/post/${post.posts.id}`,
+                    `https://freqmob.com/post/${post.posts.id}`
                   );
                   setShowTooltip(true);
                   setTimeout(() => {

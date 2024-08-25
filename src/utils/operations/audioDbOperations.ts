@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { audio } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { audio } from "@/lib/db/schema";
 
 type NewAudio = typeof audio.$inferInsert;
 

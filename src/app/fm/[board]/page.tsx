@@ -3,7 +3,7 @@
 import { getUserLikes } from "@/app/actions/likeActions";
 import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import { queryBoardByName } from "@/utils/operations/boardDbOperations";
 import {
   queryPostCount,

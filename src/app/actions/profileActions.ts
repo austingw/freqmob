@@ -1,6 +1,6 @@
 "use server";
 
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";

@@ -1,6 +1,6 @@
 "use client";
 
-import { posts } from "@/db/schema";
+import { posts } from "@/lib/db/schema";
 import {
   Button,
   Flex,

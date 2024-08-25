@@ -1,6 +1,6 @@
 "use client";
 
-import { CommentWithPost, PostWithMedia, profiles } from "@/db/schema";
+import { CommentWithPost, PostWithMedia, profiles } from "@/lib/db/schema";
 import {
   ActionIcon,
   Avatar,
@@ -174,7 +174,7 @@ const ProfileContent = ({
                 clickPost={() => handleClickPost(post.posts.id)}
                 userLike={
                   initialLikes?.filter(
-                    (like) => like.postId === post.posts.id,
+                    (like) => like.postId === post.posts.id
                   )[0] || null
                 }
                 post={post}
@@ -222,7 +222,7 @@ const ProfileContent = ({
             clickClose={handleClose}
             userLike={
               initialLikes?.filter(
-                (like) => like.postId === selectedPost.posts.id,
+                (like) => like.postId === selectedPost.posts.id
               )[0] || null
             }
             post={selectedPost}

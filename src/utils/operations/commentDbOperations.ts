@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { comments, posts, profiles } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { comments, posts, profiles } from "@/lib/db/schema";
 import { count, desc, eq, sql } from "drizzle-orm";
 
 type NewComment = typeof comments.$inferInsert;

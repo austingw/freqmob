@@ -29,7 +29,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import AudioPlayer from "./AudioPlayer";
-import { PostWithMedia } from "@/db/schema";
+import { PostWithMedia } from "@/lib/db/schema";
 import CommentForm from "./CommentForm";
 import { useGetCommentCount, useGetComments } from "@/queries/comments";
 import { useEffect, useState } from "react";
@@ -65,7 +65,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
     post.posts.id,
     profileValue?.id,
     userLike,
-    false,
+    false
   );
 
   const router = useRouter();
@@ -76,11 +76,11 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
 
   const { data: likeCount } = useGetLikeCount(
     post.posts.id,
-    post.posts.likeCount,
+    post.posts.likeCount
   );
   const { data: commentCount } = useGetCommentCount(
     post.posts.id,
-    post.posts.commentCount,
+    post.posts.commentCount
   );
   const { data: comments, isLoading } = useGetComments(post.posts.id);
   return (
@@ -219,7 +219,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                     size="sm"
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `https://freqmob.com/post/${post.posts.id}`,
+                        `https://freqmob.com/post/${post.posts.id}`
                       );
                       setShowTooltip(true);
                       setTimeout(() => {

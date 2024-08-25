@@ -1,5 +1,5 @@
 import SearchResults from "@/components/SearchResults";
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import { queryBoardsBySearchTerm } from "@/utils/operations/boardDbOperations";
 import {
   queryPostsBySearchTerm,

@@ -1,6 +1,6 @@
 import { getUserLikes } from "@/app/actions/likeActions";
 import PostWrapper from "@/components/PostWrapper";
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import { queryPostById } from "@/utils/operations/postDbOperations";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 

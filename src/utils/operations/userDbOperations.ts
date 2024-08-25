@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { profiles, userTable } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { profiles, userTable } from "@/lib/db/schema";
 import { UpdateProfile } from "@/types/userTypes";
 import { eq } from "drizzle-orm";
 

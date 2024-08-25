@@ -1,5 +1,5 @@
-import { db } from "@/db/db";
-import { likes, posts } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { likes, posts } from "@/lib/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 export const checkLike = async (postId: number, profileId: string) => {

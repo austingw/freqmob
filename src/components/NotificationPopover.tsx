@@ -2,7 +2,7 @@ import {
   delNotification,
   putNotificationRead,
 } from "@/app/actions/notificationActions";
-import { notifications } from "@/db/schema";
+import { notifications } from "@/lib/db/schema";
 import formatDate from "@/utils/formatDate";
 import {
   ActionIcon,

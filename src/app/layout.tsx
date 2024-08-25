@@ -7,7 +7,7 @@ import { theme } from "../../theme";
 import Providers from "@/app/providers";
 import { Notifications } from "@mantine/notifications";
 import FMAppShell from "@/components/FMAppShell";
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
 
 const inter = Inter({ subsets: ["latin"] });

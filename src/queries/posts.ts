@@ -2,14 +2,14 @@ import {
   getPostsByBoard,
   getPostsBySearchTerm,
 } from "@/app/actions/postActions";
-import { PostWithMedia } from "@/db/schema";
+import { PostWithMedia } from "@/lib/db/schema";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export const useGetPosts = (
   initialPosts: PostWithMedia[] | null,
   page: number,
   sort: SortOptions,
-  boardId?: string,
+  boardId?: string
 ) => {
   return useQuery({
     queryKey: ["posts", boardId, page, sort],
@@ -24,7 +24,7 @@ export const useGetPostsBySearchTerm = (
   initialPosts: PostWithMedia[] | null,
   searchTerm: string,
   page: number,
-  sort: SortOptions,
+  sort: SortOptions
 ) => {
   return useQuery({
     queryKey: ["posts", searchTerm, page, sort],

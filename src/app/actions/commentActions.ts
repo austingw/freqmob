@@ -1,6 +1,6 @@
 "use server";
 
-import { validateRequest } from "@/db/auth";
+import { validateRequest } from "@/lib/auth/auth";
 import {
   deleteComment,
   insertComment,

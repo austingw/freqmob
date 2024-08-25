@@ -1,7 +1,7 @@
 "use server";
 
-import { validateRequest } from "@/db/auth";
-import { posts } from "@/db/schema";
+import { validateRequest } from "@/lib/auth/auth";
+import { posts } from "@/lib/db/schema";
 import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
 import { insertAudio } from "@/utils/operations/audioDbOperations";
@@ -149,7 +149,7 @@ export const createPost = async (post: FormData) => {
 export const getPostsByBoard = async (
   page: number,
   sort: SortOptions,
-  boardId?: number,
+  boardId?: number
 ) => {
   try {
     if (!boardId) {
@@ -165,7 +165,7 @@ export const getPostsByBoard = async (
 export const getPostsBySearchTerm = async (
   searchTerm: string,
   page: number,
-  sort: SortOptions,
+  sort: SortOptions
 ) => {
   try {
     return await queryPostsBySearchTerm(searchTerm, page, sort);

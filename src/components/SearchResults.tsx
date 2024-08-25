@@ -12,7 +12,7 @@ import {
 import Post from "./Post";
 import PostCard from "./PostCard";
 import { useState } from "react";
-import { PostWithMedia, boards } from "@/db/schema";
+import { PostWithMedia, boards } from "@/lib/db/schema";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { UserLike } from "@/types/userTypes";
 import { useGetPostsBySearchTerm } from "@/queries/posts";
@@ -46,7 +46,7 @@ const SearchResults = ({
     initialPosts,
     searchTerm,
     page,
-    sortValue as SortOptions,
+    sortValue as SortOptions
   );
 
   const handleClickPost = (postId: number) => {
@@ -104,7 +104,7 @@ const SearchResults = ({
                 clickPost={() => handleClickPost(post.posts.id)}
                 userLike={
                   initialLikes?.filter(
-                    (like) => like.postId === post.posts.id,
+                    (like) => like.postId === post.posts.id
                   )[0] || null
                 }
                 post={post}
@@ -147,7 +147,7 @@ const SearchResults = ({
             clickClose={handleClose}
             userLike={
               initialLikes?.filter(
-                (like) => like.postId === selectedPost.posts.id,
+                (like) => like.postId === selectedPost.posts.id
               )[0] || null
             }
             post={selectedPost}

@@ -6,15 +6,15 @@ import { validateRequest } from "@/lib/auth/auth";
 import {
   queryCommentCountByProfileId,
   queryCommentsByProfile,
-} from "@/utils/operations/commentDbOperations";
+} from "@/lib/db/operations/commentDbOperations";
 import {
   queryPostCountByProfileId,
   queryPostsByProfile,
-} from "@/utils/operations/postDbOperations";
+} from "@/lib/db/operations/postDbOperations";
 import {
   getProfileFromUserId,
   getProfileFromUsername,
-} from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/userDbOperations";
 
 export default async function Page({
   params,

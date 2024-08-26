@@ -1,13 +1,13 @@
 "use server";
 
-import { queryBoardById } from "@/utils/operations/boardDbOperations";
+import { queryBoardById } from "@/lib/db/operations/boardDbOperations";
 import {
   deleteNotification,
   insertNotification,
   queryUserNotifications,
   updateNotificationAsRead,
-} from "@/utils/operations/notificationDbOperations";
-import { queryPostDetailsById } from "@/utils/operations/postDbOperations";
+} from "@/lib/db/operations/notificationDbOperations";
+import { queryPostDetailsById } from "@/lib/db/operations/postDbOperations";
 
 export const postCommentNotification = async (
   postId: number,

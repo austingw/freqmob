@@ -7,8 +7,8 @@ import { validateRequest } from "@/lib/auth/auth";
 import {
   queryPostCount,
   queryPosts,
-} from "@/utils/operations/postDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/postDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 export default async function Page() {
   const posts = await queryPosts(1, "new");

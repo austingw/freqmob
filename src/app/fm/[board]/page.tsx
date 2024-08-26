@@ -4,12 +4,12 @@ import { getUserLikes } from "@/app/actions/likeActions";
 import BoardHeader from "@/components/BoardHeader";
 import Feed from "@/components/Feed";
 import { validateRequest } from "@/lib/auth/auth";
-import { queryBoardByName } from "@/utils/operations/boardDbOperations";
+import { queryBoardByName } from "@/lib/db/operations/boardDbOperations";
 import {
   queryPostCount,
   queryPostsByBoard,
-} from "@/utils/operations/postDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/postDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 export default async function Page({ params }: { params: { board: string } }) {
   const boardData = await queryBoardByName(params.board);

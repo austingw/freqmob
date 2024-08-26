@@ -1,8 +1,8 @@
 import { getUserLikes } from "@/app/actions/likeActions";
 import PostWrapper from "@/components/PostWrapper";
 import { validateRequest } from "@/lib/auth/auth";
-import { queryPostById } from "@/utils/operations/postDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+import { queryPostById } from "@/lib/db/operations/postDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const post = await queryPostById(params?.id);

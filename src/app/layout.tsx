@@ -8,7 +8,7 @@ import Providers from "@/app/providers";
 import { Notifications } from "@mantine/notifications";
 import FMAppShell from "@/components/FMAppShell";
 import { validateRequest } from "@/lib/auth/auth";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 const inter = Inter({ subsets: ["latin"] });
 

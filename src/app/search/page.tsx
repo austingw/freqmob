@@ -1,11 +1,11 @@
 import SearchResults from "@/components/SearchResults";
 import { validateRequest } from "@/lib/auth/auth";
-import { queryBoardsBySearchTerm } from "@/utils/operations/boardDbOperations";
+import { queryBoardsBySearchTerm } from "@/lib/db/operations/boardDbOperations";
 import {
   queryPostsBySearchTerm,
   queryPostsCountBySearchTerm,
-} from "@/utils/operations/postDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/postDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 import { getUserLikes } from "../actions/likeActions";
 
 export default async function Page({

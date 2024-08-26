@@ -3,13 +3,13 @@
 import { validateRequest } from "@/lib/auth/auth";
 import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
-import { queryCommentsByProfile } from "@/utils/operations/commentDbOperations";
-import { queryPostsByProfile } from "@/utils/operations/postDbOperations";
+import { queryCommentsByProfile } from "@/lib/db/operations/commentDbOperations";
+import { queryPostsByProfile } from "@/lib/db/operations/postDbOperations";
 import {
   getProfileFromUserId,
   getProfileFromUsername,
   updateProfile,
-} from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/userDbOperations";
 
 export const getProfileByName = async (username: string) => {
   try {

@@ -4,13 +4,13 @@ import { validateRequest } from "@/lib/auth/auth";
 import {
   insertBoard,
   queryBoardsBySearchTerm,
-} from "@/utils/operations/boardDbOperations";
+} from "@/lib/db/operations/boardDbOperations";
 import {
   addBoardSub,
   getProfileFromUserId,
   getUserBoards,
   removeBoardSub,
-} from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/userDbOperations";
 
 export const joinBoard = async (profileId: string, boardName: string) => {
   try {

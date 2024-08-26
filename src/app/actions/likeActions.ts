@@ -7,7 +7,7 @@ import {
   deletePostLike,
   insertPostLike,
   queryLikeCount,
-} from "@/utils/operations/likeDbOperations";
+} from "@/lib/db/operations/likeDbOperations";
 
 export const toggleLike = async (postId: number, profileId: string) => {
   const user = await validateRequest();

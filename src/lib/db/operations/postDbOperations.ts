@@ -1,7 +1,7 @@
 import { db } from "@/lib/db/db";
 import { audio, boards, images, posts, profiles } from "@/lib/db/schema";
 import { count, desc, eq, like, or } from "drizzle-orm";
-import { getSortVal } from "../getSortVal";
+import { getSortVal } from "@/utils/getSortVal";
 
 type NewPost = typeof posts.$inferInsert;
 type UpdateDetails = {

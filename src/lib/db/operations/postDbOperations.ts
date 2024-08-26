@@ -106,6 +106,7 @@ export const queryPostsBySearchTerm = async (
     .leftJoin(audio, eq(posts.audioId, audio.id))
     .leftJoin(images, eq(posts.imageId, images.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
+    .innerJoin(boards, eq(posts.boardId, boards.id))
     .where(
       or(
         like(posts.title, `%${searchTerm}%`),

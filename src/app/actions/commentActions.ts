@@ -8,8 +8,8 @@ import {
   queryCommentCount,
   queryComments,
   updateComment,
-} from "@/utils/operations/commentDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/commentDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 export const createComment = async (comment: FormData) => {
   const postId = Number(comment.get("postId"));

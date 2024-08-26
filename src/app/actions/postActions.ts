@@ -4,9 +4,9 @@ import { validateRequest } from "@/lib/auth/auth";
 import { posts } from "@/lib/db/schema";
 import { convertImage } from "@/utils/convertImage";
 import { getPresignedUrl } from "@/utils/getPresignedUrl";
-import { insertAudio } from "@/utils/operations/audioDbOperations";
-import { queryBoardByName } from "@/utils/operations/boardDbOperations";
-import { insertImage } from "@/utils/operations/imageDbOperations";
+import { insertAudio } from "@/lib/db/operations/audioDbOperations";
+import { queryBoardByName } from "@/lib/db/operations/boardDbOperations";
+import { insertImage } from "@/lib/db/operations/imageDbOperations";
 import {
   deletePost,
   insertPost,
@@ -15,8 +15,8 @@ import {
   queryPostsByBoard,
   queryPostsBySearchTerm,
   updatePost,
-} from "@/utils/operations/postDbOperations";
-import { getProfileFromUserId } from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/postDbOperations";
+import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
 
 export const createPost = async (post: FormData) => {
   const title = String(post.get("title"));

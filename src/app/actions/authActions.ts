@@ -5,7 +5,7 @@ import {
   checkUsername,
   insertProfile,
   insertUser,
-} from "@/utils/operations/userDbOperations";
+} from "@/lib/db/operations/userDbOperations";
 import { revalidatePath } from "next/cache";
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";

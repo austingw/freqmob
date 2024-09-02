@@ -118,7 +118,7 @@ export const putProfile = async (profileId: string, data: FormData) => {
       website:
         !website || website === "" || website === "null" ? null : website,
       spotify:
-        !spotify || spotify === "" || website === "null" ? null : spotify,
+        !spotify || spotify === "" || spotify === "null" ? null : spotify,
       soundcloud:
         !soundcloud || soundcloud === "" || soundcloud === "null"
           ? null

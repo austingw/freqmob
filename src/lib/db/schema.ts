@@ -178,6 +178,7 @@ export const userTable = sqliteTable("users", {
     .$default(() => randomUUID())
     .unique(),
   username: text("username").notNull().unique(),
+  email: text("email").unique(),
   password: text("password").notNull(),
 });
 
@@ -187,6 +188,14 @@ export const sessionTable = sqliteTable("session", {
     .notNull()
     .references(() => userTable.id),
   expiresAt: integer("expires_at").notNull(),
+});
+
+export const passwordResetToken = sqliteTable("password_reset_token", {
+  tokenHash: text("token_hash").notNull().unique(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  ExpiresAt: integer("expires_at").notNull(),
 });
 
 export type CommentWithPost = {

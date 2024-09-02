@@ -24,6 +24,7 @@ import {
 } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface NotificationPopoverProps {
   notificationsList?: (typeof notifications.$inferSelect)[];
@@ -32,12 +33,30 @@ interface NotificationPopoverProps {
 const NotificationPopover = ({
   notificationsList,
 }: NotificationPopoverProps) => {
+  const [opened, setOpened] = useState(false);
+
   const queryClient = useQueryClient();
   const router = useRouter();
   const isUnread = notificationsList?.some((n) => n.isRead === false);
 
+  async function handleNotificationClick(n: typeof notifications.$inferSelect) {
+    if (!n.isRead) {
+      await putNotificationRead(n?.id);
+      n.isRead = true;
+    }
+    setOpened(false);
+    router.push(`/post/${n.postId}`);
+  }
+
   return (
-    <Popover width={"440px"} position="bottom" withArrow shadow="md">
+    <Popover
+      width={"440px"}
+      position="bottom"
+      withArrow
+      shadow="md"
+      opened={opened}
+      onChange={setOpened}
+    >
       <Popover.Target>
         <Indicator
           position="top-end"
@@ -48,7 +67,11 @@ const NotificationPopover = ({
           mt={4}
           disabled={!isUnread}
         >
-          <ActionIcon ml={4} variant={isUnread ? "light" : "subtle"}>
+          <ActionIcon
+            ml={4}
+            variant={isUnread ? "light" : "subtle"}
+            onClick={() => setOpened((o) => !o)}
+          >
             <IconBell size={20} />
           </ActionIcon>
         </Indicator>
@@ -68,13 +91,7 @@ const NotificationPopover = ({
                     <Group align="flex-start" justify="flex-start">
                       <ActionIcon
                         size="xl"
-                        onClick={async () => {
-                          if (!n.isRead) {
-                            await putNotificationRead(n?.id);
-                            n.isRead = true;
-                          }
-                          router.push(`/post/${n.postId}`);
-                        }}
+                        onClick={() => handleNotificationClick(n)}
                       >
                         {n.boardId ? <IconWriting /> : <IconMessageCircle2 />}
                       </ActionIcon>
@@ -84,13 +101,7 @@ const NotificationPopover = ({
                             variant="transparent"
                             p={0}
                             size="compact-md"
-                            onClick={async () => {
-                              if (!n.isRead) {
-                                await putNotificationRead(n?.id);
-                                n.isRead = true;
-                              }
-                              router.push(`/post/${n.postId}`);
-                            }}
+                            onClick={() => handleNotificationClick(n)}
                           >
                             {(n.boardId ? "New Post" : "New Comment") +
                               " - " +

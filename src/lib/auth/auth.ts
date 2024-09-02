@@ -1,9 +1,13 @@
-import { Lucia, Session, User } from "lucia";
+import { generateIdFromEntropySize, Lucia, Session, User } from "lucia";
 import { db } from "../db/db";
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
-import { sessionTable, userTable } from "../db/schema";
+import { passwordResetToken, sessionTable, userTable } from "../db/schema";
 import { cookies } from "next/headers";
 import { cache } from "react";
+import { eq } from "drizzle-orm";
+import { sha256 } from "oslo/crypto";
+import { encodeHex } from "oslo/encoding";
+import { createDate, TimeSpan } from "oslo";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
@@ -21,6 +25,29 @@ export const lucia = new Lucia(adapter, {
     };
   },
 });
+
+export async function createPasswordResetToken(
+  userId: string,
+): Promise<string> {
+  try {
+    await db
+      .delete(passwordResetToken)
+      .where(eq(passwordResetToken.userId, userId));
+    const tokenId = generateIdFromEntropySize(25); // 40 character
+    const tokenHash = encodeHex(
+      await sha256(new TextEncoder().encode(tokenId)),
+    );
+    await db.insert(passwordResetToken).values({
+      tokenHash,
+      userId,
+      ExpiresAt: createDate(new TimeSpan(2, "h")).getTime(),
+    });
+    return tokenId;
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
+}
 
 export const validateRequest = cache(
   async (): Promise<

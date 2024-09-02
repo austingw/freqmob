@@ -74,6 +74,9 @@ dependencies:
   next:
     specifier: 14.2.6
     version: 14.2.6(@babel/core@7.25.2)(@playwright/test@1.46.1)(react-dom@18.3.1)(react@18.3.1)
+  nodemailer:
+    specifier: ^6.9.14
+    version: 6.9.14
   oslo:
     specifier: ^1.2.1
     version: 1.2.1
@@ -199,6 +202,9 @@ packages:
   /@aws-cdk/cloud-assembly-schema@2.142.1:
     resolution: {integrity: sha512-qXPblguf9+24YFZz8vECeB5NIXoghiokeQjSXYvZNS5VS+YhqvFSoN+YIu/aoJFfAiMsbamI2CW2Z8xs3qUtiQ==}
     engines: {node: '>= 14.15.0'}
+    dependencies:
+      jsonschema: 1.4.1
+      semver: 7.6.3
     dev: true
     bundledDependencies:
       - jsonschema
@@ -207,6 +213,9 @@ packages:
   /@aws-cdk/cloud-assembly-schema@36.0.24:
     resolution: {integrity: sha512-dHyb4lvd6nbNHLVvdyxVPgwc0MyzN3VzIJnWwGJWKOIwVqL7hvU2NkQQrktY9T2MtdhzUdDFm9qluxuLRV5Cfw==}
     engines: {node: '>= 18.18.0'}
+    dependencies:
+      jsonschema: 1.4.1
+      semver: 7.6.3
     dev: true
     bundledDependencies:
       - jsonschema
@@ -232,6 +241,7 @@ packages:
       '@aws-cdk/cloud-assembly-schema': 2.142.1
     dependencies:
       '@aws-cdk/cloud-assembly-schema': 2.142.1
+      semver: 7.6.3
     dev: true
     bundledDependencies:
       - semver
@@ -7863,6 +7873,10 @@ packages:
       graceful-fs: 4.2.11
     dev: true
 
+  /jsonschema@1.4.1:
+    resolution: {integrity: sha512-S6cATIPVv1z0IlxdN+zUk5EPjkGCdnhN4wVSBlvoUO1tOLJootbo9CquNJmbIh4yikWHiUedhRYrNPn1arpEmQ==}
+    dev: true
+
   /jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
@@ -8390,6 +8404,11 @@ packages:
 
   /node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
+
+  /nodemailer@6.9.14:
+    resolution: {integrity: sha512-Dobp/ebDKBvz91sbtRKhcznLThrKxKt97GI2FAlAyy+fk19j73Uz3sBXolVtmcXjaorivqsbbbjDY+Jkt4/bQA==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}

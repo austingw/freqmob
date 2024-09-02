@@ -94,7 +94,6 @@ const ProfileUpdateForm = ({ close }: { close: () => void }) => {
                 }
                 close();
               } else {
-                console.log(res);
                 notifications.show({
                   message: "Failed to update, please try again",
                   icon: <IconX />,

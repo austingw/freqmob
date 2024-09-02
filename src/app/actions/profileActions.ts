@@ -126,7 +126,6 @@ export const putProfile = async (profileId: string, data: FormData) => {
       bandcamp:
         !bandcamp || bandcamp === "" || bandcamp === "null" ? null : bandcamp,
     });
-    console.log("q+", updatedProfile);
     return {
       status: 201,
       message: "Profile updated",

@@ -33,7 +33,6 @@ export const toggleLike = async (postId: number, profileId: string) => {
     };
   }
 
-  console.log(alreadyLiked);
   if (!alreadyLiked) {
     try {
       await insertPostLike(postId, profileId);
@@ -82,7 +81,7 @@ export const getUserLike = async (postId: number, profileId: string) => {
 
 export const getUserLikes = async (
   postIds: number[] | null,
-  profileId: string
+  profileId: string,
 ) => {
   if (postIds === null) {
     return [];

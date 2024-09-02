@@ -101,7 +101,6 @@ const PostForm = ({
     form.setFieldValue(type, file);
   };
 
-  console.log(form.errors);
   return (
     <Flex direction="column" gap="xs" w={"100%"} align="center" pb={10}>
       <form

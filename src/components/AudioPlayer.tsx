@@ -129,7 +129,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
               <Skeleton width={"100%"} height={140} radius={10} />
             </>
           )}
-          {art && (
+          {wavesurferRef.current && art && (
             <Box
               style={{
                 maxWidth: 140,

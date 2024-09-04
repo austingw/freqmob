@@ -1,5 +1,6 @@
 import {
   getPostsByBoard,
+  getPostsByProfile,
   getPostsBySearchTerm,
 } from "@/app/actions/postActions";
 import { PostWithMedia } from "@/lib/db/schema";
@@ -9,7 +10,7 @@ export const useGetPosts = (
   initialPosts: PostWithMedia[] | null,
   page: number,
   sort: SortOptions,
-  boardId?: string
+  boardId?: string,
 ) => {
   return useQuery({
     queryKey: ["posts", boardId, page, sort],
@@ -20,11 +21,25 @@ export const useGetPosts = (
   });
 };
 
+export const useGetPostsByProfile = (
+  initialPosts: PostWithMedia[] | null,
+  page: number,
+  profileId: string,
+) => {
+  return useQuery({
+    queryKey: ["posts", profileId, page],
+    queryFn: () => getPostsByProfile(page, profileId),
+    initialData: initialPosts,
+    staleTime: 0,
+    placeholderData: keepPreviousData,
+  });
+};
+
 export const useGetPostsBySearchTerm = (
   initialPosts: PostWithMedia[] | null,
   searchTerm: string,
   page: number,
-  sort: SortOptions
+  sort: SortOptions,
 ) => {
   return useQuery({
     queryKey: ["posts", searchTerm, page, sort],

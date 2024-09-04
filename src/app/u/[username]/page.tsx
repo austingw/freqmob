@@ -31,7 +31,7 @@ export default async function Page({
     );
   }
 
-  const posts = await queryPostsByProfile(profile[0]?.id);
+  const posts = await queryPostsByProfile(1, profile[0]?.id);
   const postCount = await queryPostCountByProfileId(profile[0]?.id);
   const comments = await queryCommentsByProfile(profile[0]?.id);
   const commentCount = await queryCommentCountByProfileId(profile[0]?.id);

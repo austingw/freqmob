@@ -25,6 +25,7 @@ import {
   IconBrandSpotify,
   IconLink,
 } from "@tabler/icons-react";
+import { useGetPostsByProfile } from "@/queries/posts";
 
 type Segment = "posts" | "comments";
 
@@ -52,11 +53,12 @@ const ProfileContent = ({
   const [selectedPost, setSelectedPost] = useState<PostWithMedia | null>(null);
   const [segment, setSegment] = useState<Segment>("posts");
   const [postPage, setPostPage] = useState(1);
-
   const [commentPage, setCommentPage] = useState(1);
 
+  const { data } = useGetPostsByProfile(posts, postPage, profile.id);
+
   const handleClickPost = (postId: number) => {
-    const post = posts?.find((post) => post.posts.id === postId);
+    const post = data?.find((post) => post.posts.id === postId);
     post && setSelectedPost(post);
     open();
   };
@@ -167,14 +169,14 @@ const ProfileContent = ({
       </Flex>
       {segment === "posts" && (
         <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
-          {posts?.map((post) => {
+          {data?.map((post) => {
             return (
               <PostCard
                 key={post.posts.id}
                 clickPost={() => handleClickPost(post.posts.id)}
                 userLike={
                   initialLikes?.filter(
-                    (like) => like.postId === post.posts.id
+                    (like) => like.postId === post.posts.id,
                   )[0] || null
                 }
                 post={post}
@@ -222,7 +224,7 @@ const ProfileContent = ({
             clickClose={handleClose}
             userLike={
               initialLikes?.filter(
-                (like) => like.postId === selectedPost.posts.id
+                (like) => like.postId === selectedPost.posts.id,
               )[0] || null
             }
             post={selectedPost}

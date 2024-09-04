@@ -64,7 +64,7 @@ export const queryPostsByBoard = async (
     .orderBy(desc(sortVal));
 };
 
-export const queryPostsByProfile = async (profileId: string) => {
+export const queryPostsByProfile = async (page: number, profileId: string) => {
   return await db
     .select()
     .from(posts)
@@ -73,6 +73,8 @@ export const queryPostsByProfile = async (profileId: string) => {
     .innerJoin(boards, eq(posts.boardId, boards.id))
     .innerJoin(profiles, eq(posts.profileId, profiles.id))
     .where(eq(posts.profileId, profileId))
+    .limit(10)
+    .offset((page - 1) * 10)
     .orderBy(desc(posts.createdAt));
 };
 

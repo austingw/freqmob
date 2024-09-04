@@ -13,6 +13,7 @@ import {
   queryPostById,
   queryPosts,
   queryPostsByBoard,
+  queryPostsByProfile,
   queryPostsBySearchTerm,
   updatePost,
 } from "@/lib/db/operations/postDbOperations";
@@ -149,7 +150,7 @@ export const createPost = async (post: FormData) => {
 export const getPostsByBoard = async (
   page: number,
   sort: SortOptions,
-  boardId?: number
+  boardId?: number,
 ) => {
   try {
     if (!boardId) {
@@ -162,10 +163,19 @@ export const getPostsByBoard = async (
   }
 };
 
+export const getPostsByProfile = async (page: number, profileId: string) => {
+  try {
+    return await queryPostsByProfile(page, profileId);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
 export const getPostsBySearchTerm = async (
   searchTerm: string,
   page: number,
-  sort: SortOptions
+  sort: SortOptions,
 ) => {
   try {
     return await queryPostsBySearchTerm(searchTerm, page, sort);

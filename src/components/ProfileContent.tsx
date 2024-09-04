@@ -76,17 +76,6 @@ const ProfileContent = ({
     open();
   };
 
-  const handleClickComment = (postId: number) => {
-    const comment = comments?.find((comment) => comment.comments.id === postId);
-    if (comment) {
-      const post = posts?.find(
-        (post) => post.posts.id === comment.comments.postId,
-      );
-      post && setSelectedPost(post);
-      open();
-    }
-  };
-
   const handleClose = () => {
     setSelectedPost(null);
     close();

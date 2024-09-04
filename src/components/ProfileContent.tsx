@@ -31,18 +31,18 @@ type Segment = "posts" | "comments";
 
 interface ProfileContentProps {
   profile: typeof profiles.$inferSelect;
-  posts: PostWithMedia[] | null;
+  initialPosts: PostWithMedia[] | null;
   postCount: number;
-  comments: CommentWithPost[] | null;
+  initialComments: CommentWithPost[] | null;
   commentCount: number;
   initialLikes: UserLike[] | null;
 }
 
 const ProfileContent = ({
   profile,
-  posts,
+  initialPosts,
   postCount,
-  comments,
+  initialComments,
   commentCount,
   initialLikes,
 }: ProfileContentProps) => {
@@ -55,10 +55,14 @@ const ProfileContent = ({
   const [postPage, setPostPage] = useState(1);
   const [commentPage, setCommentPage] = useState(1);
 
-  const { data } = useGetPostsByProfile(posts, postPage, profile.id);
+  const { data: posts } = useGetPostsByProfile(
+    initialPosts,
+    postPage,
+    profile.id,
+  );
 
   const handleClickPost = (postId: number) => {
-    const post = data?.find((post) => post.posts.id === postId);
+    const post = posts?.find((post) => post.posts.id === postId);
     post && setSelectedPost(post);
     open();
   };
@@ -169,7 +173,7 @@ const ProfileContent = ({
       </Flex>
       {segment === "posts" && (
         <Stack align={"center"} justify={"center"} gap={16} w="100%" h="100%">
-          {data?.map((post) => {
+          {posts?.map((post) => {
             return (
               <PostCard
                 key={post.posts.id}

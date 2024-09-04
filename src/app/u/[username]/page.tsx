@@ -33,7 +33,7 @@ export default async function Page({
 
   const posts = await queryPostsByProfile(1, profile[0]?.id);
   const postCount = await queryPostCountByProfileId(profile[0]?.id);
-  const comments = await queryCommentsByProfile(profile[0]?.id);
+  const comments = await queryCommentsByProfile(1, profile[0]?.id);
   const commentCount = await queryCommentCountByProfileId(profile[0]?.id);
 
   const postIds = posts ? posts.map((post) => post.posts.id) : [];
@@ -51,9 +51,9 @@ export default async function Page({
     <div>
       <ProfileContent
         profile={profile[0]}
-        posts={posts}
+        initialPosts={posts}
         postCount={postCount?.[0]?.count || 0}
-        comments={comments}
+        initialComments={comments}
         commentCount={commentCount?.[0]?.count || 0}
         initialLikes={postLikes}
       />

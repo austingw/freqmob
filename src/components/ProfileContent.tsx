@@ -26,6 +26,8 @@ import {
   IconLink,
 } from "@tabler/icons-react";
 import { useGetPostsByProfile } from "@/queries/posts";
+import { useGetCommentsByProfile } from "@/queries/comments";
+import { useRouter } from "next/navigation";
 
 type Segment = "posts" | "comments";
 
@@ -46,6 +48,7 @@ const ProfileContent = ({
   commentCount,
   initialLikes,
 }: ProfileContentProps) => {
+  const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -61,10 +64,27 @@ const ProfileContent = ({
     profile.id,
   );
 
+  const { data: comments } = useGetCommentsByProfile(
+    initialComments,
+    commentPage,
+    profile.id,
+  );
+
   const handleClickPost = (postId: number) => {
     const post = posts?.find((post) => post.posts.id === postId);
     post && setSelectedPost(post);
     open();
+  };
+
+  const handleClickComment = (postId: number) => {
+    const comment = comments?.find((comment) => comment.comments.id === postId);
+    if (comment) {
+      const post = posts?.find(
+        (post) => post.posts.id === comment.comments.postId,
+      );
+      post && setSelectedPost(post);
+      open();
+    }
   };
 
   const handleClose = () => {
@@ -201,7 +221,9 @@ const ProfileContent = ({
             return (
               <CommentCard
                 key={comment.comments.id}
-                clickPost={() => handleClickPost(comment.comments.postId)}
+                clickPost={() =>
+                  router.push(`/post/${comment.comments.postId}`)
+                }
                 comment={comment}
                 name={profile?.name}
               />

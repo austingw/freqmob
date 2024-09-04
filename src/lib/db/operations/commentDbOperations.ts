@@ -46,12 +46,17 @@ export const queryCommentById = async (commentId: number) => {
   return await db.select().from(comments).where(eq(comments.id, commentId));
 };
 
-export const queryCommentsByProfile = async (profileId: string) => {
+export const queryCommentsByProfile = async (
+  page: number,
+  profileId: string,
+) => {
   return await db
     .select()
     .from(comments)
     .where(eq(comments.profileId, profileId))
     .innerJoin(posts, eq(posts.id, comments.postId))
+    .limit(10)
+    .offset((page - 1) * 10)
     .orderBy(desc(comments.createdAt));
 };
 

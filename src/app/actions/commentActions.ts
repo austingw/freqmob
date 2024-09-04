@@ -7,6 +7,7 @@ import {
   queryCommentById,
   queryCommentCount,
   queryComments,
+  queryCommentsByProfile,
   updateComment,
 } from "@/lib/db/operations/commentDbOperations";
 import { getProfileFromUserId } from "@/lib/db/operations/userDbOperations";
@@ -46,6 +47,15 @@ export const createComment = async (comment: FormData) => {
 
 export const getComments = async (postId: number) => {
   return await queryComments(postId);
+};
+
+export const getCommentsByProfile = async (page: number, profileId: string) => {
+  try {
+    return await queryCommentsByProfile(page, profileId);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
 };
 
 export const getCommentCount = async (postId: number) => {

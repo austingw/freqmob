@@ -22,6 +22,7 @@ interface SignUpProps {
 
 interface SignUpFormValues {
   username: string;
+  email: string;
   password: string;
   password2: string;
 }
@@ -32,6 +33,7 @@ const schema = z
       .string()
       .min(3, { message: "Username must have at least three characters" })
       .max(100, { message: "Username can have at most 100 characters" }),
+    email: z.string().email().optional().or(z.literal("")),
     password: z
       .string()
       .min(6)
@@ -61,6 +63,7 @@ const SignUp = ({ close }: SignUpProps) => {
   const form = useForm<SignUpFormValues>({
     initialValues: {
       username: "",
+      email: "",
       password: "",
       password2: "",
     },
@@ -101,21 +104,23 @@ const SignUp = ({ close }: SignUpProps) => {
             <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk
-              c="black"
               label="Username"
               placeholder="Ideally this should be your artist name"
               {...form.getInputProps("username")}
             />
+            <TextInput
+              label="Email (Optional)"
+              placeholder="test@example.com"
+              {...form.getInputProps("email")}
+            />
             <PasswordInput
               withAsterisk
-              c="black"
               label="Password"
               placeholder="Password (1 uppercase, 1 lowercase, 1 number)"
               {...form.getInputProps("password")}
             />
             <PasswordInput
               withAsterisk
-              c="black"
               label="Confirm Password"
               placeholder="Password (Match what you entered above)"
               {...form.getInputProps("password2")}

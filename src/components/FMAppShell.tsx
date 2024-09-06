@@ -69,7 +69,7 @@ export default function FMAppShell({
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { open, close }] = useDisclosure(false);
   const [modalContent, setModalContent] = useState<"login" | "post" | "edit">(
-    "login"
+    "login",
   );
   const [modalTitle, setModalTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -317,7 +317,7 @@ export default function FMAppShell({
                 </Button>
               ))
             ) : (
-              <Text c="black">
+              <Text>
                 {!isLoading && profile ? "no boards found, join some!" : ""}
               </Text>
             )}

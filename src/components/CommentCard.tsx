@@ -21,7 +21,7 @@ const CommentCard = ({ clickPost, comment, name }: CommentCardProps) => {
             cursor: "pointer",
           }}
         >
-          <Text fz="md" c="black">
+          <Text fz="md">
             u/{name} commented on
             <b> {comment?.posts?.title}</b>{" "}
           </Text>

@@ -107,7 +107,7 @@ const ProfileContent = ({
               alt={`${profile?.name}'s avatar`}
               size={"lg"}
             />
-            <Text fz={"h1"} c="black" fw={600}>
+            <Text fz={"h1"} fw={600}>
               u/{profile?.name}
             </Text>
           </Flex>

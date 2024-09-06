@@ -15,7 +15,6 @@ const AuthModal = ({ close, setModalTitle }: AuthModelProps) => {
       {isLogin ? <Login close={close} /> : <SignUp close={close} />}
       <Button
         variant="transparent"
-        c="black"
         onClick={() => {
           isLogin ? setModalTitle("Sign Up") : setModalTitle("Login");
           setIsLogin(!isLogin);

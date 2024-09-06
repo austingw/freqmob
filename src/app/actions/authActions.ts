@@ -1,11 +1,16 @@
 "use server";
 
-import { lucia, validateRequest } from "@/lib/auth/auth";
+import {
+  createPasswordResetToken,
+  lucia,
+  validateRequest,
+} from "@/lib/auth/auth";
 import {
   checkUsername,
   insertProfile,
   insertUser,
 } from "@/lib/db/operations/userDbOperations";
+import sendPasswordResetEmail from "@/lib/email/sendPasswordResetEmail";
 import { revalidatePath } from "next/cache";
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
@@ -58,7 +63,7 @@ export const signup = async (user: FormData) => {
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes
+      sessionCookie.attributes,
     );
   } catch {
     return {
@@ -104,7 +109,7 @@ export const login = async (user: FormData) => {
 
   const passwordMatch = await new Argon2id().verify(
     existingUser[0].password,
-    password
+    password,
   );
   if (!passwordMatch) {
     return {
@@ -117,7 +122,7 @@ export const login = async (user: FormData) => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return;
 };
@@ -136,7 +141,30 @@ export const logout = async (): Promise<ActionResult> => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return;
+};
+
+export const sendPasswordResetToken = async (username: string) => {
+  const user = await checkUsername(username);
+
+  if (!user || !user[0].email) {
+    return { message: "No email associated with account", status: 400 };
+  }
+
+  const verificationToken = await createPasswordResetToken(user[0].id);
+  const verificationLink = window.location.origin + "/" + verificationToken;
+
+  const res = await sendPasswordResetEmail(user[0].email, verificationLink);
+
+  if (!res) {
+    return {
+      message:
+        "There was an error sending the email, please try again later or contact fm@freqmob.com directly",
+      status: 500,
+    };
+  }
+
+  return { message: "Email sent", status: 200 };
 };

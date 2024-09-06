@@ -34,6 +34,7 @@
     "drizzle-zod": "^0.5.1",
     "jotai": "^2.9.3",
     "lucia": "^3.2.0",
+    "mailgun.js": "^10.2.3",
     "next": "14.2.6",
     "nodemailer": "^6.9.14",
     "oslo": "^1.2.1",

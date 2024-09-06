@@ -19,7 +19,9 @@ import { Argon2id } from "oslo/password";
 
 export const signup = async (user: FormData) => {
   const username = String(user.get("username"));
+  const email = String(user.get("email"));
   const password = String(user.get("password"));
+  const password2 = String(user.get("password2"));
 
   //Check if the username already exists
   if (username) {
@@ -41,6 +43,12 @@ export const signup = async (user: FormData) => {
     };
   }
 
+  if (password !== password2) {
+    return {
+      error: "Passwords do not match",
+    };
+  }
+
   //Hash that jawn
   const hashedPassword = await new Argon2id().hash(password);
 
@@ -48,6 +56,7 @@ export const signup = async (user: FormData) => {
   try {
     const newUser = await insertUser({
       username,
+      email: email || null,
       password: hashedPassword,
     });
 

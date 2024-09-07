@@ -7,5 +7,6 @@ export const useGetBoardList = (profileId: string) => {
     queryFn: () => getUserBoardList(profileId),
     staleTime: 0,
     placeholderData: keepPreviousData,
+    enabled: !!profileId,
   });
 };

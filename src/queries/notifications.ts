@@ -7,5 +7,6 @@ export const useGetNotifications = (profileId: string, page: number) => {
     queryFn: () => getNotifications(profileId, page),
     staleTime: 0,
     placeholderData: keepPreviousData,
+    enabled: !!profileId,
   });
 };

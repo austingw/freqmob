@@ -246,7 +246,7 @@ export default function FMAppShell({
             size={"auto"}
             title={modalTitle}
             style={{
-              ".mantine-Modal-title": {
+              ".mantineModalTitle": {
                 fontWeight: 6000,
               },
             }}

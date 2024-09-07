@@ -6,10 +6,12 @@ import {
   Button,
   Flex,
   LoadingOverlay,
+  Modal,
   PasswordInput,
   Stack,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -52,6 +54,7 @@ const schema = z
 
 const PasswordResetForm = ({ token }: PasswordResetFormProps) => {
   const [loading, setLoading] = useState(false);
+  const [opened, { open, close }] = useDisclosure(true);
 
   const form = useForm<PasswordResetFormValues>({
     initialValues: {
@@ -65,52 +68,65 @@ const PasswordResetForm = ({ token }: PasswordResetFormProps) => {
 
   return (
     <>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          form.validate();
-          if (form.errors.password || form.errors.password2) return form.errors;
-          setLoading(true);
-          const data = generateFormData(form.values);
-          await postNewPassword(token, data).then((res) => {
-            setLoading(false);
-            if (res?.status !== 200) {
-              form.validate();
-              notifications.show({
-                message: "Failed to reset password, please try again later",
-                icon: <IconX />,
-                autoClose: 3000,
-              });
-            } else {
-              router.push("/");
-              notifications.show({
-                message: "Password changed successfully!",
-                icon: <IconCheck />,
-                autoClose: 3000,
-              });
-            }
-          });
+      <Modal
+        opened={opened}
+        onClose={close}
+        size={"xl"}
+        title={"Reset Password"}
+        style={{
+          ".mantineModalTitle": {
+            fontWeight: 6000,
+          },
         }}
       >
-        <Flex>
-          <Stack>
-            <LoadingOverlay visible={loading} />
-            <PasswordInput
-              withAsterisk
-              label="Password"
-              placeholder="Password (1 uppercase, 1 lowercase, 1 number)"
-              {...form.getInputProps("password")}
-            />
-            <PasswordInput
-              withAsterisk
-              label="Confirm Password"
-              placeholder="Password (Match what you entered above)"
-              {...form.getInputProps("password2")}
-            />
-            <Button type="submit">Save</Button>
-          </Stack>
-        </Flex>
-      </form>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            form.validate();
+            if (form.errors.password || form.errors.password2)
+              return form.errors;
+            setLoading(true);
+            const data = generateFormData(form.values);
+            await postNewPassword(token, data).then((res) => {
+              setLoading(false);
+              if (res?.status !== 200) {
+                form.validate();
+                notifications.show({
+                  message: "Failed to reset password, please try again later",
+                  icon: <IconX />,
+                  autoClose: 3000,
+                });
+              } else {
+                router.push("/");
+                notifications.show({
+                  message: "Password changed successfully!",
+                  icon: <IconCheck />,
+                  autoClose: 3000,
+                });
+              }
+            });
+          }}
+        >
+          <Flex miw={"100%"}>
+            <Stack miw={"100%"}>
+              <LoadingOverlay visible={loading} />
+              <PasswordInput
+                withAsterisk
+                label="Password"
+                placeholder="Password (1 uppercase, 1 lowercase, 1 number)"
+                {...form.getInputProps("password")}
+              />
+              <PasswordInput
+                withAsterisk
+                label="Confirm Password"
+                placeholder="Password (Match what you entered above)"
+                {...form.getInputProps("password2")}
+              />
+              <Button type="submit">Save</Button>
+            </Stack>
+          </Flex>
+        </form>
+      </Modal>
     </>
   );
 };

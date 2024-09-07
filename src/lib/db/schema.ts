@@ -195,7 +195,7 @@ export const passwordResetToken = sqliteTable("password_reset_token", {
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
-  ExpiresAt: integer("expires_at").notNull(),
+  expiresAt: integer("expires_at").notNull(),
 });
 
 export type CommentWithPost = {

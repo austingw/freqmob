@@ -40,7 +40,7 @@ export async function createPasswordResetToken(
     await db.insert(passwordResetToken).values({
       tokenHash,
       userId,
-      ExpiresAt: createDate(new TimeSpan(2, "h")).getTime(),
+      expiresAt: createDate(new TimeSpan(2, "h")).getTime(),
     });
     return tokenId;
   } catch (e) {

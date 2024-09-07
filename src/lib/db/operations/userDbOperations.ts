@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { profiles, userTable } from "@/lib/db/schema";
+import { passwordResetToken, profiles, userTable } from "@/lib/db/schema";
 import { UpdateProfile } from "@/types/userTypes";
 import { eq } from "drizzle-orm";
 
@@ -68,4 +68,24 @@ export const updateProfile = async (profileId: string, data: UpdateProfile) => {
     .set(data)
     .where(eq(profiles.id, profileId))
     .returning();
+};
+
+export const queryPasswordToken = async (tokenHash: string) => {
+  return await db
+    .select()
+    .from(passwordResetToken)
+    .where(eq(passwordResetToken.tokenHash, tokenHash));
+};
+
+export const deletePasswordToken = async (tokenHash: string) => {
+  return await db
+    .delete(passwordResetToken)
+    .where(eq(passwordResetToken.tokenHash, tokenHash));
+};
+
+export const updatePassword = async (userId: string, password: string) => {
+  return await db
+    .update(userTable)
+    .set({ password })
+    .where(eq(userTable.id, userId));
 };

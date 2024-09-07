@@ -12,8 +12,8 @@ interface PostWrapperProps {
 
 const PostWrapper = ({ userLike, post }: PostWrapperProps) => {
   return (
-    <Stack>
-      <Card withBorder>
+    <Stack h={"100%"}>
+      <Card withBorder h={"100%"}>
         <Post clickClose={() => {}} hideClose userLike={userLike} post={post} />
       </Card>
     </Stack>

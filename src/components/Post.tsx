@@ -86,7 +86,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
   return (
     <>
       <ScrollArea.Autosize scrollbarSize={10}>
-        <Card radius="md" w={"100%"} shadow="sm" pt={0}>
+        <Card radius="md" w={"100%"} shadow="sm" pt={!hideClose ? 0 : 8}>
           {!hideClose && (
             <ActionIcon
               variant="subtle"
@@ -219,7 +219,7 @@ const Post = ({ clickClose, hideClose, userLike, post }: PostProps) => {
                     size="sm"
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `https://freqmob.com/post/${post.posts.id}`,
+                        `${window.location.origin}/post/${post.posts.id}`,
                       );
                       setShowTooltip(true);
                       setTimeout(() => {

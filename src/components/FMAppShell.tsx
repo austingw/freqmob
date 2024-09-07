@@ -292,7 +292,9 @@ export default function FMAppShell({
               }}
               pb={8}
             />
-            <Text>{profile ? "your boards" : "login to view boards!"}</Text>{" "}
+            <Text>
+              {profile ? "your boards" : "login to join or create boards!"}
+            </Text>{" "}
             {isLoading && <Skeleton height={20} width={200} />}
             {isLoading && <Skeleton height={20} width={200} />}
             {isLoading && <Skeleton height={20} width={200} />}

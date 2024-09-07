@@ -71,7 +71,7 @@ const PasswordResetForm = ({ token }: PasswordResetFormProps) => {
       <Modal
         opened={opened}
         onClose={close}
-        size={"xl"}
+        size={"auto"}
         title={"Reset Password"}
         style={{
           ".mantineModalTitle": {

@@ -78,7 +78,7 @@ const PasswordEmail = ({ cancel }: PasswordEmailProps) => {
       >
         <Flex>
           <Stack>
-            <Text fz={"sm"}>Enter your username to reset your password</Text>
+            <Text fz={"h5"}>Reset your password via email:</Text>
             <LoadingOverlay visible={loading} />
             <TextInput
               withAsterisk

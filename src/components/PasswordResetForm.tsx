@@ -18,7 +18,6 @@ import { z } from "zod";
 
 interface PasswordResetFormProps {
   token: string;
-  close: () => void;
 }
 
 interface PasswordResetFormValues {

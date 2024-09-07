@@ -5,7 +5,7 @@ export default async function sendPasswordResetEmail(
   verificationLink: string,
 ) {
   let res = false;
-  mg.messages
+  await mg.messages
     .create("mail.freqmob.com", {
       from: "Freqmob <fm@mail.freqmob.com>",
       to: [email],
@@ -13,10 +13,13 @@ export default async function sendPasswordResetEmail(
       text: `Please use the following link to reset your password: ${verificationLink}`,
       html: `<p>Please use the following link to reset your password: <a href="${verificationLink}">${verificationLink}</a></p>`,
     })
-    .then(() => (res = true))
+    .then(() => {
+      res = true;
+    })
     .catch((err) => {
       res = false;
       console.error(err);
     });
+
   return res;
 }

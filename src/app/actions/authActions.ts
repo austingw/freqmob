@@ -161,7 +161,9 @@ export const logout = async (): Promise<ActionResult> => {
   return;
 };
 
-export const sendPasswordResetToken = async (username: string) => {
+export const sendPasswordResetToken = async (data: FormData) => {
+  const username = String(data.get("username"));
+  const origin = String(data.get("origin"));
   const user = await checkUsername(username);
 
   if (!user || !user[0].email) {
@@ -169,9 +171,10 @@ export const sendPasswordResetToken = async (username: string) => {
   }
 
   const verificationToken = await createPasswordResetToken(user[0].id);
-  const verificationLink = window.location.origin + "/" + verificationToken;
+  const verificationLink = origin + "/reset-password/" + verificationToken;
 
   const res = await sendPasswordResetEmail(user[0].email, verificationLink);
+  console.log(res);
 
   if (!res) {
     return {

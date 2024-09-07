@@ -16,6 +16,19 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/reset-password",
+        headers: [
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

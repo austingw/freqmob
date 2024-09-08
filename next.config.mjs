@@ -6,7 +6,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
-    serverComponentsExternalPackages: ["@aws-sdk"],
+    serverComponentsExternalPackages: ["@aws-sdk", "@node-rs/argon2"],
   },
   async redirects() {
     return [

@@ -14,14 +14,13 @@ import {
   updatePassword,
 } from "@/lib/db/operations/userDbOperations";
 import sendPasswordResetEmail from "@/lib/email/sendPasswordResetEmail";
-import { revalidatePath } from "next/cache";
 import { ActionResult } from "next/dist/server/app-render/types";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { isWithinExpirationDate } from "oslo";
 import { sha256 } from "oslo/crypto";
 import { encodeHex } from "oslo/encoding";
-import { Argon2id } from "oslo/password";
+
+import { hash, verify } from "@node-rs/argon2";
 
 export const signup = async (user: FormData) => {
   const username = String(user.get("username"));
@@ -55,11 +54,22 @@ export const signup = async (user: FormData) => {
     };
   }
 
-  //Hash that jawn
-  const hashedPassword = await new Argon2id().hash(password);
-
-  //Now we can insert the user
   try {
+    const hashedPassword = await hash(password, {
+      // recommended minimum parameters
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
+
+    if (hashedPassword === "") {
+      return {
+        error: "Password broken :/",
+      };
+    }
+
+    //Now we can insert the user
     const newUser = await insertUser({
       username,
       email: email || null,
@@ -80,9 +90,10 @@ export const signup = async (user: FormData) => {
       sessionCookie.value,
       sessionCookie.attributes,
     );
-  } catch {
+  } catch (e) {
+    console.error(e);
     return {
-      error: "There was an error creating the user",
+      error: "Error creating profile, please try again later",
     };
   }
 
@@ -122,10 +133,12 @@ export const login = async (user: FormData) => {
     };
   }
 
-  const passwordMatch = await new Argon2id().verify(
-    existingUser[0].password,
-    password,
-  );
+  const passwordMatch = await verify(existingUser[0].password, password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
   if (!passwordMatch) {
     return {
       error: "Incorrect username or password4",
@@ -226,7 +239,13 @@ export const postNewPassword = async (
     return { message: "Invalid token", status: 400 };
   }
 
-  const hashedPassword = await new Argon2id().hash(password);
+  const hashedPassword = await hash(password, {
+    // recommended minimum parameters
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
 
   await updatePassword(token[0].userId, hashedPassword);
 

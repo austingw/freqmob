@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ActionIcon,
   Flex,
@@ -23,7 +25,6 @@ import {
   IconLink,
   IconMessageCircle2,
   IconMinus,
-  IconPencil,
   IconPlus,
   IconTrash,
   IconX,

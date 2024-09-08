@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Stack } from "@mantine/core";
 import { Dispatch, SetStateAction, useState } from "react";
 import Login from "./Login";

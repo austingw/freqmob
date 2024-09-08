@@ -1,3 +1,5 @@
+"use client";
+
 import { CommentWithPost } from "@/lib/db/schema";
 import formatDate from "@/utils/formatDate";
 import { Card, Group, Stack, Text, useMantineTheme } from "@mantine/core";

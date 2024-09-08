@@ -1,3 +1,5 @@
+"use client";
+
 import { parseLabel } from "@/utils/parseLabel";
 import { Button, Menu } from "@mantine/core";
 import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";

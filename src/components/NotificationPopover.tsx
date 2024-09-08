@@ -1,3 +1,5 @@
+"use client";
+
 import {
   delNotification,
   putNotificationRead,
@@ -14,7 +16,6 @@ import {
   Spoiler,
   Stack,
   Text,
-  ThemeIcon,
 } from "@mantine/core";
 import {
   IconBell,

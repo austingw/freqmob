@@ -1,3 +1,5 @@
+"use client";
+
 import { FileInput } from "@mantine/core";
 import { IconFileUpload } from "@tabler/icons-react";
 

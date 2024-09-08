@@ -1,3 +1,5 @@
+"use client";
+
 import { IconHeart, IconLink, IconMessageCircle2 } from "@tabler/icons-react";
 import {
   Card,

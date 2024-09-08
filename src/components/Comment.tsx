@@ -1,3 +1,5 @@
+"use client";
+
 import { CommentWithProfile } from "@/lib/db/schema";
 import formatDate from "@/utils/formatDate";
 import {
@@ -118,7 +120,7 @@ const Comment = ({ comment }: { comment: CommentWithProfile }) => {
                 if (form.errors.content || form.errors.commentId) return;
                 await putCommentContent(
                   comment.comments.id,
-                  form.values.content
+                  form.values.content,
                 )
                   .catch((err) => {
                     console.error(err);

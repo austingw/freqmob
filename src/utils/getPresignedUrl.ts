@@ -8,7 +8,12 @@ export const getPresignedUrl = async () => {
     Bucket: process.env.S3_BUCKET,
   });
 
-  const url = await getSignedUrl(new S3Client({}), command);
+  const url = await getSignedUrl(
+    new S3Client({
+      region: "us-east-1",
+    }),
+    command,
+  );
 
   return url;
 };

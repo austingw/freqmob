@@ -26,36 +26,6 @@ export const getProfileByName = async (username: string) => {
   }
 };
 
-export const getPostsByUser = async (profileId: string) => {
-  try {
-    const posts = await queryPostsByProfile(profileId);
-    return {
-      status: 200,
-      data: posts,
-    };
-  } catch (e) {
-    return {
-      status: 500,
-      message: "Internal Server Error",
-    };
-  }
-};
-
-export const getCommentsByUser = async (profileId: string) => {
-  try {
-    const comments = await queryCommentsByProfile(profileId);
-    return {
-      status: 200,
-      data: comments,
-    };
-  } catch (e) {
-    return {
-      status: 500,
-      message: "Internal Server Error",
-    };
-  }
-};
-
 export const putProfile = async (profileId: string, data: FormData) => {
   const imageFile = data.get("imageFile") as Blob;
   const currentAvatar = String(data.get("currentAvatar"));

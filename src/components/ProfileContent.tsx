@@ -111,7 +111,7 @@ const ProfileContent = ({
               u/{profile?.name}
             </Text>
           </Flex>
-          <Group align="center" justify="center" gap={8} pb={isMobile ? 8 : 0}>
+          <Group align="center" justify="center" gap={0} pb={isMobile ? 8 : 0}>
             {profile?.website && (
               <ActionIcon
                 variant="subtle"

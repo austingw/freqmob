@@ -1,24 +1,14 @@
-import { SSTConfig } from "sst";
-import { Bucket, NextjsSite } from "sst/constructs";
+/// <reference path="./.sst/platform/config.d.ts" />
 
-export default {
-  config(_input) {
+export default $config({
+  app(input) {
     return {
       name: "freqmob",
-      region: "us-east-1",
+      removal: input?.stage === "production" ? "retain" : "remove",
+      home: "aws",
     };
   },
-  stacks(app) {
-    app.stack(function Site({ stack }) {
-      const bucket = new Bucket(stack, "public");
-
-      const site = new NextjsSite(stack, "site", {
-        bind: [bucket],
-      });
-
-      stack.addOutputs({
-        SiteUrl: site.url,
-      });
-    });
+  async run() {
+    new sst.aws.Nextjs("MyWeb");
   },
-} satisfies SSTConfig;
+});

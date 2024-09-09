@@ -37,6 +37,7 @@ const AudioPlayer = ({ url, art }: AudioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  console.log("duration", duration);
   const [speed, setSpeed] = useState(1);
 
   const waveformRef = useRef<HTMLDivElement>(null);

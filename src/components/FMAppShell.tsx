@@ -15,7 +15,6 @@ import {
   Modal,
   rem,
   Skeleton,
-  Slider,
   Stack,
   Switch,
   Text,

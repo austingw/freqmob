@@ -12,11 +12,11 @@ import {
   Text,
   TextInput,
   Textarea,
+  useMantineTheme,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import FileUpload from "./FileUpload";
-import classes from "./PostForm.module.css";
 import { createPost } from "@/app/actions/postActions";
 import generateFormData from "@/utils/generateFormData";
 import { notifications } from "@mantine/notifications";
@@ -70,6 +70,8 @@ const PostForm = ({
 }) => {
   const [showUpload, setShowUpload] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const theme = useMantineTheme();
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -162,14 +164,11 @@ const PostForm = ({
               </Text>
               <SegmentedControl
                 data={posts.type.enumValues}
-                color="primary"
+                color={theme.primaryColor}
                 value={form.values.type}
                 onChange={(value) => form.setFieldValue("type", value)}
                 radius="md"
                 size={isMobile ? "xs" : "sm"}
-                classNames={{
-                  indicator: classes.segmentedIndicator,
-                }}
               />
             </Stack>
           </Group>

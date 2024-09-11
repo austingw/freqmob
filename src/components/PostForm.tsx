@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Group,
+  LoadingOverlay,
   NumberInput,
   SegmentedControl,
   Select,
@@ -69,6 +70,7 @@ const PostForm = ({
   boardList?: string[] | null;
 }) => {
   const [showUpload, setShowUpload] = useState(false);
+  const [loading, setLoading] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const theme = useMantineTheme();
@@ -105,14 +107,22 @@ const PostForm = ({
 
   return (
     <Flex direction="column" gap="xs" w={"100%"} align="center" pb={10}>
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+        loaderProps={{ color: theme.primaryColor, type: "bars" }}
+      />
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          setLoading(true);
           form.validate();
           if (form.errors.title || form.errors.type) return;
           const data = generateFormData(form.values);
           await createPost(data)
             .catch((err) => {
+              setLoading(false);
               console.error(err);
               notifications.show({
                 message: "Error creating post",
@@ -122,6 +132,7 @@ const PostForm = ({
             })
             .then(async (res) => {
               if (res?.status === 201) {
+                setLoading(false);
                 notifications.show({
                   message: "Post created!",
                   icon: <IconCheck />,
@@ -137,6 +148,7 @@ const PostForm = ({
                 form.reset();
                 close();
               } else {
+                setLoading(false);
                 notifications.show({
                   message: "Failed to create post, please try again",
                   icon: <IconX />,
